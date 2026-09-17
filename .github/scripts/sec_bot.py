@@ -2,40 +2,52 @@ import os
 import json
 import re
 import requests
+import argparse
 
 # --- Load Environment / Secrets ---
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
 # --- 1. Parse Dependency Files in Repo ---
-def parse_dependencies():
-    """Extracts package names and versions from requirements.txt or package.json."""
-    dependencies = {}
-
-    # Check requirements.txt
-    if os.path.exists("requirements.txt"):
-        with open("requirements.txt", "r") as f:
+def parse_requirements(file_path):
+    dependencies = []
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
             for line in f:
+                # Strip leading/trailing whitespace and line breaks
                 line = line.strip()
-                if not line or line.startswith("#"):
+                
+                # Ignore empty lines, comments, and pip flags
+                if not line or line.startswith("#") or line.startswith("-"):
                     continue
-                match = re.match(r"^([a-zA-Z0-9_\-]+)\s*(?:==|>=|~=)?\s*([0-9\.]+)?", line)
+                
+                # Extract package name and version using regex
+                # Matches: package==1.0.0, package>=1.0.0, or plain package
+                match = re.match(r"^([a-zA-Z0-9_\-\.]+)\s*([<>=!~]=?\s*.*)?$", line)
                 if match:
-                    pkg = match.group(1).lower()
-                    version = match.group(2) if match.group(2) else "0.0.0"
-                    dependencies[pkg] = {"version": version, "ecosystem": "PyPI"}
-
-    # Check package.json
-    if os.path.exists("package.json"):
-        with open("package.json", "r") as f:
-            data = json.load(f)
-            deps = {**data.get("dependencies", {}), **data.get("devDependencies", {})}
-            for pkg, ver in deps.items():
-                clean_ver = re.sub(r"[^0-9\.]", "", ver)
-                dependencies[pkg.lower()] = {"version": clean_ver or "0.0.0", "ecosystem": "npm"}
-
+                    package_name = match.group(1)
+                    version = match.group(2).strip() if match.group(2) else "latest"
+                    dependencies.append((package_name, version))
+                    
+    except FileNotFoundError:
+        print(f"Error: Specified file '{file_path}' was not found.")
+        sys.exit(1)
+        
     return dependencies
+    if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Scan dependencies for vulnerabilities.")
+    parser.add_argument("--file", default="requirements.txt", help="Path to dependency file")
+    args = parser.parse_args()
 
+    deps = parse_requirements(args.file)
+
+    if not deps:
+        print("No dependencies found in repository.")
+        sys.exit(0)
+
+    print(f"Successfully parsed {len(deps)} dependencies:")
+    for name, ver in deps:
+        print(f" - {name} ({ver})")
 # --- 2. CISA Known Exploited Vulnerabilities (KEV) ---
 def get_cisa_kev():
     url = "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json"
