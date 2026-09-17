@@ -34,7 +34,11 @@ def parse_requirements(file_path):
         sys.exit(1)
         
     return dependencies
-    if __name__ == "__main__":
+   if __name__ == "__main__":
+   parser = argparse.ArgumentParser(description="Scan dependencies for vulnerabilities.") # <--- CAUSING ERROR
+
+# Fix it by indenting all code inside the block:
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Scan dependencies for vulnerabilities.")
     parser.add_argument("--file", default="requirements.txt", help="Path to dependency file")
     args = parser.parse_args()
