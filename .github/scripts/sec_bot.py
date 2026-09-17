@@ -1,6 +1,7 @@
 import os
 import json
 import requests
+import re
 
 # --- Load Environment / Secrets ---
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
@@ -8,15 +9,32 @@ TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
 # --- 1. Parse Dependency Files in Repo ---
 def parse_requirements_txt(filepath="requirements.txt"):
-    """Extracts package names from requirements.txt."""
+    """Extracts package names and versions flexibly from requirements.txt."""
     dependencies = {}
+    
     if os.path.exists(filepath):
         with open(filepath, "r") as f:
             for line in f:
                 line = line.strip()
-                if line and not line.startswith("#") and "==" in line:
-                    pkg, version = line.split("==")[:2]
-                    dependencies[pkg.strip().lower()] = version.strip()
+                # Skip comments and empty lines
+                if not line or line.startswith("#"):
+                    continue
+                
+                # Regex to match package name and version specs (==, >=, ~=)
+                match = re.match(r"^([a-zA-Z0-9_\-]+)\s*(?:==|>=|~=)?\s*([0-9\.]+)?", line)
+                if match:
+                    pkg = match.group(1).lower()
+                    version = match.group(2) if match.group(2) else "0.0.0"
+                    dependencies[pkg] = version
+    else:
+        print(f"Warning: {filepath} not found. Falling back to default monitoring stack.")
+        # Optional fallback stack if requirements.txt doesn't exist
+        dependencies = {
+            "django": "4.1.0",
+            "requests": "2.28.0",
+            "urllib3": "1.26.5"
+        }
+        
     return dependencies
 
 # --- 2. CISA Known Exploited Vulnerabilities (KEV) ---
