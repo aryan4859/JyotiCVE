@@ -1,40 +1,39 @@
 import os
 import json
-import requests
 import re
+import requests
 
 # --- Load Environment / Secrets ---
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
 # --- 1. Parse Dependency Files in Repo ---
-def parse_requirements_txt(filepath="requirements.txt"):
-    """Extracts package names and versions flexibly from requirements.txt."""
+def parse_dependencies():
+    """Extracts package names and versions from requirements.txt or package.json."""
     dependencies = {}
-    
-    if os.path.exists(filepath):
-        with open(filepath, "r") as f:
+
+    # Check requirements.txt
+    if os.path.exists("requirements.txt"):
+        with open("requirements.txt", "r") as f:
             for line in f:
                 line = line.strip()
-                # Skip comments and empty lines
                 if not line or line.startswith("#"):
                     continue
-                
-                # Regex to match package name and version specs (==, >=, ~=)
                 match = re.match(r"^([a-zA-Z0-9_\-]+)\s*(?:==|>=|~=)?\s*([0-9\.]+)?", line)
                 if match:
                     pkg = match.group(1).lower()
                     version = match.group(2) if match.group(2) else "0.0.0"
-                    dependencies[pkg] = version
-    else:
-        print(f"Warning: {filepath} not found. Falling back to default monitoring stack.")
-        # Optional fallback stack if requirements.txt doesn't exist
-        dependencies = {
-            "django": "4.1.0",
-            "requests": "2.28.0",
-            "urllib3": "1.26.5"
-        }
-        
+                    dependencies[pkg] = {"version": version, "ecosystem": "PyPI"}
+
+    # Check package.json
+    if os.path.exists("package.json"):
+        with open("package.json", "r") as f:
+            data = json.load(f)
+            deps = {**data.get("dependencies", {}), **data.get("devDependencies", {})}
+            for pkg, ver in deps.items():
+                clean_ver = re.sub(r"[^0-9\.]", "", ver)
+                dependencies[pkg.lower()] = {"version": clean_ver or "0.0.0", "ecosystem": "npm"}
+
     return dependencies
 
 # --- 2. CISA Known Exploited Vulnerabilities (KEV) ---
@@ -63,14 +62,13 @@ def get_epss_score(cve_id):
 
 # --- 4. HackerNews / Algolia Security News Filter ---
 def fetch_hackernews_alerts(keywords):
-    """Fetches top security news mentioning tracked dependencies or critical terms."""
     query = " OR ".join(keywords)
     url = f"https://hn.algolia.com/api/v1/search_by_date?query={query}&tags=story"
     news_items = []
     try:
         res = requests.get(url, timeout=10)
         if res.status_code == 200:
-            hits = res.json().get("hits", [])[:3]  # Take top 3 latest relevant hits
+            hits = res.json().get("hits", [])[:3]
             for hit in hits:
                 news_items.append({
                     "title": hit.get("title"),
@@ -103,20 +101,17 @@ def send_telegram_alert(title, details, news=[]):
 
 # --- 6. Execution Pipeline ---
 def main():
-    repo_packages = parse_requirements_txt()
+    repo_packages = parse_dependencies()
     if not repo_packages:
-        print("No dependencies found or parsed.")
+        print("No dependencies found in repository.")
         return
 
-    print(f"Loaded {len(repo_packages)} packages from repository.")
-
-    # Fetch Intel feeds
+    print(f"Successfully loaded {len(repo_packages)} packages from repository.")
     cisa_kev = get_cisa_kev()
     
-    # Query OSV API to find direct CVEs against our parsed packages
-    for pkg, version in repo_packages.items():
+    for pkg, info in repo_packages.items():
         osv_url = "https://api.osv.dev/v1/query"
-        payload = {"package": {"name": pkg, "ecosystem": "PyPI"}, "version": version}
+        payload = {"package": {"name": pkg, "ecosystem": info["ecosystem"]}, "version": info["version"]}
         
         res = requests.post(osv_url, json=payload)
         if res.status_code == 200 and "vulns" in res.json():
@@ -128,14 +123,12 @@ def main():
                 epss = get_epss_score(cve_id)
                 in_kev = cve_id in cisa_kev
                 
-                # Check for Critical Severity criteria
-                # Trigger: In CISA KEV OR high EPSS (>15%) OR explicit Critical tag
-                if in_kev or epss > 0.15:
+                if in_kev or epss > 0.10:
                     hn_news = fetch_hackernews_alerts([pkg, cve_id])
                     
                     alert_details = {
                         "CVE ID": cve_id,
-                        "Matched Package": f"`{pkg}=={version}`",
+                        "Matched Package": f"`{pkg}@{info['version']}` ({info['ecosystem']})",
                         "CISA KEV Status": "⚠️ EXPLOITED IN WILD" if in_kev else "Clean",
                         "EPSS Exploitation Risk": f"{epss * 100:.2f}%",
                         "Summary": vuln.get("summary", "Critical dependency vulnerability detected.")[:200]
