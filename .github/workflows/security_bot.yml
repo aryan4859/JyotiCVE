@@ -1,216 +1,34 @@
-import os
-import sys
-import json
-import re
-import argparse
-import subprocess
-import requests
+name: Cybersecurity Intel & Dependency Alert Bot
 
-# --- Load Environment / Secrets ---
-TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
-TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+on:
+  schedule:
+    # Runs every 6 hours (At minute 0 past hour 0, 6, 12, and 18)
+    - cron: '0 */6 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub UI
 
-# --- 1. Subdomain Discovery (crt.sh) ---
-def fetch_subdomains(domain):
-    """Fetches subdomains passively using Certificate Transparency logs."""
-    url = f"https://crt.sh/?q=%.{domain}&output=json"
-    subdomains = set()
-    try:
-        res = requests.get(url, timeout=15)
-        if res.status_code == 200:
-            for entry in res.json():
-                name = entry.get("name_value", "")
-                for sub in name.split("\n"):
-                    sub = sub.strip().replace("*.", "")
-                    if sub and domain in sub:
-                        subdomains.add(sub)
-    except Exception as e:
-        print(f"crt.sh Query Error for {domain}: {e}")
-    return sorted(list(subdomains))
+jobs:
+  scan-and-alert:
+    runs-on: ubuntu-latest
 
-# --- 2. Tech Fingerprinting via WhatWeb ---
-def scan_targets_with_whatweb(targets):
-    """Runs WhatWeb against a list of targets and parses the JSON output."""
-    log_file = "whatweb_temp_output.json"
-    results = {}
-    
-    # Save targets to a temporary file for WhatWeb
-    with open("targets_temp.txt", "w") as f:
-        for target in targets:
-            f.write(f"{target}\n")
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-    cmd = ["whatweb", "-i", "targets_temp.txt", f"--log-json={log_file}"]
-    
-    try:
-        print("Running WhatWeb scan on targets...")
-        subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        
-        if os.path.exists(log_file):
-            with open(log_file, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                for entry in data:
-                    target = entry.get("target")
-                    plugins = entry.get("plugins", {})
-                    results[target] = []
-                    for name, info in plugins.items():
-                        ver = info.get("version", [])
-                        version_str = ver[0] if ver else ""
-                        results[target].append({"name": name, "version": version_str})
-    except (FileNotFoundError, subprocess.CalledProcessError) as e:
-        print("WhatWeb command failed or is not installed locally. Continuing without WhatWeb results.")
-    finally:
-        for temp_file in ["targets_temp.txt", log_file]:
-            if os.path.exists(temp_file):
-                os.remove(temp_file)
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-    return results
+      - name: Install System Tools & Python Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y whatweb
+          python -m pip install --upgrade pip
+          pip install requests
 
-# --- 3. Parse Requirements File ---
-def parse_requirements(file_path):
-    dependencies = {}
-    if not os.path.exists(file_path):
-        return dependencies
-
-    with open(file_path, "r", encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if not line or line.startswith("#") or line.startswith("-"):
-                continue
-            match = re.match(r"^([a-zA-Z0-9_\-\.]+)\s*([<>=!~]=?\s*.*)?$", line)
-            if match:
-                pkg = match.group(1)
-                raw_ver = match.group(2).strip() if match.group(2) else ""
-                clean_ver = re.sub(r"^[<>=!~]+", "", raw_ver).strip()
-                dependencies[pkg] = {"version": clean_ver, "ecosystem": "PyPI"}
-    return dependencies
-
-# --- 4. Threat Intelligence (CISA KEV & EPSS) ---
-def get_cisa_kev():
-    url = "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json"
-    try:
-        res = requests.get(url, timeout=10)
-        if res.status_code == 200:
-            return {item["cveID"]: item for item in res.json().get("vulnerabilities", [])}
-    except Exception as e:
-        print(f"CISA KEV Fetch Error: {e}")
-    return {}
-
-def get_epss_score(cve_id):
-    url = f"https://api.first.org/data/v1/epss?cve={cve_id}"
-    try:
-        res = requests.get(url, timeout=10)
-        if res.status_code == 200:
-            data = res.json().get("data", [])
-            if data:
-                return float(data[0].get("epss", 0.0))
-    except Exception as e:
-        print(f"EPSS Fetch Error: {e}")
-    return 0.0
-
-def fetch_hackernews_alerts(keywords):
-    query = " OR ".join(keywords)
-    url = f"https://hn.algolia.com/api/v1/search_by_date?query={query}&tags=story"
-    news_items = []
-    try:
-        res = requests.get(url, timeout=10)
-        if res.status_code == 200:
-            hits = res.json().get("hits", [])[:3]
-            for hit in hits:
-                news_items.append({
-                    "title": hit.get("title"),
-                    "url": hit.get("url") or f"https://news.ycombinator.com/item?id={hit.get('objectID')}"
-                })
-    except Exception as e:
-        print(f"HackerNews Fetch Error: {e}")
-    return news_items
-
-# --- 5. Telegram Dispatcher ---
-def send_telegram_alert(title, details, news=[]):
-    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
-        print(f"[Alert Output]\nTarget: {title}\nDetails: {details}\n")
-        return
-
-    message = f"🚨 *[SECURITY THREAT ALERT]*\n\n"
-    message += f"📌 *Target:* {title}\n"
-    for key, val in details.items():
-        message += f"• *{key}:* {val}\n"
-        
-    if news:
-        message += "\n📰 *Related News (HackerNews):*\n"
-        for item in news:
-            message += f"• [{item['title']}]({item['url']})\n"
-
-    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-    payload = {
-        "chat_id": TELEGRAM_CHAT_ID,
-        "text": message,
-        "parse_mode": "Markdown",
-        "disable_web_page_preview": True
-    }
-    try:
-        requests.post(url, json=payload, timeout=10)
-    except Exception as e:
-        print(f"Failed to send Telegram alert: {e}")
-
-# --- 6. Core Execution Pipeline ---
-def analyze_package(pkg_name, version, target_context, cisa_kev, ecosystem="PyPI"):
-    osv_url = "https://api.osv.dev/v1/query"
-    payload = {"package": {"name": pkg_name}}
-    if ecosystem:
-        payload["package"]["ecosystem"] = ecosystem
-    if version:
-        payload["version"] = version
-
-    try:
-        res = requests.post(osv_url, json=payload, timeout=10)
-        if res.status_code == 200 and "vulns" in res.json():
-            for vuln in res.json()["vulns"]:
-                cve_id = next((alias for alias in vuln.get("aliases", []) if alias.startswith("CVE-")), None)
-                if not cve_id:
-                    continue
-
-                epss = get_epss_score(cve_id)
-                in_kev = cve_id in cisa_kev
-
-                if in_kev or epss > 0.10:
-                    hn_news = fetch_hackernews_alerts([pkg_name, cve_id])
-                    alert_details = {
-                        "CVE ID": cve_id,
-                        "Component": f"`{pkg_name}` ({version if version else 'Version Unknown'})",
-                        "CISA KEV Status": "⚠️ EXPLOITED IN WILD" if in_kev else "Clean",
-                        "EPSS Risk": f"{epss * 100:.2f}%",
-                        "Summary": vuln.get("summary", "Vulnerability detected.")[:200]
-                    }
-                    send_telegram_alert(target_context, alert_details, news=hn_news)
-    except Exception as e:
-        print(f"Error checking {pkg_name}: {e}")
-
-def main():
-    parser = argparse.ArgumentParser(description="Integrated Security Recon & Vulnerability Scanner")
-    parser.add_argument("--domain", help="Base domain to enumerate subdomains & scan via WhatWeb")
-    parser.add_argument("--file", help="Path to local dependency file (e.g., requirements.txt)")
-    args = parser.parse_args()
-
-    cisa_kev = get_cisa_kev()
-
-    # Domain Flow (Subdomains + WhatWeb + CVE Query)
-    if args.domain:
-        print(f"Enumerating subdomains for {args.domain} via crt.sh...")
-        subdomains = fetch_subdomains(args.domain)
-        print(f"Discovered {len(subdomains)} target hosts.")
-        
-        if subdomains:
-            tech_results = scan_targets_with_whatweb(subdomains)
-            for host, tech_list in tech_results.items():
-                for tech in tech_list:
-                    analyze_package(tech["name"], tech["version"], f"Host: {host}", cisa_kev, ecosystem=None)
-
-    # Local Requirements File Flow
-    if args.file:
-        repo_packages = parse_requirements(args.file)
-        print(f"Loaded {len(repo_packages)} dependencies from {args.file}.")
-        for pkg, info in repo_packages.items():
-            analyze_package(pkg, info["version"], f"Repo Dependency ({args.file})", cisa_kev, ecosystem=info["ecosystem"])
-
-if __name__ == "__main__":
-    main()
+      - name: Run Correlation & Telegram Bot Engine
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python .github/scripts/sec_bot.py --file .github/scripts/requirements.txt --domain jbbl.com.np
