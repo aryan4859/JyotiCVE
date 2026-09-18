@@ -2,8 +2,8 @@ name: Cybersecurity Intel & CVE Alert Bot
 
 on:
   schedule:
-    # Runs every 6 hours (At minute 0 past hour 0, 6, 12, and 18)
-    - cron: '0 */6 * * *'
+    # Runs every 15 minutes
+    - cron: '*/15 * * * *'
   workflow_dispatch: # Allows manual trigger from GitHub UI
 
 jobs:
@@ -31,4 +31,4 @@ jobs:
           # Optional: raises NVD's rate limit from 5 to 50 requests/30s.
           # NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
         run: |
-          python .github/scripts/sec_bot.py --domain jbbl.com.np --hours 6
+          python .github/scripts/sec_bot.py --domain jbbl.com.np --hours 0.3
