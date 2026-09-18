@@ -26,9 +26,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
+      - name: Run WhatWeb Scan
+        run: |
+          whatweb jbbl.com.np --log-json=whatweb_output.json
+
       - name: Run Correlation & Telegram Bot Engine
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          python .github/scripts/sec_bot.py --file .github/scripts/requirements.txt --domain jbbl.com.np
+          python .github/scripts/sec_bot.py --domain jbbl.com.np --whatweb-file whatweb_output.json
