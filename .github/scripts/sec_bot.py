@@ -1,29 +1,24 @@
 import os
-import sys
 import json
 import time
 import argparse
+from datetime import datetime, timedelta, timezone
 import requests
 
 # --- Load Environment / Secrets ---
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+# Optional: an NVD API key raises the rate limit from 5 to 50 requests/30s.
+# Free to request at https://nvd.nist.gov/developers/request-an-api-key
+NVD_API_KEY = os.getenv("NVD_API_KEY")
 
 # Reuse a single HTTP session for all outbound requests
 SESSION = requests.Session()
 SESSION.headers.update({"User-Agent": "sec-bot/1.0"})
 
-# WhatWeb reports a lot of "plugins" that are really page/response metadata,
-# not identifiable software packages (e.g. the page <title>, the server's IP,
-# a GeoIP country lookup, or a raw redirect URL). Querying OSV with these as
-# package names always fails (400) and is meaningless anyway, so skip them.
-NON_TECH_WHATWEB_PLUGINS = {
-    "Title", "IP", "IPv6", "Country", "RedirectLocation", "UncommonHeaders",
-    "Cookies", "HttpOnly", "Email", "Allow", "Via-Proxy", "ETag",
-    "Cache-Control", "X-Frame-Options", "X-XSS-Protection",
-    "X-Content-Type-Options", "Strict-Transport-Security",
-    "Content-Security-Policy", "Access-Control-Allow-Origin",
-}
+# Alert thresholds
+EPSS_ALERT_THRESHOLD = 0.10   # alert if >10% predicted exploitation probability
+CVSS_ALERT_THRESHOLD = 9.0    # alert on CRITICAL severity regardless of EPSS/KEV
 
 
 # --- 1. Passive Subdomain Discovery via crt.sh ---
@@ -44,7 +39,6 @@ def fetch_subdomains(domain, max_retries=3, backoff_seconds=5):
             entries = res.json()
             for entry in entries:
                 name = entry.get("name_value", "")
-                # Handle multi-line results or wildcard entries
                 for sub in name.split("\n"):
                     sub = sub.strip().replace("*.", "")
                     if sub and domain in sub:
@@ -63,35 +57,57 @@ def fetch_subdomains(domain, max_retries=3, backoff_seconds=5):
     return sorted(subdomains)
 
 
-# --- 2. Load Technology Stack Results ---
-def parse_whatweb_json(json_file):
-    """Parses a WhatWeb JSON output file to identify running packages/technologies."""
-    tech_map = {}
-    if not os.path.exists(json_file):
-        print(f"Warning: WhatWeb log file '{json_file}' not found.")
-        return tech_map
+# --- 2. Newly Published CVEs via NVD ---
+def fetch_recent_nvd_cves(hours=6):
+    """Fetches CVEs published in the last `hours` hours from the NVD 2.0 API."""
+    end = datetime.now(timezone.utc)
+    start = end - timedelta(hours=hours)
+    url = "https://services.nvd.nist.gov/rest/json/cves/2.0"
+    params = {
+        "pubStartDate": start.strftime("%Y-%m-%dT%H:%M:%S.000"),
+        "pubEndDate": end.strftime("%Y-%m-%dT%H:%M:%S.000"),
+        "resultsPerPage": 200,
+    }
+    headers = {"apiKey": NVD_API_KEY} if NVD_API_KEY else {}
 
+    cves = []
     try:
-        with open(json_file, "r", encoding="utf-8") as f:
-            data = json.load(f)
-    except (json.JSONDecodeError, OSError) as e:
-        print(f"Error reading WhatWeb JSON: {e}")
-        return tech_map
+        res = SESSION.get(url, params=params, headers=headers, timeout=30)
+        res.raise_for_status()
+        data = res.json()
+        for item in data.get("vulnerabilities", []):
+            cve = item.get("cve", {})
+            cve_id = cve.get("id")
+            if not cve_id:
+                continue
 
-    for entry in data:
-        target = entry.get("target", "Unknown Target")
-        plugins = entry.get("plugins", {})
-        tech_map[target] = []
+            descriptions = cve.get("descriptions", [])
+            desc_text = next(
+                (d.get("value", "") for d in descriptions if d.get("lang") == "en"),
+                "No description available."
+            )
 
-        for plugin_name, plugin_info in plugins.items():
-            version = plugin_info.get("version", [])
-            version_str = version[0] if version else ""
-            tech_map[target].append({
-                "name": plugin_name,
-                "version": version_str
+            # Prefer the newest CVSS version available
+            cvss_score = None
+            metrics = cve.get("metrics", {})
+            for key in ("cvssMetricV31", "cvssMetricV30", "cvssMetricV2"):
+                metric_list = metrics.get(key)
+                if metric_list:
+                    cvss_score = metric_list[0].get("cvssData", {}).get("baseScore")
+                    break
+
+            cves.append({
+                "id": cve_id,
+                "description": desc_text.strip()[:300],
+                "cvss": cvss_score,
             })
 
-    return tech_map
+    except requests.exceptions.RequestException as e:
+        print(f"NVD Fetch Error: {e}")
+    except (ValueError, json.JSONDecodeError) as e:
+        print(f"NVD returned invalid JSON: {e}")
+
+    return cves
 
 
 # --- 3. CISA Known Exploited Vulnerabilities (KEV) ---
@@ -108,20 +124,31 @@ def get_cisa_kev():
     return {}
 
 
-# --- 4. EPSS Score Fetching ---
-def get_epss_score(cve_id):
+# --- 4. EPSS Score Fetching (bulk) ---
+def get_epss_scores_bulk(cve_ids, batch_size=100):
+    """Fetches EPSS scores for many CVEs at once, in batches, to minimize requests."""
+    scores = {}
+    if not cve_ids:
+        return scores
+
     url = "https://api.first.org/data/v1/epss"
-    try:
-        res = SESSION.get(url, params={"cve": cve_id}, timeout=10)
-        res.raise_for_status()
-        data = res.json().get("data", [])
-        if data:
-            return float(data[0].get("epss", 0.0))
-    except requests.exceptions.RequestException as e:
-        print(f"EPSS Fetch Error for {cve_id}: {e}")
-    except (ValueError, TypeError, json.JSONDecodeError) as e:
-        print(f"EPSS returned unexpected data for {cve_id}: {e}")
-    return 0.0
+    for i in range(0, len(cve_ids), batch_size):
+        batch = cve_ids[i:i + batch_size]
+        try:
+            res = SESSION.get(url, params={"cve": ",".join(batch)}, timeout=15)
+            res.raise_for_status()
+            for item in res.json().get("data", []):
+                cve_id = item.get("cve")
+                try:
+                    scores[cve_id] = float(item.get("epss", 0.0))
+                except (TypeError, ValueError):
+                    scores[cve_id] = 0.0
+        except requests.exceptions.RequestException as e:
+            print(f"EPSS Fetch Error: {e}")
+        except (ValueError, json.JSONDecodeError) as e:
+            print(f"EPSS returned invalid JSON: {e}")
+
+    return scores
 
 
 # --- 5. HackerNews / Algolia Security News Filter ---
@@ -153,8 +180,8 @@ def send_telegram_alert(title, details, news=None):
         print("Telegram credentials not configured. Skipping notification.")
         return
 
-    message = "🚨 *[SECURITY ALERT] Target Analysis*\n\n"
-    message += f"📌 *Target:* {title}\n"
+    message = "🚨 *[NEW CVE ALERT]*\n\n"
+    message += f"📌 *{title}*\n"
     for key, val in details.items():
         message += f"• *{key}:* {val}\n"
 
@@ -177,78 +204,58 @@ def send_telegram_alert(title, details, news=None):
         print(f"Failed to send Telegram alert: {e}")
 
 
-# --- 7. Vulnerability Correlation for a Single Technology ---
-def check_technology_vulns(target, pkg_name, pkg_ver, cisa_kev, epss_threshold=0.10):
-    # Skip WhatWeb "plugins" that are just page/response metadata, not software.
-    if pkg_name in NON_TECH_WHATWEB_PLUGINS:
+# --- 7. Correlate New CVEs Against KEV / EPSS and Alert ---
+def process_new_cves(hours):
+    print(f"Checking NVD for CVEs published in the last {hours} hour(s)...")
+    cisa_kev = get_cisa_kev()
+    new_cves = fetch_recent_nvd_cves(hours)
+    print(f"Found {len(new_cves)} newly published CVE(s).")
+
+    if not new_cves:
         return
 
-    # OSV needs a version (or a purl) to match reliably; a bare name from a
-    # fingerprinting tool is too ambiguous and OSV will reject it outright.
-    if not pkg_ver:
-        print(f"Skipping OSV check for '{pkg_name}' (no version detected).")
-        return
+    cve_ids = [c["id"] for c in new_cves]
+    epss_scores = get_epss_scores_bulk(cve_ids)
 
-    osv_url = "https://api.osv.dev/v1/query"
-    payload = {"package": {"name": pkg_name}, "version": pkg_ver}
+    alert_count = 0
+    for cve in new_cves:
+        cve_id = cve["id"]
+        cvss = cve.get("cvss")
+        epss = epss_scores.get(cve_id, 0.0)
+        in_kev = cve_id in cisa_kev
+        is_critical = cvss is not None and cvss >= CVSS_ALERT_THRESHOLD
 
-    try:
-        res = SESSION.post(osv_url, json=payload, timeout=10)
-        if res.status_code == 400:
-            # No matching ecosystem/package for this name - not a real error,
-            # just means OSV doesn't recognize this as a known package.
-            print(f"OSV has no known package matching '{pkg_name}' ({pkg_ver}); skipping.")
-            return
-        res.raise_for_status()
-    except requests.exceptions.RequestException as e:
-        print(f"Error querying OSV API for {pkg_name}: {e}")
-        return
-
-    try:
-        vulns = res.json().get("vulns", [])
-    except (ValueError, json.JSONDecodeError) as e:
-        print(f"OSV returned invalid JSON for {pkg_name}: {e}")
-        return
-
-    for vuln in vulns:
-        cve_id = next((alias for alias in vuln.get("aliases", []) if alias.startswith("CVE-")), None)
-        if not cve_id:
+        if not (in_kev or epss > EPSS_ALERT_THRESHOLD or is_critical):
             continue
 
-        epss = get_epss_score(cve_id)
-        in_kev = cve_id in cisa_kev
+        hn_news = fetch_hackernews_alerts([cve_id])
+        alert_details = {
+            "CVSS Score": f"{cvss}" if cvss is not None else "N/A",
+            "CISA KEV Status": "⚠️ EXPLOITED IN WILD" if in_kev else "Clean",
+            "EPSS Exploitation Risk": f"{epss * 100:.2f}%",
+            "Summary": cve.get("description", "No description available."),
+        }
+        send_telegram_alert(cve_id, alert_details, news=hn_news)
+        alert_count += 1
+        time.sleep(0.5)  # be polite to Telegram/HN when many alerts fire in a row
 
-        if in_kev or epss > epss_threshold:
-            hn_news = fetch_hackernews_alerts([pkg_name, cve_id])
-            alert_details = {
-                "CVE ID": cve_id,
-                "Matched Tech": f"`{pkg_name}` ({pkg_ver if pkg_ver else 'Unknown Version'})",
-                "CISA KEV Status": "⚠️ EXPLOITED IN WILD" if in_kev else "Clean",
-                "EPSS Exploitation Risk": f"{epss * 100:.2f}%",
-                "Summary": vuln.get("summary", "Security vulnerability detected.")[:200]
-            }
-            send_telegram_alert(f"Asset Threat: {target}", alert_details, news=hn_news)
-            # Be polite to upstream APIs when many alerts fire in a row
-            time.sleep(0.5)
+    print(f"Sent {alert_count} alert(s) out of {len(new_cves)} new CVE(s).")
 
 
 # --- 8. Execution Pipeline ---
 def main():
     parser = argparse.ArgumentParser(
-        description="Scan domain subdomains and technologies for security risks."
+        description="Monitor for newly published high-risk CVEs (NVD + CISA KEV + EPSS + HackerNews), "
+                    "with optional passive subdomain discovery."
     )
-    parser.add_argument("--domain", help="Base domain to query crt.sh (e.g., example.com)")
-    parser.add_argument("--whatweb-file", help="Path to a WhatWeb JSON log file")
+    parser.add_argument("--domain", help="Base domain to query crt.sh for subdomains (e.g., example.com)")
+    parser.add_argument(
+        "--hours", type=float, default=6,
+        help="Look back this many hours for newly published CVEs (default: 6, matching a 6-hour schedule)"
+    )
     args = parser.parse_args()
 
-    if not args.domain and not args.whatweb_file:
-        parser.error("At least one of --domain or --whatweb-file must be provided.")
-
-    cisa_kev = {}
-    if args.whatweb_file:
-        cisa_kev = get_cisa_kev()
-
-    # 1. Subdomain Discovery
+    # Optional: subdomain discovery
     if args.domain:
         print(f"Fetching subdomains for {args.domain} via crt.sh...")
         subdomains = fetch_subdomains(args.domain)
@@ -256,12 +263,8 @@ def main():
         for sub in subdomains:
             print(f" - {sub}")
 
-    # 2. Technology & Vulnerability Analysis
-    if args.whatweb_file:
-        tech_map = parse_whatweb_json(args.whatweb_file)
-        for target, tech_list in tech_map.items():
-            for tech in tech_list:
-                check_technology_vulns(target, tech["name"], tech["version"], cisa_kev)
+    # New CVE alerting
+    process_new_cves(args.hours)
 
 
 if __name__ == "__main__":
