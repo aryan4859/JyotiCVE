@@ -28,7 +28,7 @@ jobs:
 
       - name: Run WhatWeb Scan
         run: |
-          whatweb jbbl.com.np --log-json=whatweb_output.json
+          whatweb jbbl.com.np --log-json=whatweb_output.json || echo '[]' > whatweb_output.json
 
       - name: Run Correlation & Telegram Bot Engine
         env:
