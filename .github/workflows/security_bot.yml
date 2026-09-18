@@ -1,4 +1,4 @@
-name: Cybersecurity Intel & Dependency Alert Bot
+name: Cybersecurity Intel & CVE Alert Bot
 
 on:
   schedule:
@@ -19,20 +19,16 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install System Tools & Python Dependencies
+      - name: Install Python Dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y whatweb
           python -m pip install --upgrade pip
           pip install requests
 
-      - name: Run WhatWeb Scan
-        run: |
-          whatweb jbbl.com.np --log-json=whatweb_output.json || echo '[]' > whatweb_output.json
-
-      - name: Run Correlation & Telegram Bot Engine
+      - name: Run CVE Correlation & Telegram Bot Engine
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # Optional: raises NVD's rate limit from 5 to 50 requests/30s.
+          # NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
         run: |
-          python .github/scripts/sec_bot.py --domain jbbl.com.np --whatweb-file whatweb_output.json
+          python .github/scripts/sec_bot.py --domain jbbl.com.np --hours 6
