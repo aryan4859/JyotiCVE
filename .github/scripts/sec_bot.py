@@ -13,6 +13,18 @@ TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 SESSION = requests.Session()
 SESSION.headers.update({"User-Agent": "sec-bot/1.0"})
 
+# WhatWeb reports a lot of "plugins" that are really page/response metadata,
+# not identifiable software packages (e.g. the page <title>, the server's IP,
+# a GeoIP country lookup, or a raw redirect URL). Querying OSV with these as
+# package names always fails (400) and is meaningless anyway, so skip them.
+NON_TECH_WHATWEB_PLUGINS = {
+    "Title", "IP", "IPv6", "Country", "RedirectLocation", "UncommonHeaders",
+    "Cookies", "HttpOnly", "Email", "Allow", "Via-Proxy", "ETag",
+    "Cache-Control", "X-Frame-Options", "X-XSS-Protection",
+    "X-Content-Type-Options", "Strict-Transport-Security",
+    "Content-Security-Policy", "Access-Control-Allow-Origin",
+}
+
 
 # --- 1. Passive Subdomain Discovery via crt.sh ---
 def fetch_subdomains(domain):
@@ -153,13 +165,26 @@ def send_telegram_alert(title, details, news=None):
 
 # --- 7. Vulnerability Correlation for a Single Technology ---
 def check_technology_vulns(target, pkg_name, pkg_ver, cisa_kev, epss_threshold=0.10):
+    # Skip WhatWeb "plugins" that are just page/response metadata, not software.
+    if pkg_name in NON_TECH_WHATWEB_PLUGINS:
+        return
+
+    # OSV needs a version (or a purl) to match reliably; a bare name from a
+    # fingerprinting tool is too ambiguous and OSV will reject it outright.
+    if not pkg_ver:
+        print(f"Skipping OSV check for '{pkg_name}' (no version detected).")
+        return
+
     osv_url = "https://api.osv.dev/v1/query"
-    payload = {"package": {"name": pkg_name}}
-    if pkg_ver:
-        payload["version"] = pkg_ver
+    payload = {"package": {"name": pkg_name}, "version": pkg_ver}
 
     try:
         res = SESSION.post(osv_url, json=payload, timeout=10)
+        if res.status_code == 400:
+            # No matching ecosystem/package for this name - not a real error,
+            # just means OSV doesn't recognize this as a known package.
+            print(f"OSV has no known package matching '{pkg_name}' ({pkg_ver}); skipping.")
+            return
         res.raise_for_status()
     except requests.exceptions.RequestException as e:
         print(f"Error querying OSV API for {pkg_name}: {e}")
