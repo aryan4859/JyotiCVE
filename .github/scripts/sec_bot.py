@@ -1,13 +1,18 @@
 import os
 import sys
 import json
-import re
-import requests
+import time
 import argparse
+import requests
 
 # --- Load Environment / Secrets ---
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+
+# Reuse a single HTTP session for all outbound requests
+SESSION = requests.Session()
+SESSION.headers.update({"User-Agent": "sec-bot/1.0"})
+
 
 # --- 1. Passive Subdomain Discovery via crt.sh ---
 def fetch_subdomains(domain):
@@ -15,19 +20,22 @@ def fetch_subdomains(domain):
     url = f"https://crt.sh/?q=%.{domain}&output=json"
     subdomains = set()
     try:
-        res = requests.get(url, timeout=15)
-        if res.status_code == 200:
-            entries = res.json()
-            for entry in entries:
-                name = entry.get("name_value", "")
-                # Handle multi-line results or wildcard entries
-                for sub in name.split("\n"):
-                    sub = sub.strip().replace("*.", "")
-                    if sub and domain in sub:
-                        subdomains.add(sub)
-    except Exception as e:
+        res = SESSION.get(url, timeout=15)
+        res.raise_for_status()
+        entries = res.json()
+        for entry in entries:
+            name = entry.get("name_value", "")
+            # Handle multi-line results or wildcard entries
+            for sub in name.split("\n"):
+                sub = sub.strip().replace("*.", "")
+                if sub and domain in sub:
+                    subdomains.add(sub)
+    except requests.exceptions.RequestException as e:
         print(f"crt.sh Query Error for {domain}: {e}")
-    return sorted(list(subdomains))
+    except (ValueError, json.JSONDecodeError) as e:
+        print(f"crt.sh returned invalid JSON for {domain}: {e}")
+    return sorted(subdomains)
+
 
 # --- 2. Load Technology Stack Results ---
 def parse_whatweb_json(json_file):
@@ -40,75 +48,90 @@ def parse_whatweb_json(json_file):
     try:
         with open(json_file, "r", encoding="utf-8") as f:
             data = json.load(f)
-            for entry in data:
-                target = entry.get("target", "Unknown Target")
-                plugins = entry.get("plugins", {})
-                tech_map[target] = []
-                
-                for plugin_name, plugin_info in plugins.items():
-                    version = plugin_info.get("version", [])
-                    version_str = version[0] if version else ""
-                    tech_map[target].append({
-                        "name": plugin_name,
-                        "version": version_str
-                    })
-    except Exception as e:
+    except (json.JSONDecodeError, OSError) as e:
         print(f"Error reading WhatWeb JSON: {e}")
+        return tech_map
+
+    for entry in data:
+        target = entry.get("target", "Unknown Target")
+        plugins = entry.get("plugins", {})
+        tech_map[target] = []
+
+        for plugin_name, plugin_info in plugins.items():
+            version = plugin_info.get("version", [])
+            version_str = version[0] if version else ""
+            tech_map[target].append({
+                "name": plugin_name,
+                "version": version_str
+            })
+
     return tech_map
+
 
 # --- 3. CISA Known Exploited Vulnerabilities (KEV) ---
 def get_cisa_kev():
     url = "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json"
     try:
-        res = requests.get(url, timeout=10)
-        if res.status_code == 200:
-            return {item["cveID"]: item for item in res.json().get("vulnerabilities", [])}
-    except Exception as e:
+        res = SESSION.get(url, timeout=10)
+        res.raise_for_status()
+        return {item["cveID"]: item for item in res.json().get("vulnerabilities", [])}
+    except requests.exceptions.RequestException as e:
         print(f"CISA KEV Fetch Error: {e}")
+    except (ValueError, json.JSONDecodeError) as e:
+        print(f"CISA KEV returned invalid JSON: {e}")
     return {}
+
 
 # --- 4. EPSS Score Fetching ---
 def get_epss_score(cve_id):
-    url = f"https://api.first.org/data/v1/epss?cve={cve_id}"
+    url = "https://api.first.org/data/v1/epss"
     try:
-        res = requests.get(url, timeout=10)
-        if res.status_code == 200:
-            data = res.json().get("data", [])
-            if data:
-                return float(data[0].get("epss", 0.0))
-    except Exception as e:
-        print(f"EPSS Fetch Error: {e}")
+        res = SESSION.get(url, params={"cve": cve_id}, timeout=10)
+        res.raise_for_status()
+        data = res.json().get("data", [])
+        if data:
+            return float(data[0].get("epss", 0.0))
+    except requests.exceptions.RequestException as e:
+        print(f"EPSS Fetch Error for {cve_id}: {e}")
+    except (ValueError, TypeError, json.JSONDecodeError) as e:
+        print(f"EPSS returned unexpected data for {cve_id}: {e}")
     return 0.0
+
 
 # --- 5. HackerNews / Algolia Security News Filter ---
 def fetch_hackernews_alerts(keywords):
     query = " OR ".join(keywords)
-    url = f"https://hn.algolia.com/api/v1/search_by_date?query={query}&tags=story"
+    url = "https://hn.algolia.com/api/v1/search_by_date"
     news_items = []
     try:
-        res = requests.get(url, timeout=10)
-        if res.status_code == 200:
-            hits = res.json().get("hits", [])[:3]
-            for hit in hits:
-                news_items.append({
-                    "title": hit.get("title"),
-                    "url": hit.get("url") or f"https://news.ycombinator.com/item?id={hit.get('objectID')}"
-                })
-    except Exception as e:
+        res = SESSION.get(url, params={"query": query, "tags": "story"}, timeout=10)
+        res.raise_for_status()
+        hits = res.json().get("hits", [])[:3]
+        for hit in hits:
+            news_items.append({
+                "title": hit.get("title"),
+                "url": hit.get("url") or f"https://news.ycombinator.com/item?id={hit.get('objectID')}"
+            })
+    except requests.exceptions.RequestException as e:
         print(f"HackerNews Fetch Error: {e}")
+    except (ValueError, json.JSONDecodeError) as e:
+        print(f"HackerNews returned invalid JSON: {e}")
     return news_items
 
+
 # --- 6. Dispatch Telegram Alert ---
-def send_telegram_alert(title, details, news=[]):
+def send_telegram_alert(title, details, news=None):
+    news = news or []
+
     if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
         print("Telegram credentials not configured. Skipping notification.")
         return
 
-    message = f"🚨 *[SECURITY ALERT] Target Analysis*\n\n"
+    message = "🚨 *[SECURITY ALERT] Target Analysis*\n\n"
     message += f"📌 *Target:* {title}\n"
     for key, val in details.items():
         message += f"• *{key}:* {val}\n"
-        
+
     if news:
         message += "\n📰 *Related Security News (HackerNews):*\n"
         for item in news:
@@ -122,18 +145,69 @@ def send_telegram_alert(title, details, news=[]):
         "disable_web_page_preview": True
     }
     try:
-        requests.post(url, json=payload, timeout=10)
-    except Exception as e:
+        res = SESSION.post(url, json=payload, timeout=10)
+        res.raise_for_status()
+    except requests.exceptions.RequestException as e:
         print(f"Failed to send Telegram alert: {e}")
 
-# --- 7. Execution Pipeline ---
+
+# --- 7. Vulnerability Correlation for a Single Technology ---
+def check_technology_vulns(target, pkg_name, pkg_ver, cisa_kev, epss_threshold=0.10):
+    osv_url = "https://api.osv.dev/v1/query"
+    payload = {"package": {"name": pkg_name}}
+    if pkg_ver:
+        payload["version"] = pkg_ver
+
+    try:
+        res = SESSION.post(osv_url, json=payload, timeout=10)
+        res.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        print(f"Error querying OSV API for {pkg_name}: {e}")
+        return
+
+    try:
+        vulns = res.json().get("vulns", [])
+    except (ValueError, json.JSONDecodeError) as e:
+        print(f"OSV returned invalid JSON for {pkg_name}: {e}")
+        return
+
+    for vuln in vulns:
+        cve_id = next((alias for alias in vuln.get("aliases", []) if alias.startswith("CVE-")), None)
+        if not cve_id:
+            continue
+
+        epss = get_epss_score(cve_id)
+        in_kev = cve_id in cisa_kev
+
+        if in_kev or epss > epss_threshold:
+            hn_news = fetch_hackernews_alerts([pkg_name, cve_id])
+            alert_details = {
+                "CVE ID": cve_id,
+                "Matched Tech": f"`{pkg_name}` ({pkg_ver if pkg_ver else 'Unknown Version'})",
+                "CISA KEV Status": "⚠️ EXPLOITED IN WILD" if in_kev else "Clean",
+                "EPSS Exploitation Risk": f"{epss * 100:.2f}%",
+                "Summary": vuln.get("summary", "Security vulnerability detected.")[:200]
+            }
+            send_telegram_alert(f"Asset Threat: {target}", alert_details, news=hn_news)
+            # Be polite to upstream APIs when many alerts fire in a row
+            time.sleep(0.5)
+
+
+# --- 8. Execution Pipeline ---
 def main():
-    parser = argparse.ArgumentParser(description="Scan domain subdomains and technologies for security risks.")
+    parser = argparse.ArgumentParser(
+        description="Scan domain subdomains and technologies for security risks."
+    )
     parser.add_argument("--domain", help="Base domain to query crt.sh (e.g., example.com)")
-    parser.add_argument("--whatweb-file", help="Path to WhatWeb JSON log file")
+    parser.add_argument("--whatweb-file", help="Path to a WhatWeb JSON log file")
     args = parser.parse_args()
 
-    cisa_kev = get_cisa_kev()
+    if not args.domain and not args.whatweb_file:
+        parser.error("At least one of --domain or --whatweb-file must be provided.")
+
+    cisa_kev = {}
+    if args.whatweb_file:
+        cisa_kev = get_cisa_kev()
 
     # 1. Subdomain Discovery
     if args.domain:
@@ -148,37 +222,8 @@ def main():
         tech_map = parse_whatweb_json(args.whatweb_file)
         for target, tech_list in tech_map.items():
             for tech in tech_list:
-                pkg_name = tech["name"]
-                pkg_ver = tech["version"]
+                check_technology_vulns(target, tech["name"], tech["version"], cisa_kev)
 
-                osv_url = "https://api.osv.dev/v1/query"
-                payload = {"package": {"name": pkg_name}}
-                if pkg_ver:
-                    payload["version"] = pkg_ver
-
-                try:
-                    res = requests.post(osv_url, json=payload, timeout=10)
-                    if res.status_code == 200 and "vulns" in res.json():
-                        for vuln in res.json()["vulns"]:
-                            cve_id = next((alias for alias in vuln.get("aliases", []) if alias.startswith("CVE-")), None)
-                            if not cve_id:
-                                continue
-
-                            epss = get_epss_score(cve_id)
-                            in_kev = cve_id in cisa_kev
-
-                            if in_kev or epss > 0.10:
-                                hn_news = fetch_hackernews_alerts([pkg_name, cve_id])
-                                alert_details = {
-                                    "CVE ID": cve_id,
-                                    "Matched Tech": f"`{pkg_name}` ({pkg_ver if pkg_ver else 'Unknown Version'})",
-                                    "CISA KEV Status": "⚠️ EXPLOITED IN WILD" if in_kev else "Clean",
-                                    "EPSS Exploitation Risk": f"{epss * 100:.2f}%",
-                                    "Summary": vuln.get("summary", "Security vulnerability detected.")[:200]
-                                }
-                                send_telegram_alert(f"Asset Threat: {target}", alert_details, news=hn_news)
-                except Exception as e:
-                    print(f"Error querying OSV API for {pkg_name}: {e}")
 
 if __name__ == "__main__":
     main()
