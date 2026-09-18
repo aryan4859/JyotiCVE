@@ -27,25 +27,39 @@ NON_TECH_WHATWEB_PLUGINS = {
 
 
 # --- 1. Passive Subdomain Discovery via crt.sh ---
-def fetch_subdomains(domain):
-    """Fetches subdomains passively using Certificate Transparency logs (crt.sh)."""
+def fetch_subdomains(domain, max_retries=3, backoff_seconds=5):
+    """Fetches subdomains passively using Certificate Transparency logs (crt.sh).
+
+    crt.sh is a free, community-run service that is prone to transient 502/503
+    errors and timeouts under load. Retry a few times with backoff before
+    giving up, since a single blip shouldn't blank out an entire scheduled run.
+    """
     url = f"https://crt.sh/?q=%.{domain}&output=json"
     subdomains = set()
-    try:
-        res = SESSION.get(url, timeout=15)
-        res.raise_for_status()
-        entries = res.json()
-        for entry in entries:
-            name = entry.get("name_value", "")
-            # Handle multi-line results or wildcard entries
-            for sub in name.split("\n"):
-                sub = sub.strip().replace("*.", "")
-                if sub and domain in sub:
-                    subdomains.add(sub)
-    except requests.exceptions.RequestException as e:
-        print(f"crt.sh Query Error for {domain}: {e}")
-    except (ValueError, json.JSONDecodeError) as e:
-        print(f"crt.sh returned invalid JSON for {domain}: {e}")
+
+    for attempt in range(1, max_retries + 1):
+        try:
+            res = SESSION.get(url, timeout=15)
+            res.raise_for_status()
+            entries = res.json()
+            for entry in entries:
+                name = entry.get("name_value", "")
+                # Handle multi-line results or wildcard entries
+                for sub in name.split("\n"):
+                    sub = sub.strip().replace("*.", "")
+                    if sub and domain in sub:
+                        subdomains.add(sub)
+            return sorted(subdomains)  # success - no need to retry
+
+        except requests.exceptions.RequestException as e:
+            print(f"crt.sh Query Error for {domain} (attempt {attempt}/{max_retries}): {e}")
+        except (ValueError, json.JSONDecodeError) as e:
+            print(f"crt.sh returned invalid JSON for {domain} (attempt {attempt}/{max_retries}): {e}")
+
+        if attempt < max_retries:
+            time.sleep(backoff_seconds * attempt)  # simple linear backoff: 5s, 10s, ...
+
+    print(f"crt.sh remained unavailable for {domain} after {max_retries} attempts; giving up.")
     return sorted(subdomains)
 
 
