@@ -1,8 +1,7 @@
+# Legacy manual workflow. Automatic scheduling moved to the standalone tool.
 name: Bot 1 - Cybersecurity news and CVE alerts
 
 on:
-  schedule:
-    - cron: '*/15 * * * *'
   workflow_dispatch:
 
 permissions:

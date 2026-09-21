@@ -1,8 +1,7 @@
+# Legacy manual workflow. Automatic scheduling moved to the standalone tool.
 name: Bot 2 - Daily TLS certificate checks
 
 on:
-  schedule:
-    - cron: '0 2 * * *'
   workflow_dispatch:
 
 permissions:

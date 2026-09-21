@@ -1,0 +1,29 @@
+[
+  {
+    "id": "example-web-framework",
+    "name": "Django",
+    "category": "framework",
+    "vendor": "djangoproject",
+    "product": "django",
+    "part": "a",
+    "package": {"ecosystem": "PyPI", "name": "django"},
+    "version": "4.2.16",
+    "version_scheme": "pep440"
+  },
+  {
+    "id": "example-web-server",
+    "name": "Apache HTTP Server",
+    "category": "web server",
+    "cpe": "cpe:2.3:a:apache:http_server:2.4.49:*:*:*:*:*:*:*",
+    "version": "2.4.49"
+  },
+  {
+    "id": "example-os",
+    "name": "Ubuntu Linux",
+    "category": "operating system",
+    "vendor": "canonical",
+    "product": "ubuntu_linux",
+    "part": "o",
+    "version": "22.04"
+  }
+]

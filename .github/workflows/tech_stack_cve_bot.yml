@@ -1,8 +1,7 @@
+# Legacy manual workflow. Automatic scheduling moved to the standalone tool.
 name: Bot 3 - Technology stack vulnerabilities
 
 on:
-  schedule:
-    - cron: '0 */6 * * *'
   workflow_dispatch:
 
 permissions:
