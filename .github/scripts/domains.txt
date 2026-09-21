@@ -1,1 +1,10 @@
-
+jbbl.com.np
+jyotismart.jbbl.com.np
+mail.jbbl.com.np
+memo.jbbl.com.np
+onlineservices.jbbl.com.np
+onlineforms.jbbl.com.np
+chatbot.jbbl.com.np
+jbbl-assests.jbbl.com.np
+econnect.jbbl.com.np:8082
+web-cms.jbbl.com.np
