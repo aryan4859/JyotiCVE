@@ -29,6 +29,6 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           # Optional: raises NVD's rate limit from 5 to 50 requests/30s.
-          # NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
         run: |
           python .github/scripts/sec_bot.py --domain jbbl.com.np --hours 0.3
