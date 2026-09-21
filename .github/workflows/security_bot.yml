@@ -2,33 +2,45 @@ name: Cybersecurity Intel & CVE Alert Bot
 
 on:
   schedule:
-    # Runs every 15 minutes
     - cron: '*/15 * * * *'
-  workflow_dispatch: # Allows manual trigger from GitHub UI
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-bot
+  cancel-in-progress: false
 
 jobs:
   scan-and-alert:
     runs-on: ubuntu-latest
-
+    timeout-minutes: 30
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
-      - name: Install Python Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install requests
-
-      - name: Run CVE Correlation & Telegram Bot Engine
+      - name: Install dependencies
+        run: pip install -r .github/scripts/requirements.txt
+      - name: Run regression tests
+        run: python -m unittest discover -s tests -v
+      - name: Restore successful deliveries
+        uses: actions/cache/restore@v4
+        with:
+          path: .bot-state
+          key: security-bot-${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            security-bot-${{ github.ref_name }}-
+      - name: Run news and CVE bot
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          # Optional: raises NVD's rate limit from 5 to 50 requests/30s.
-          # NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
-        run: |
-          python .github/scripts/sec_bot.py --domain jbbl.com.np --hours 0.3
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+        run: python .github/scripts/sec_bot.py --hours 6 --news-source both
+      - name: Save successful deliveries even after partial failure
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: .bot-state
+          key: security-bot-${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_attempt }}
