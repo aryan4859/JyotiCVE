@@ -1,0 +1,45 @@
+name: Bot 3 - Technology stack vulnerabilities
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tech_stack_cve-bot
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install -r .github/scripts/requirements.txt
+      - name: Run regression tests
+        run: python -m unittest discover -s tests -v
+      - name: Restore alert history
+        uses: actions/cache/restore@v4
+        with:
+          path: .tech-stack-state
+          key: tech_stack_cve-${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            tech_stack_cve-${{ github.ref_name }}-
+      - name: Run monitor
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TECH_STACK_TELEGRAM_BOT_TOKEN || secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TECH_STACK_TELEGRAM_CHAT_ID || secrets.TELEGRAM_CHAT_ID }}
+        run: python .github/scripts/tech_stack_cve_bot.py
+      - name: Save successful alerts after partial failures too
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: .tech-stack-state
+          key: tech_stack_cve-${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_attempt }}

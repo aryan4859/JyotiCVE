@@ -1,0 +1,4 @@
+# Add your domains, one per line (optional :port; default 443).
+# Example only; uncomment and replace with your own hostname:
+# example.com
+# app.example.com:8443
