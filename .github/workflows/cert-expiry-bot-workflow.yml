@@ -1,32 +1,31 @@
-name: Certificate Expiry Alert Bot
+# Legacy manual workflow. Automatic scheduling moved to the standalone tool.
+name: Bot 2 - Daily TLS certificate checks
 
 on:
-  schedule:
-    # Runs once daily at 02:00 UTC
-    - cron: '0 2 * * *'
   workflow_dispatch:
 
-jobs:
-  cert-expiry-check:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+permissions:
+  contents: read
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+concurrency:
+  group: cert_expiry-bot
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
-      - name: Install Python Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install requests
-
-      - name: Run Certificate Expiry Bot
-        working-directory: .github/scripts
+      - name: Install dependencies
+        run: pip install -e .
+      - name: Run regression tests
+        run: python -m unittest discover -s tests -v
+      - name: Run monitor
         env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: |
-          python cert_expiry_bot.py --domains-file domains.txt --warn-days 30
+          TELEGRAM_BOT_TOKEN: ${{ secrets.CERT_TELEGRAM_BOT_TOKEN || secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.CERT_TELEGRAM_CHAT_ID || secrets.TELEGRAM_CHAT_ID }}
+        run: python .github/scripts/cert_expiry_bot.py --warn-days 30

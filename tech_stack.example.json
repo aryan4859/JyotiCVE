@@ -1,0 +1,5 @@
+[
+  {"name": "django", "ecosystem": "PyPI", "version": "4.2.16"},
+  {"name": "express", "ecosystem": "npm", "version": "4.21.0"},
+  {"name": "org.apache.logging.log4j:log4j-core", "ecosystem": "Maven", "version": "2.14.1"}
+]

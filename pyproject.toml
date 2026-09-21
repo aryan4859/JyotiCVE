@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jyoticve"
+version = "1.0.0"
+description = "Independent scheduled security intelligence, TLS, and stack monitoring bots"
+requires-python = ">=3.11"
+dependencies = ["requests>=2.32.4,<3", "cryptography>=42,<51", "packaging>=24,<27"]
+
+[project.scripts]
+jyoticve = "jyoticve.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["jyoticve*"]
+
+[tool.setuptools.package-data]
+jyoticve = ["static/*.html", "static/*.css", "static/*.js"]

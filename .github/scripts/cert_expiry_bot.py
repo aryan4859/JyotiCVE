@@ -1,137 +1,112 @@
-"""
-Bot 2: TLS Certificate Expiry Monitor
-
-Connects to each domain in a given list over TLS, reads the server
-certificate's expiry date, and sends a Telegram alert for anything already
-expired or expiring within a configurable warning window. Meant to run once
-a day.
-"""
-import ssl
-import socket
+"""Daily TLS certificate validation for an explicit list of hosts."""
 import argparse
+import math
+import socket
+import ssl
 from datetime import datetime, timezone
+from pathlib import Path
+from urllib.parse import urlsplit
 
-from alert_utils import send_telegram_alert
-
-DEFAULT_WARN_DAYS = 30
-DEFAULT_PORT = 443
-DEFAULT_TIMEOUT = 10
+from cryptography import x509
+import sec_bot as common
 
 
 def load_domains(path):
     domains = []
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if line and not line.startswith("#"):
-                    domains.append(line)
-    except OSError as e:
-        print(f"Could not read domain list '{path}': {e}")
+    for number, line in enumerate(Path(path).read_text().splitlines(), 1):
+        value = line.split('#', 1)[0].strip()
+        if not value:
+            continue
+        try:
+            parsed = urlsplit('//' + value)
+            if (not parsed.hostname or parsed.username or parsed.password or
+                    parsed.path or parsed.query or parsed.fragment):
+                raise ValueError()
+            host = parsed.hostname.encode('idna').decode('ascii')
+            port = 443 if parsed.port is None else parsed.port
+            if any(c.isspace() for c in host) or not 1 <= port <= 65535:
+                raise ValueError()
+        except (ValueError, UnicodeError):
+            raise ValueError(f'{path}:{number}: use a hostname or hostname:port, without a URL/path') from None
+        if (host, port) not in domains:
+            domains.append((host, port))
     return domains
 
 
-def get_cert_expiry(domain, port=DEFAULT_PORT, timeout=DEFAULT_TIMEOUT):
-    """Returns (expiry_datetime, error_message). Exactly one will be None."""
-    context = ssl.create_default_context()
+def read_certificate(host, port, context, timeout):
+    with socket.create_connection((host, port), timeout=timeout) as connection:
+        with context.wrap_socket(connection, server_hostname=host) as tls:
+            return x509.load_der_x509_certificate(tls.getpeercert(binary_form=True))
+
+
+def check_certificate(host, port=443, warn_days=30, timeout=10, now=None):
+    now = now or datetime.now(timezone.utc)
+    verification_error = None
     try:
-        with socket.create_connection((domain, port), timeout=timeout) as sock:
-            with context.wrap_socket(sock, server_hostname=domain) as ssock:
-                cert = ssock.getpeercert()
-        not_after = cert.get("notAfter")
-        if not not_after:
-            return None, "Certificate has no notAfter field"
-        expiry = datetime.strptime(not_after, "%b %d %H:%M:%S %Y %Z").replace(tzinfo=timezone.utc)
-        return expiry, None
+        try:
+            certificate = read_certificate(host, port, ssl.create_default_context(), timeout)
+        except ssl.SSLCertVerificationError as error:
+            verification_error = error.verify_message or str(error)
+            # Inspect dates even for an expired/untrusted certificate. This second
+            # connection is diagnostic only; it never changes the failed validation.
+            context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+            context.check_hostname = False
+            context.verify_mode = ssl.CERT_NONE
+            certificate = read_certificate(host, port, context, timeout)
+        expiry = certificate.not_valid_after_utc
+        starts = certificate.not_valid_before_utc
+        remaining = (expiry - now).total_seconds()
+        if remaining <= 0:
+            status = 'EXPIRED'
+        elif starts > now:
+            status = 'NOT YET VALID'
+        elif verification_error:
+            status = 'INVALID TLS CERTIFICATE'
+        elif remaining <= warn_days * 86400:
+            status = 'EXPIRING SOON'
+        else:
+            status = 'VALID'
+        return {'Domain': f'{host}:{port}', 'Status': status,
+                'Expires (UTC)': expiry.isoformat(),
+                'Days remaining': math.floor(remaining / 86400),
+                'Issuer': certificate.issuer.rfc4514_string(),
+                'TLS validation': verification_error or 'Passed hostname and trust-chain validation'}
+    except (OSError, ValueError) as error:
+        return {'Domain': f'{host}:{port}', 'Status': 'CHECK FAILED',
+                'Error': str(error), 'TLS validation': verification_error or 'Could not complete validation'}
 
-    except ssl.SSLCertVerificationError as e:
-        return None, f"Certificate verification failed: {e}"
-    except (socket.timeout, TimeoutError):
-        return None, f"Connection to {domain}:{port} timed out"
-    except (socket.gaierror, ConnectionRefusedError, OSError) as e:
-        return None, f"Could not connect to {domain}:{port}: {e}"
-    except Exception as e:
-        return None, f"Unexpected error checking {domain}: {e}"
 
-
-def check_domains(domains, warn_days=DEFAULT_WARN_DAYS, port=DEFAULT_PORT, timeout=DEFAULT_TIMEOUT):
-    now = datetime.now(timezone.utc)
-    alert_count = 0
-
-    for domain in domains:
-        expiry, error = get_cert_expiry(domain, port=port, timeout=timeout)
-
-        if error:
-            print(f" - {domain}: ERROR - {error}")
-            send_telegram_alert(
-                domain,
-                {"Status": "⚠️ Could not verify certificate", "Detail": error},
-                header="🔒 *[CERTIFICATE CHECK FAILED]*"
-            )
-            alert_count += 1
-            continue
-
-        days_left = (expiry - now).days
-        print(f" - {domain}: expires {expiry.date()} ({days_left} day(s) left)")
-
-        if days_left < 0:
-            send_telegram_alert(
-                domain,
-                {
-                    "Status": "🔴 EXPIRED",
-                    "Expired On": str(expiry.date()),
-                    "Days Overdue": str(abs(days_left)),
-                },
-                header="🔒 *[CERTIFICATE EXPIRED]*"
-            )
-            alert_count += 1
-        elif days_left <= warn_days:
-            send_telegram_alert(
-                domain,
-                {
-                    "Status": "🟡 Expiring Soon",
-                    "Expires On": str(expiry.date()),
-                    "Days Remaining": str(days_left),
-                },
-                header="🔒 *[CERTIFICATE EXPIRING SOON]*"
-            )
-            alert_count += 1
-
-    print(f"Checked {len(domains)} domain(s), sent {alert_count} alert(s).")
+def run(domains, warn_days=30, timeout=10, dry_run=False):
+    failed = False
+    for host, port in domains:
+        details = check_certificate(host, port, warn_days, timeout)
+        print(details)
+        if details['Status'] == 'CHECK FAILED':
+            failed = True
+        if details['Status'] != 'VALID' and not dry_run:
+            if not common.send_telegram_alert('Certificate alert', details):
+                failed = True
+    if failed:
+        raise RuntimeError('Certificate check or alert delivery failed; see output above')
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Check TLS certificate expiry for a list of domains and alert via Telegram."
-    )
-    parser.add_argument(
-        "--domains-file", default="domains.txt",
-        help="Path to a text file with one domain per line (default: domains.txt)"
-    )
-    parser.add_argument(
-        "--domains", default=None,
-        help="Comma-separated list of domains, used instead of --domains-file"
-    )
-    parser.add_argument(
-        "--warn-days", type=int, default=DEFAULT_WARN_DAYS,
-        help=f"Alert if a certificate expires within this many days (default: {DEFAULT_WARN_DAYS})"
-    )
-    parser.add_argument("--port", type=int, default=DEFAULT_PORT, help="TLS port (default: 443)")
-    parser.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT, help="Connection timeout in seconds")
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--domains-file', default='domains.txt')
+    parser.add_argument('--warn-days', type=int, default=30)
+    parser.add_argument('--timeout', type=float, default=10)
+    parser.add_argument('--dry-run', action='store_true', help='Check TLS and print results without sending Telegram')
     args = parser.parse_args()
-
-    if args.domains:
-        domains = [d.strip() for d in args.domains.split(",") if d.strip()]
-    else:
-        domains = load_domains(args.domains_file)
-
+    if args.warn_days < 0 or args.timeout <= 0:
+        parser.error('--warn-days must be nonnegative and --timeout must be positive')
+    domains = load_domains(args.domains_file)
     if not domains:
-        print("No domains to check. Provide --domains or a --domains-file with at least one entry.")
+        print('No domains configured. Add your hosts to domains.txt to enable monitoring.')
         return
+    if not args.dry_run and not (common.TELEGRAM_BOT_TOKEN and common.TELEGRAM_CHAT_ID):
+        parser.error('Set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID')
+    run(domains, args.warn_days, args.timeout, args.dry_run)
 
-    print(f"Checking certificate expiry for {len(domains)} domain(s)...")
-    check_domains(domains, warn_days=args.warn_days, port=args.port, timeout=args.timeout)
 
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

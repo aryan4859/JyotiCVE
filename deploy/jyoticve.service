@@ -1,0 +1,25 @@
+[Unit]
+Description=JyotiCVE security monitoring bots
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=jyoticve
+Group=jyoticve
+WorkingDirectory=/opt/jyoticve
+EnvironmentFile=-/etc/jyoticve.env
+ExecStart=/opt/jyoticve/.venv/bin/python -m jyoticve --config /opt/jyoticve/config.json serve
+Restart=on-failure
+RestartSec=15
+UMask=0077
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/var/lib/jyoticve
+StateDirectory=jyoticve
+TimeoutStopSec=120
+
+[Install]
+WantedBy=multi-user.target

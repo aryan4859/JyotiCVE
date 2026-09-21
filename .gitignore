@@ -1,0 +1,10 @@
+.bot-state/
+__pycache__/
+*.pyc
+.env
+.tech-stack-state/
+
+state/
+config.json
+.venv/
+*.egg-info/

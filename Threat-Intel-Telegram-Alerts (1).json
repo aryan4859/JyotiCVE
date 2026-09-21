@@ -1,0 +1,4014 @@
+{
+  "version": "1.0",
+  "exportedAt": "2026-09-21T09:51:38.844Z",
+  "state": {
+    "blocks": {
+      "upsertSeen": {
+        "id": "upsertSeen",
+        "type": "table_v2",
+        "name": "upsertSeen",
+        "position": {
+          "x": 203.0132547864505,
+          "y": 136.30338733431518
+        },
+        "subBlocks": {
+          "data": {
+            "id": "data",
+            "type": "code",
+            "value": "<loop.currentItem>"
+          },
+          "rows": {
+            "id": "rows",
+            "type": "code",
+            "value": null
+          },
+          "limit": {
+            "id": "limit",
+            "type": "short-input",
+            "value": null
+          },
+          "order": {
+            "id": "order",
+            "type": "short-input",
+            "value": null
+          },
+          "rowId": {
+            "id": "rowId",
+            "type": "short-input",
+            "value": null
+          },
+          "cursor": {
+            "id": "cursor",
+            "type": "short-input",
+            "value": null
+          },
+          "filter": {
+            "id": "filter",
+            "type": "code",
+            "value": null
+          },
+          "eventType": {
+            "id": "eventType",
+            "type": "dropdown",
+            "value": null
+          },
+          "operation": {
+            "id": "operation",
+            "type": "dropdown",
+            "value": "upsert_row"
+          },
+          "sortBuilder": {
+            "id": "sortBuilder",
+            "type": "sort-builder",
+            "value": null
+          },
+          "watchColumns": {
+            "id": "watchColumns",
+            "type": "dropdown",
+            "value": null
+          },
+          "filterBuilder": {
+            "id": "filterBuilder",
+            "type": "filter-builder",
+            "value": null
+          },
+          "manualTableId": {
+            "id": "manualTableId",
+            "type": "short-input",
+            "value": null
+          },
+          "outputColumns": {
+            "id": "outputColumns",
+            "type": "dropdown",
+            "value": null
+          },
+          "tableSelector": {
+            "id": "tableSelector",
+            "type": "table-selector",
+            "value": null
+          },
+          "includeHeaders": {
+            "id": "includeHeaders",
+            "type": "switch",
+            "value": null
+          },
+          "triggerInstructions": {
+            "id": "triggerInstructions",
+            "type": "text",
+            "value": null
+          },
+          "manualConflictColumn": {
+            "id": "manualConflictColumn",
+            "type": "short-input",
+            "value": "item_id"
+          },
+          "conflictColumnSelector": {
+            "id": "conflictColumnSelector",
+            "type": "column-selector",
+            "value": null
+          }
+        },
+        "outputs": {
+          "row": {
+            "type": "json",
+            "description": "Upserted row data"
+          },
+          "message": {
+            "type": "string",
+            "description": "Status message"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Whether row was upserted"
+          },
+          "operation": {
+            "type": "string",
+            "description": "Operation performed: insert or update"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 136,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {
+          "parentId": "7b073d4d-a782-48f5-9488-e2bf97451b29",
+          "extent": "parent",
+          "canonicalModes": {
+            "tableId": "advanced",
+            "sortInput": "basic",
+            "filterInput": "basic",
+            "conflictColumn": "advanced"
+          }
+        },
+        "locked": false
+      },
+      "9440e358-1e56-4298-96de-b4bed046172d": {
+        "id": "9440e358-1e56-4298-96de-b4bed046172d",
+        "type": "telegram",
+        "name": "sendTelegram",
+        "position": {
+          "x": 2091.723122238588,
+          "y": 1285.6524300441822
+        },
+        "subBlocks": {
+          "text": {
+            "id": "text",
+            "type": "long-input",
+            "value": "<digest.content>"
+          },
+          "audio": {
+            "id": "audio",
+            "type": "short-input",
+            "value": null
+          },
+          "files": {
+            "id": "files",
+            "type": "short-input",
+            "value": null
+          },
+          "isBig": {
+            "id": "isBig",
+            "type": "dropdown",
+            "value": null
+          },
+          "photo": {
+            "id": "photo",
+            "type": "short-input",
+            "value": null
+          },
+          "vcard": {
+            "id": "vcard",
+            "type": "long-input",
+            "value": null
+          },
+          "video": {
+            "id": "video",
+            "type": "short-input",
+            "value": null
+          },
+          "action": {
+            "id": "action",
+            "type": "dropdown",
+            "value": null
+          },
+          "chatId": {
+            "id": "chatId",
+            "type": "short-input",
+            "value": "{{TELEGRAM_CHAT_ID}}"
+          },
+          "userId": {
+            "id": "userId",
+            "type": "short-input",
+            "value": null
+          },
+          "caption": {
+            "id": "caption",
+            "type": "long-input",
+            "value": null
+          },
+          "audioRef": {
+            "id": "audioRef",
+            "type": "short-input",
+            "value": null
+          },
+          "botToken": {
+            "id": "botToken",
+            "type": "short-input",
+            "value": "{{TELEGRAM_BOT_TOKEN}}"
+          },
+          "lastName": {
+            "id": "lastName",
+            "type": "short-input",
+            "value": null
+          },
+          "latitude": {
+            "id": "latitude",
+            "type": "short-input",
+            "value": null
+          },
+          "photoRef": {
+            "id": "photoRef",
+            "type": "short-input",
+            "value": null
+          },
+          "question": {
+            "id": "question",
+            "type": "long-input",
+            "value": null
+          },
+          "videoRef": {
+            "id": "videoRef",
+            "type": "short-input",
+            "value": null
+          },
+          "animation": {
+            "id": "animation",
+            "type": "short-input",
+            "value": null
+          },
+          "audioFile": {
+            "id": "audioFile",
+            "type": "file-upload",
+            "value": null
+          },
+          "firstName": {
+            "id": "firstName",
+            "type": "short-input",
+            "value": null
+          },
+          "longitude": {
+            "id": "longitude",
+            "type": "short-input",
+            "value": null
+          },
+          "messageId": {
+            "id": "messageId",
+            "type": "short-input",
+            "value": null
+          },
+          "operation": {
+            "id": "operation",
+            "type": "dropdown",
+            "value": "telegram_message"
+          },
+          "photoFile": {
+            "id": "photoFile",
+            "type": "file-upload",
+            "value": null
+          },
+          "videoFile": {
+            "id": "videoFile",
+            "type": "file-upload",
+            "value": null
+          },
+          "fromChatId": {
+            "id": "fromChatId",
+            "type": "short-input",
+            "value": null
+          },
+          "isAnonymous": {
+            "id": "isAnonymous",
+            "type": "dropdown",
+            "value": null
+          },
+          "phoneNumber": {
+            "id": "phoneNumber",
+            "type": "short-input",
+            "value": null
+          },
+          "pollOptions": {
+            "id": "pollOptions",
+            "type": "long-input",
+            "value": null
+          },
+          "animationRef": {
+            "id": "animationRef",
+            "type": "short-input",
+            "value": null
+          },
+          "animationFile": {
+            "id": "animationFile",
+            "type": "file-upload",
+            "value": null
+          },
+          "reactionEmoji": {
+            "id": "reactionEmoji",
+            "type": "short-input",
+            "value": null
+          },
+          "attachmentFiles": {
+            "id": "attachmentFiles",
+            "type": "file-upload",
+            "value": null
+          },
+          "webhookUrlDisplay": {
+            "id": "webhookUrlDisplay",
+            "type": "short-input",
+            "value": null
+          },
+          "disableNotification": {
+            "id": "disableNotification",
+            "type": "dropdown",
+            "value": null
+          },
+          "triggerInstructions": {
+            "id": "triggerInstructions",
+            "type": "text",
+            "value": null
+          },
+          "allowsMultipleAnswers": {
+            "id": "allowsMultipleAnswers",
+            "type": "dropdown",
+            "value": null
+          },
+          "samplePayload_telegram_webhook": {
+            "id": "samplePayload_telegram_webhook",
+            "type": "code",
+            "value": null
+          }
+        },
+        "outputs": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "chat": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "description": "Bot user ID"
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "chat type private or channel"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "Bot username"
+                  },
+                  "first_name": {
+                    "type": "string",
+                    "description": "Bot first name"
+                  }
+                },
+                "description": "Information about the bot that sent the message"
+              },
+              "date": {
+                "type": "number",
+                "description": "Unix timestamp when message was sent"
+              },
+              "from": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "description": "Chat ID"
+                  },
+                  "is_bot": {
+                    "type": "boolean",
+                    "description": "Whether the chat is a bot or not"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "Chat title (for groups and channels)"
+                  },
+                  "first_name": {
+                    "type": "string",
+                    "description": "Chat username (if available)"
+                  }
+                },
+                "description": "Chat information"
+              },
+              "text": {
+                "type": "string",
+                "description": "Text content of the sent message"
+              },
+              "message_id": {
+                "type": "number",
+                "description": "Unique Telegram message identifier"
+              }
+            },
+            "description": "Telegram message data"
+          },
+          "message": {
+            "type": "string",
+            "description": "Success or error message"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 136,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {
+          "canonicalModes": {
+            "files": "basic",
+            "audioSource": "basic",
+            "photoSource": "basic",
+            "videoSource": "basic",
+            "animationSource": "basic"
+          }
+        },
+        "locked": false
+      },
+      "d016e131-c25a-4a86-91d2-faabae25ca4f": {
+        "id": "d016e131-c25a-4a86-91d2-faabae25ca4f",
+        "type": "function",
+        "name": "fetchHn",
+        "position": {
+          "x": 580,
+          "y": 150
+        },
+        "subBlocks": {
+          "code": {
+            "id": "code",
+            "type": "code",
+            "value": "// Hacker News (Algolia) security stories from the last 24h. UTC timestamps.\n// No AbortController/setTimeout in this sandbox: resilience is bounded immediate\n// retries plus parse guards. A failing query never fails the block.\nasync function getJson(url, tries) {\n  tries = tries || 3;\n  let lastErr = null;\n  for (let a = 1; a <= tries; a++) {\n    try {\n      const res = await fetch(url, { headers: { 'User-Agent': 'sim-threat-intel' } });\n      if (res.status === 429 || res.status >= 500) {\n        lastErr = 'HTTP ' + res.status + (res.status === 429 ? ' (rate limited)' : '');\n        if (a < tries) { continue; }\n        return { ok: false, error: lastErr, data: null };\n      }\n      if (!res.ok) { return { ok: false, error: 'HTTP ' + res.status, data: null }; }\n      const text = await res.text();\n      try { return { ok: true, error: null, data: JSON.parse(text) }; }\n      catch (e) { return { ok: false, error: 'malformed JSON response', data: null }; }\n    } catch (e) {\n      lastErr = (e && e.message) ? e.message : String(e);\n    }\n  }\n  return { ok: false, error: lastErr || 'request failed', data: null };\n}\n\nconst queries = ['cybersecurity', 'CVE vulnerability', 'data breach', 'ransomware exploit'];\nconst DAY = 86400000;\nconst nowMs = Date.now();\nconst out = [];\nconst seen = {};\nconst errors = [];\nlet okCount = 0;\n\nfor (const q of queries) {\n  const r = await getJson('https://hn.algolia.com/api/v1/search_by_date?query=' + encodeURIComponent(q) + '&tags=story&hitsPerPage=20', 3);\n  if (!r.ok || !r.data) { errors.push(q + ': ' + r.error); continue; }\n  okCount++;\n  const hits = Array.isArray(r.data.hits) ? r.data.hits : [];\n  for (const h of hits) {\n    if (!h || !h.objectID) { continue; }\n    const t = h.created_at ? new Date(h.created_at).getTime() : nowMs;\n    if (isNaN(t) || (nowMs - t) > DAY) { continue; }\n    const id = 'HN-' + h.objectID;\n    if (seen[id]) { continue; }\n    seen[id] = true;\n    out.push({\n      item_id: id,\n      source: 'hackernews',\n      cve_id: null,\n      title: h.title || h.story_title || '(untitled)',\n      description: '',\n      url: h.url || ('https://news.ycombinator.com/item?id=' + h.objectID),\n      references: ['https://news.ycombinator.com/item?id=' + h.objectID],\n      cvss_severity: 'NONE',\n      cvss: null,\n      cvss_vector: null,\n      affected: [],\n      vendor_product: '',\n      kev: false,\n      kev_due: null,\n      epss: null,\n      published: h.created_at ? new Date(h.created_at).toISOString() : null,\n      last_modified: h.created_at ? new Date(h.created_at).toISOString() : null,\n      vuln_status: null,\n      points: h.points || 0\n    });\n  }\n}\n\nconst ok = okCount > 0;\nreturn {\n  source: 'hackernews',\n  fetched_at: new Date().toISOString(),\n  ok: ok,\n  error: errors.length ? errors.join('; ') : null,\n  queriesOk: okCount,\n  queriesTotal: queries.length,\n  count: out.length,\n  items: out\n};"
+          },
+          "language": {
+            "id": "language",
+            "type": "dropdown",
+            "value": "javascript"
+          },
+          "sandboxId": {
+            "id": "sandboxId",
+            "type": "combobox",
+            "value": null
+          },
+          "secretScope": {
+            "id": "secretScope",
+            "type": "dropdown",
+            "value": null
+          },
+          "mountedSecrets": {
+            "id": "mountedSecrets",
+            "type": "dropdown",
+            "value": null
+          }
+        },
+        "outputs": {
+          "files": {
+            "type": "file[]",
+            "description": "Files the code wrote to /tmp/sim/outputs, ready to attach or upload downstream"
+          },
+          "result": {
+            "type": "json",
+            "description": "Structured result emitted by the executed code"
+          },
+          "stdout": {
+            "type": "string",
+            "description": "Console log output and debug messages from function execution"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 112,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {},
+        "locked": false
+      },
+      "6739d6f9-9988-4f02-8d81-38720324a7fa": {
+        "id": "6739d6f9-9988-4f02-8d81-38720324a7fa",
+        "type": "function",
+        "name": "fetchCisa",
+        "position": {
+          "x": 580,
+          "y": 342
+        },
+        "subBlocks": {
+          "code": {
+            "id": "code",
+            "type": "code",
+            "value": "// CISA cybersecurity advisories RSS. UTC timestamps.\n// No AbortController/setTimeout in this sandbox: bounded immediate retries + parse guards.\nconst LT = String.fromCharCode(60);\nconst open = (n) => LT + n + '>';\nconst close = (n) => LT + '/' + n + '>';\n\nasync function getText(url, tries) {\n  tries = tries || 3;\n  let lastErr = null;\n  for (let a = 1; a <= tries; a++) {\n    try {\n      const res = await fetch(url, { headers: { 'User-Agent': 'sim-threat-intel' } });\n      if (res.status === 429 || res.status >= 500) {\n        lastErr = 'HTTP ' + res.status + (res.status === 429 ? ' (rate limited)' : '');\n        if (a < tries) { continue; }\n        return { ok: false, error: lastErr, text: null };\n      }\n      if (!res.ok) { return { ok: false, error: 'HTTP ' + res.status, text: null }; }\n      return { ok: true, error: null, text: await res.text() };\n    } catch (e) {\n      lastErr = (e && e.message) ? e.message : String(e);\n    }\n  }\n  return { ok: false, error: lastErr || 'request failed', text: null };\n}\n\nconst out = [];\nlet ok = true;\nlet error = null;\n\nconst r = await getText('https://www.cisa.gov/cybersecurity-advisories/all.xml', 3);\nif (!r.ok) {\n  ok = false;\n  error = 'CISA RSS ' + r.error;\n} else {\n  const xml = r.text || '';\n  const parts = xml.split(open('item')).slice(1);\n  if (parts.length === 0) { ok = false; error = 'CISA RSS returned no items (malformed or changed feed)'; }\n  const strip = (s) => s.replace('![CDATA[', '').replace(']]', '').trim();\n  for (const p of parts.slice(0, 25)) {\n    const get = (n) => {\n      const a = p.split(open(n))[1];\n      return a === undefined ? '' : strip(a.split(close(n))[0]);\n    };\n    const link = get('link') || get('guid');\n    const title = get('title');\n    if (!link && !title) { continue; }\n    const pub = get('pubDate');\n    let pubIso = null;\n    if (pub) { const t = new Date(pub).getTime(); if (!isNaN(t)) { pubIso = new Date(t).toISOString(); } }\n    const cveMatch = (title.match(/CVE-\\d{4}-\\d{4,7}/g) || []);\n    out.push({\n      item_id: 'CISA-' + (link || title).slice(-80),\n      source: 'cisa_advisory',\n      cve_id: cveMatch[0] || null,\n      title: title,\n      description: get('description').slice(0, 500),\n      url: link,\n      references: link ? [link] : [],\n      cvss_severity: 'UNKNOWN',\n      cvss: null,\n      cvss_vector: null,\n      affected: [],\n      vendor_product: '',\n      kev: false,\n      kev_due: null,\n      epss: null,\n      published: pubIso,\n      last_modified: pubIso,\n      vuln_status: 'ADVISORY'\n    });\n  }\n}\n\nreturn {\n  source: 'cisa_advisory',\n  fetched_at: new Date().toISOString(),\n  ok: ok,\n  error: error,\n  count: out.length,\n  items: out\n};"
+          },
+          "language": {
+            "id": "language",
+            "type": "dropdown",
+            "value": "javascript"
+          },
+          "sandboxId": {
+            "id": "sandboxId",
+            "type": "combobox",
+            "value": null
+          },
+          "secretScope": {
+            "id": "secretScope",
+            "type": "dropdown",
+            "value": null
+          },
+          "mountedSecrets": {
+            "id": "mountedSecrets",
+            "type": "dropdown",
+            "value": null
+          }
+        },
+        "outputs": {
+          "files": {
+            "type": "file[]",
+            "description": "Files the code wrote to /tmp/sim/outputs, ready to attach or upload downstream"
+          },
+          "result": {
+            "type": "json",
+            "description": "Structured result emitted by the executed code"
+          },
+          "stdout": {
+            "type": "string",
+            "description": "Console log output and debug messages from function execution"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 112,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {},
+        "locked": false
+      },
+      "c18525ad-6ea9-499b-9a9d-6408ca72d603": {
+        "id": "c18525ad-6ea9-499b-9a9d-6408ca72d603",
+        "type": "note",
+        "name": "note1",
+        "position": {
+          "x": 150,
+          "y": 946
+        },
+        "subBlocks": {
+          "color": {
+            "id": "color",
+            "type": "short-input",
+            "value": "carbon"
+          },
+          "content": {
+            "id": "content",
+            "type": "long-input",
+            "value": "BOT 1 — Security News & Vulnerability Alert Bot (hourly, UTC throughout)\n\nPIPELINE\nhourlySchedule -> [fetchNvd | fetchHn | fetchCisa] in parallel -> mergeItems -> queryTable -> filterNew -> hasNew -> recordLoop(upsertSeen) -> hasAlerts -> digest -> sendTelegram\n\nTwo gates, deliberately separate:\n- hasNew fires when there are STATE ROWS to write (rows.length > 0). This also lets legacy rows be upgraded without sending anything.\n- hasAlerts fires only when there are ALERTABLE items (count > 0). Telegram is behind this gate, so a run with nothing new sends nothing.\n\nSOURCES\n- fetchNvd: NVD CVE API, 3h last-modified window. Per CVE: CVSS score + severity + vector, affected vendor/product/version range parsed from CPE configurations, description, published and lastModified, vulnStatus, up to 4 reference links. Also pulls the full CISA KEV catalog (flags matching CVEs with dueDate + requiredAction, and emits KEV entries added in the last 4 days as their own items), then FIRST EPSS scores batched 100 ids per request.\n- fetchHn: Hacker News Algolia, 4 security queries, 24h window.\n- fetchCisa: CISA cybersecurity advisories RSS, 25 most recent, CVE id extracted from the title when present.\n\nRESILIENCE (important sandbox constraint)\nThe function sandbox provides NEITHER AbortController NOR setTimeout, so client-side timeouts and backoff sleeps are impossible here — do not reintroduce them, they throw ReferenceError at runtime. What is in place instead:\n- bounded immediate retries (3 attempts; 2 for EPSS) on 429 and 5xx and on network errors\n- explicit non-retry on other 4xx\n- JSON/XML parse guards, so a malformed body returns an error instead of throwing\n- every source returns { ok, error } rather than throwing, so one dead source never fails the run\nmergeItems aggregates this into `sources` (per-source ok/error/count) and `degradedSources`; the digest appends a degraded-sources footer when any source is down. Overall runtime is bounded by the platform's own execution limit.\n\nSEVERITY (computed in filterNew; the agent must not recompute it)\n- CRITICAL: in CISA KEV, or CVSS >= 9.0, or EPSS >= 50%\n- HIGH: CVSS >= 7.0, or EPSS >= 20%\n- MEDIUM: CVSS >= 4.0, or a CISA advisory\n- LOW: informational news\nCRITICAL + HIGH are reported as actionable; MEDIUM and LOW are informational.\n\nDEDUPLICATION / STATE — table 'threat_intel_seen' (tbl_f2f3faba698d4225b3a22d8b909c7b02)\n- queryTable looks up the merged item_ids with NO row limit (it cannot truncate and mistake a seen item for a new one) and returns only item_id, severity, first_seen.\n- The `severity` COLUMN stores a state fingerprint \"SEVERITY|kev=0|mod=<iso>\", not a bare label. filterNew compares it:\n  * id absent -> NEW, alert\n  * fingerprint differs (severity moved, KEV flipped, or upstream lastModified moved) -> UPDATED, re-alert tagged with the reason\n  * fingerprint identical -> suppressed, no alert\n- Writes go through upsert_row (conflict column item_id) inside recordLoop, one row per iteration, reading <loop.currentItem>. This is why the unique constraint on item_id can no longer be violated — do NOT revert to batch_insert_rows.\n- first_seen is preserved across updates.\n- Rows written before fingerprinting existed are adopted silently: upgraded to a fingerprint, no alert.\n\nSECRETS: sendTelegram reads {{TELEGRAM_BOT_TOKEN}} and {{TELEGRAM_CHAT_ID}} from workspace environment variables. Never paste literal values back into the block. The token was previously hardcoded in workflow state — rotate it in BotFather if that has not been done.\n\nKNOWN LIMITS\n- NVD is rate-limited without an API key; retries absorb occasional 429s, but add a key if they become frequent.\n- The table has no dedicated kev/last_seen columns, which is why state is packed into the severity column. If those columns are added, split the fingerprint into them and simplify filterNew.\n- Idempotency is enforced in filterNew, not at the database, so two overlapping executions could still race. The single hourly schedule makes this a non-issue."
+          }
+        },
+        "outputs": {},
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 240,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {},
+        "locked": false
+      },
+      "2340e2f0-7782-4f7f-aac6-911760087d39": {
+        "id": "2340e2f0-7782-4f7f-aac6-911760087d39",
+        "type": "function",
+        "name": "fetchNvd",
+        "position": {
+          "x": 580,
+          "y": 534
+        },
+        "subBlocks": {
+          "code": {
+            "id": "code",
+            "type": "code",
+            "value": "// NVD recent CVEs (3h last-modified window) + CISA KEV + EPSS. All timestamps UTC.\n// NOTE: this sandbox provides neither AbortController nor setTimeout, so there is no\n// client-side timeout or backoff sleep. Resilience = bounded immediate retries on\n// 429/5xx and network errors, plus a malformed-body guard. The platform's own\n// execution limit bounds total runtime.\nasync function getJson(url, tries) {\n  tries = tries || 3;\n  let lastErr = null;\n  for (let a = 1; a <= tries; a++) {\n    try {\n      const res = await fetch(url, { headers: { 'User-Agent': 'sim-threat-intel' } });\n      if (res.status === 429 || res.status >= 500) {\n        lastErr = 'HTTP ' + res.status + (res.status === 429 ? ' (rate limited)' : '');\n        if (a < tries) { continue; }\n        return { ok: false, error: lastErr, data: null };\n      }\n      if (!res.ok) { return { ok: false, error: 'HTTP ' + res.status, data: null }; }\n      const text = await res.text();\n      try { return { ok: true, error: null, data: JSON.parse(text) }; }\n      catch (e) { return { ok: false, error: 'malformed JSON response', data: null }; }\n    } catch (e) {\n      lastErr = (e && e.message) ? e.message : String(e);\n    }\n  }\n  return { ok: false, error: lastErr || 'request failed', data: null };\n}\n\n// --- vendor/product extraction from CPE configurations ---\nfunction vendorProduct(c) {\n  const out = [];\n  const seen = {};\n  const nodes = [];\n  for (const cfg of (c.configurations || [])) {\n    for (const n of (cfg.nodes || [])) { nodes.push(n); }\n  }\n  for (const n of nodes) {\n    for (const m of (n.cpeMatch || [])) {\n      const crit = m.criteria || '';\n      const p = crit.split(':');\n      if (p.length > 5 && p[3] && p[4]) {\n        const vendor = p[3].replace(/_/g, ' ');\n        const product = p[4].replace(/_/g, ' ');\n        const key = vendor + '/' + product;\n        if (!seen[key]) {\n          seen[key] = true;\n          out.push({ vendor: vendor, product: product, versionStart: m.versionStartIncluding || m.versionStartExcluding || null, versionEnd: m.versionEndIncluding || m.versionEndExcluding || (p[5] !== '*' ? p[5] : null) });\n        }\n      }\n    }\n  }\n  return out.slice(0, 6);\n}\n\n// --- NVD ---\nconst end = new Date();\nconst start = new Date(end.getTime() - 3 * 60 * 60 * 1000);\nconst fmt = (d) => d.toISOString().slice(0, 19) + '.000';\nconst nvdUrl = 'https://services.nvd.nist.gov/rest/json/cves/2.0?lastModStartDate=' + fmt(start) + '&lastModEndDate=' + fmt(end) + '&resultsPerPage=60';\n\nlet items = [];\nconst nvdRes = await getJson(nvdUrl, 3);\nconst nvdOk = nvdRes.ok;\nconst nvdError = nvdRes.error;\nif (nvdRes.ok && nvdRes.data) {\n  const vulns = Array.isArray(nvdRes.data.vulnerabilities) ? nvdRes.data.vulnerabilities : [];\n  items = vulns.map((v) => {\n    const c = (v && v.cve) || {};\n    const m = c.metrics || {};\n    const arr = m.cvssMetricV31 || m.cvssMetricV40 || m.cvssMetricV30 || m.cvssMetricV2 || [];\n    const metric = arr[0] || null;\n    const cd = metric ? (metric.cvssData || {}) : {};\n    const desc = ((c.descriptions || []).find((d) => d.lang === 'en') || {}).value || '';\n    const vp = vendorProduct(c);\n    const refs = (c.references || []).map((r) => r && r.url).filter(Boolean).slice(0, 4);\n    return {\n      item_id: c.id,\n      source: 'nvd',\n      cve_id: c.id,\n      title: (c.id || '') + ': ' + desc.slice(0, 200),\n      description: desc.slice(0, 700),\n      url: 'https://nvd.nist.gov/vuln/detail/' + c.id,\n      references: refs,\n      cvss_severity: cd.baseSeverity || (metric && metric.baseSeverity) || 'UNKNOWN',\n      cvss: cd.baseScore === undefined ? null : cd.baseScore,\n      cvss_vector: cd.vectorString || null,\n      affected: vp,\n      vendor_product: vp.map((x) => x.vendor + ' ' + x.product).join(', '),\n      kev: false,\n      kev_due: null,\n      epss: null,\n      published: c.published ? new Date(c.published).toISOString() : null,\n      last_modified: c.lastModified ? new Date(c.lastModified).toISOString() : null,\n      vuln_status: c.vulnStatus || null\n    };\n  }).filter((i) => i.item_id);\n}\n\n// --- CISA KEV catalog ---\nconst kev = {};\nconst kevRes = await getJson('https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json', 3);\nconst kevOk = kevRes.ok;\nconst kevError = kevRes.error;\nif (kevRes.ok && kevRes.data) {\n  for (const v of (kevRes.data.vulnerabilities || [])) { if (v && v.cveID) { kev[v.cveID] = v; } }\n}\nfor (const i of items) {\n  const k = kev[i.item_id];\n  if (k) {\n    i.kev = true;\n    i.kev_due = k.dueDate || null;\n    i.remediation = k.requiredAction || null;\n    if (!i.vendor_product && (k.vendorProject || k.product)) { i.vendor_product = ((k.vendorProject || '') + ' ' + (k.product || '')).trim(); }\n  }\n}\n\n// KEV entries added in the last 4 days are their own alert items\nconst FOUR_DAYS = 4 * 86400000;\nconst kevItems = Object.keys(kev).map((k) => kev[k]).filter((v) => {\n  if (!v.dateAdded) { return false; }\n  const t = new Date(v.dateAdded + 'T00:00:00Z').getTime();\n  return (Date.now() - t) <= FOUR_DAYS;\n}).map((v) => ({\n  item_id: 'KEV-' + v.cveID,\n  source: 'cisa_kev',\n  cve_id: v.cveID,\n  title: 'KEV added: ' + v.cveID + ' — ' + (v.vulnerabilityName || ''),\n  description: (v.shortDescription || '').slice(0, 700),\n  url: 'https://nvd.nist.gov/vuln/detail/' + v.cveID,\n  references: ['https://www.cisa.gov/known-exploited-vulnerabilities-catalog'],\n  cvss_severity: 'UNKNOWN',\n  cvss: null,\n  cvss_vector: null,\n  affected: [{ vendor: v.vendorProject || '', product: v.product || '', versionStart: null, versionEnd: null }],\n  vendor_product: ((v.vendorProject || '') + ' ' + (v.product || '')).trim(),\n  kev: true,\n  kev_due: v.dueDate || null,\n  remediation: v.requiredAction || null,\n  epss: null,\n  published: v.dateAdded ? new Date(v.dateAdded + 'T00:00:00Z').toISOString() : null,\n  last_modified: v.dateAdded ? new Date(v.dateAdded + 'T00:00:00Z').toISOString() : null,\n  vuln_status: 'KEV'\n}));\n\nconst all = items.concat(kevItems);\n\n// --- EPSS scores, batched by 100 CVE ids ---\nconst cveIds = [];\nfor (const i of all) {\n  const id = String(i.item_id).replace('KEV-', '');\n  if (id.indexOf('CVE-') === 0 && cveIds.indexOf(id) === -1) { cveIds.push(id); }\n}\nconst chunks = [];\nfor (const id of cveIds) {\n  if (chunks.length === 0 || chunks[chunks.length - 1].length === 100) { chunks.push([]); }\n  chunks[chunks.length - 1].push(id);\n}\nconst epss = {};\nlet epssOk = true;\nlet epssError = null;\nfor (const batch of chunks) {\n  const er = await getJson('https://api.first.org/data/v1/epss?cve=' + batch.join(','), 2);\n  if (er.ok && er.data) {\n    for (const d of (er.data.data || [])) { const f = parseFloat(d.epss); if (!isNaN(f)) { epss[d.cve] = f; } }\n  } else { epssOk = false; epssError = er.error; }\n}\nfor (const i of all) {\n  const id = String(i.item_id).replace('KEV-', '');\n  if (epss[id] !== undefined) { i.epss = epss[id]; }\n}\n\nreturn {\n  source: 'nvd+kev+epss',\n  fetched_at: new Date().toISOString(),\n  nvdOk: nvdOk,\n  nvdError: nvdError,\n  kevOk: kevOk,\n  kevError: kevError,\n  epssOk: epssOk,\n  epssError: epssError,\n  kevCatalogSize: Object.keys(kev).length,\n  count: all.length,\n  items: all\n};"
+          },
+          "language": {
+            "id": "language",
+            "type": "dropdown",
+            "value": "javascript"
+          },
+          "sandboxId": {
+            "id": "sandboxId",
+            "type": "combobox",
+            "value": null
+          },
+          "secretScope": {
+            "id": "secretScope",
+            "type": "dropdown",
+            "value": null
+          },
+          "mountedSecrets": {
+            "id": "mountedSecrets",
+            "type": "dropdown",
+            "value": null
+          }
+        },
+        "outputs": {
+          "files": {
+            "type": "file[]",
+            "description": "Files the code wrote to /tmp/sim/outputs, ready to attach or upload downstream"
+          },
+          "result": {
+            "type": "json",
+            "description": "Structured result emitted by the executed code"
+          },
+          "stdout": {
+            "type": "string",
+            "description": "Console log output and debug messages from function execution"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 112,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {},
+        "locked": false
+      },
+      "f6f58bc9-f82d-47a4-af22-8c4e3d1b4fe8": {
+        "id": "f6f58bc9-f82d-47a4-af22-8c4e3d1b4fe8",
+        "type": "function",
+        "name": "mergeItems",
+        "position": {
+          "x": 1010,
+          "y": 534
+        },
+        "subBlocks": {
+          "code": {
+            "id": "code",
+            "type": "code",
+            "value": "// Merge all feeds, dedupe within this run, build the id list for the table lookup,\n// and record per-source health so one failing source never fails the run.\nconst nvd = <fetchNvd.result>;\nconst hn = <fetchHn.result>;\nconst cisa = <fetchCisa.result>;\n\nconst all = [].concat(\n  (nvd && Array.isArray(nvd.items)) ? nvd.items : [],\n  (hn && Array.isArray(hn.items)) ? hn.items : [],\n  (cisa && Array.isArray(cisa.items)) ? cisa.items : []\n);\n\nconst byId = {};\nfor (const i of all) {\n  if (!i || !i.item_id) { continue; }\n  const id = String(i.item_id).trim();\n  if (!id) { continue; }\n  // keep the richest record when the same id arrives from two sources\n  const prev = byId[id];\n  if (!prev) { byId[id] = i; }\n  else if ((i.kev && !prev.kev) || (i.cvss != null && prev.cvss == null)) { byId[id] = Object.assign({}, prev, i); }\n}\nconst items = Object.keys(byId).map((k) => byId[k]);\nconst ids = items.map((i) => String(i.item_id).trim());\n// sentinel keeps the table 'in' filter valid when nothing was fetched\nif (ids.length === 0) { ids.push('__none__'); }\n\nconst sources = {\n  nvd: nvd ? { ok: !!nvd.nvdOk, error: nvd.nvdError || null, count: (nvd.items || []).filter((x) => x.source === 'nvd').length } : { ok: false, error: 'block produced no output', count: 0 },\n  cisa_kev: nvd ? { ok: !!nvd.kevOk, error: nvd.kevError || null, catalogSize: nvd.kevCatalogSize || 0, count: (nvd.items || []).filter((x) => x.source === 'cisa_kev').length } : { ok: false, error: 'block produced no output', count: 0 },\n  epss: nvd ? { ok: !!nvd.epssOk, error: nvd.epssError || null } : { ok: false, error: 'block produced no output' },\n  hackernews: hn ? { ok: !!hn.ok, error: hn.error || null, count: hn.count || 0, queriesOk: hn.queriesOk, queriesTotal: hn.queriesTotal } : { ok: false, error: 'block produced no output', count: 0 },\n  cisa_advisory: cisa ? { ok: !!cisa.ok, error: cisa.error || null, count: cisa.count || 0 } : { ok: false, error: 'block produced no output', count: 0 }\n};\n\nconst degraded = Object.keys(sources).filter((k) => !sources[k].ok);\n\nreturn {\n  run_at: new Date().toISOString(),\n  count: items.length,\n  ids: ids,\n  items: items,\n  sources: sources,\n  degradedSources: degraded,\n  healthy: degraded.length === 0,\n  diagnostics: sources\n};"
+          },
+          "language": {
+            "id": "language",
+            "type": "dropdown",
+            "value": "javascript"
+          },
+          "sandboxId": {
+            "id": "sandboxId",
+            "type": "combobox",
+            "value": null
+          },
+          "secretScope": {
+            "id": "secretScope",
+            "type": "dropdown",
+            "value": null
+          },
+          "mountedSecrets": {
+            "id": "mountedSecrets",
+            "type": "dropdown",
+            "value": null
+          }
+        },
+        "outputs": {
+          "files": {
+            "type": "file[]",
+            "description": "Files the code wrote to /tmp/sim/outputs, ready to attach or upload downstream"
+          },
+          "result": {
+            "type": "json",
+            "description": "Structured result emitted by the executed code"
+          },
+          "stdout": {
+            "type": "string",
+            "description": "Console log output and debug messages from function execution"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 112,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {},
+        "locked": false
+      },
+      "1d882d2c-72b4-4882-8d9d-35c6cd0762b2": {
+        "id": "1d882d2c-72b4-4882-8d9d-35c6cd0762b2",
+        "type": "condition",
+        "name": "hasNew",
+        "position": {
+          "x": 2300,
+          "y": 522
+        },
+        "subBlocks": {
+          "conditions": {
+            "id": "conditions",
+            "type": "condition-input",
+            "value": "[{\"title\":\"If\",\"value\":\"<filterNew.result.rows>.length > 0\",\"id\":\"1d882d2c-72b4-4882-8d9d-35c6cd0762b2-if\"},{\"title\":\"Else\",\"value\":\"\",\"id\":\"1d882d2c-72b4-4882-8d9d-35c6cd0762b2-else\"}]"
+          }
+        },
+        "outputs": {
+          "selectedPath": {
+            "type": "json",
+            "description": "Selected execution path"
+          },
+          "selectedOption": {
+            "type": "string",
+            "description": "Selected condition option ID"
+          },
+          "conditionResult": {
+            "type": "boolean",
+            "description": "Condition result"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 136,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {},
+        "locked": false
+      },
+      "68241f0e-369e-493a-860e-82d4ea08c6c0": {
+        "id": "68241f0e-369e-493a-860e-82d4ea08c6c0",
+        "type": "agent",
+        "name": "digest",
+        "position": {
+          "x": 2102.37113402062,
+          "y": 1049.0544918998523
+        },
+        "subBlocks": {
+          "files": {
+            "id": "files",
+            "type": "short-input",
+            "value": null
+          },
+          "model": {
+            "id": "model",
+            "type": "combobox",
+            "value": "claude-sonnet-4-6"
+          },
+          "tools": {
+            "id": "tools",
+            "type": "tool-input",
+            "value": []
+          },
+          "apiKey": {
+            "id": "apiKey",
+            "type": "short-input",
+            "value": null
+          },
+          "skills": {
+            "id": "skills",
+            "type": "skill-input",
+            "value": null
+          },
+          "messages": {
+            "id": "messages",
+            "type": "messages-input",
+            "value": [
+              {
+                "role": "system",
+                "content": "You are a threat-intel analyst writing hourly Telegram alerts for a security team.\n\nOUTPUT FORMAT: ONLY Telegram-supported HTML: <b>, <i>, <code>, <a href=\"...\">. No markdown, no <br>, no other tags, no tables. Under 3800 characters.\n\nSEVERITY MODEL (already computed for you in each item's `severity` field — never recompute or override it):\n- CRITICAL 🔴 = actively exploited (CISA KEV), CVSS >= 9.0, or EPSS >= 50%\n- HIGH 🟠 = CVSS >= 7.0 or EPSS >= 20%\n- MEDIUM 🟡 = CVSS >= 4.0 or a CISA advisory\n- LOW ⚪ = general security news, no identified impact\n\nSTRUCTURE:\n- Header line: <b>🛡 Threat Intel Digest</b> followed by the UTC run time and the counts by severity.\n- Then group items under: <b>🔴 CRITICAL — Actionable</b>, <b>🟠 HIGH — Actionable</b>, <b>🟡 MEDIUM</b>, <b>⚪ Informational</b>. Omit any empty group.\n- Order groups by severity, most severe first. Cap at 14 items total; if you omit any, end with a one-line count of what was omitted.\n\nPER CVE ITEM, one compact entry containing every field that is present in the data (skip a field silently when it is null/empty — never write \"unknown\" or invent a value):\n- <code>CVE-ID</code> as a link to its `url`\n- CVSS score and severity label, EPSS as a percentage\n- affected vendor/product (from `vendor_product` or `affected`), with version range when present\n- one-sentence plain-language impact drawn from `description`\n- exploitation status (`exploitation_status`) and KEV status (`kev_status`), including the KEV remediation due date when set\n- published and last-modified dates (UTC, date only)\n- up to 2 extra reference links from `references` when they add value beyond the main link\n\nFOR NEWS ITEMS: title as a link, one short line of why it matters. Nothing more.\n\nUPDATED ITEMS: when `alert_status` is \"updated\", prefix the entry with <i>[UPDATED]</i> and state the `change_reason` — these are re-alerts of a previously-sent item that changed.\n\nFOOTER: if `degradedSources` is non-empty, add a final line <i>⚠ Degraded sources: ...</i> naming each failing source and its error. Otherwise add nothing.\n\nRULES: Never invent scores, dates, products, or facts absent from the data. Distinguish actionable alerts (CRITICAL/HIGH) from informational items clearly."
+              },
+              {
+                "role": "user",
+                "content": "Run time (UTC): <filterNew.result.run_at>\nSeverity counts: <filterNew.result.severityCounts>\nNew: <filterNew.result.newCount> | Updated (changed since last alert): <filterNew.result.updatedCount> | Suppressed as unchanged: <filterNew.result.suppressedCount>\nActionable (critical+high): <filterNew.result.actionable>\nDegraded sources: <filterNew.result.degradedSources>\nPer-source status: <filterNew.result.sources>\n\nItems to report (JSON, already ranked by severity):\n<filterNew.result.items>"
+              }
+            ]
+          },
+          "maxTokens": {
+            "id": "maxTokens",
+            "type": "short-input",
+            "value": 2000
+          },
+          "verbosity": {
+            "id": "verbosity",
+            "type": "combobox",
+            "value": null
+          },
+          "memoryType": {
+            "id": "memoryType",
+            "type": "dropdown",
+            "value": "none"
+          },
+          "temperature": {
+            "id": "temperature",
+            "type": "slider",
+            "value": 0.3
+          },
+          "azureEndpoint": {
+            "id": "azureEndpoint",
+            "type": "short-input",
+            "value": null
+          },
+          "bedrockRegion": {
+            "id": "bedrockRegion",
+            "type": "short-input",
+            "value": null
+          },
+          "promptCaching": {
+            "id": "promptCaching",
+            "type": "switch",
+            "value": null
+          },
+          "thinkingLevel": {
+            "id": "thinkingLevel",
+            "type": "combobox",
+            "value": null
+          },
+          "vertexProject": {
+            "id": "vertexProject",
+            "type": "short-input",
+            "value": null
+          },
+          "conversationId": {
+            "id": "conversationId",
+            "type": "short-input",
+            "value": null
+          },
+          "responseFormat": {
+            "id": "responseFormat",
+            "type": "code",
+            "value": null
+          },
+          "vertexLocation": {
+            "id": "vertexLocation",
+            "type": "short-input",
+            "value": null
+          },
+          "attachmentFiles": {
+            "id": "attachmentFiles",
+            "type": "file-upload",
+            "value": null
+          },
+          "azureApiVersion": {
+            "id": "azureApiVersion",
+            "type": "short-input",
+            "value": null
+          },
+          "reasoningEffort": {
+            "id": "reasoningEffort",
+            "type": "combobox",
+            "value": null
+          },
+          "bedrockSecretKey": {
+            "id": "bedrockSecretKey",
+            "type": "short-input",
+            "value": null
+          },
+          "vertexCredential": {
+            "id": "vertexCredential",
+            "type": "oauth-input",
+            "value": null
+          },
+          "slidingWindowSize": {
+            "id": "slidingWindowSize",
+            "type": "short-input",
+            "value": null
+          },
+          "bedrockAccessKeyId": {
+            "id": "bedrockAccessKeyId",
+            "type": "short-input",
+            "value": null
+          },
+          "slidingWindowTokens": {
+            "id": "slidingWindowTokens",
+            "type": "short-input",
+            "value": null
+          },
+          "previousInteractionId": {
+            "id": "previousInteractionId",
+            "type": "short-input",
+            "value": null
+          },
+          "vertexManualCredential": {
+            "id": "vertexManualCredential",
+            "type": "short-input",
+            "value": null
+          }
+        },
+        "outputs": {
+          "cost": {
+            "type": "json",
+            "description": "Cost of the API call"
+          },
+          "model": {
+            "type": "string",
+            "description": "Model used for generation"
+          },
+          "tokens": {
+            "type": "json",
+            "description": "Token usage statistics"
+          },
+          "content": {
+            "type": "string",
+            "description": "Generated response content"
+          },
+          "toolCalls": {
+            "type": "json",
+            "description": "Tool calls made"
+          },
+          "providerTiming": {
+            "type": "json",
+            "description": "Provider timing information"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 136,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {
+          "canonicalModes": {
+            "files": "basic",
+            "vertexCredential": "basic"
+          }
+        },
+        "locked": false
+      },
+      "22c329bf-62c5-4586-92be-e0088dc9db96": {
+        "id": "22c329bf-62c5-4586-92be-e0088dc9db96",
+        "type": "function",
+        "name": "filterNew",
+        "position": {
+          "x": 1870,
+          "y": 534
+        },
+        "subBlocks": {
+          "code": {
+            "id": "code",
+            "type": "code",
+            "value": "// Severity classification + smart dedup.\n// An item alerts when it is NEW, or when a previously-seen item has meaningful\n// new information: severity changed, KEV status changed, or the source's\n// last-modified timestamp moved. Everything else is suppressed.\n//\n// State is stored in the threat_intel_seen table. The 'severity' column holds a\n// compact fingerprint \"SEVERITY|kev=0|mod=<iso>\" so change detection works with\n// the columns available; 'first_seen' is preserved across updates.\n// query_rows returns rows as { id, data: { ...columns } }.\n\nconst items = <mergeItems.result.items> || [];\nconst seenRows = <queryTable.rows> || [];\nconst nowIso = new Date().toISOString();\n\nconst cellOf = (r, col) => {\n  if (!r) return null;\n  const v = (r.data && r.data[col] != null) ? r.data[col] : r[col];\n  return v == null ? null : String(v).trim();\n};\n\n// stored state keyed by item_id\nconst stored = new Map();\nfor (const r of seenRows) {\n  const id = cellOf(r, 'item_id');\n  if (!id) continue;\n  stored.set(id, { fingerprint: cellOf(r, 'severity') || '', first_seen: cellOf(r, 'first_seen') || null });\n}\n\n// --- severity classification (spec priority model) ---\nfunction classify(i) {\n  const cvss = typeof i.cvss === 'number' ? i.cvss : null;\n  const epss = typeof i.epss === 'number' ? i.epss : null;\n  if (i.kev) { return 'CRITICAL'; }\n  if (cvss !== null && cvss >= 9.0) { return 'CRITICAL'; }\n  if (epss !== null && epss >= 0.5) { return 'CRITICAL'; }\n  if (cvss !== null && cvss >= 7.0) { return 'HIGH'; }\n  if (epss !== null && epss >= 0.2) { return 'HIGH'; }\n  if (cvss !== null && cvss >= 4.0) { return 'MEDIUM'; }\n  if (i.source === 'cisa_advisory') { return 'MEDIUM'; }\n  return 'LOW';\n}\n\nfunction exploitation(i) {\n  if (i.kev) { return 'Actively exploited (CISA KEV)' + (i.kev_due ? ', remediation due ' + i.kev_due : ''); }\n  if (typeof i.epss === 'number' && i.epss >= 0.5) { return 'High exploitation probability (EPSS ' + Math.round(i.epss * 100) + '%)'; }\n  if (typeof i.epss === 'number') { return 'No known exploitation (EPSS ' + Math.round(i.epss * 100) + '%)'; }\n  return 'No known exploitation';\n}\n\nconst fp = (sev, i) => sev + '|kev=' + (i.kev ? 1 : 0) + '|mod=' + (i.last_modified || '');\n\nconst batch = new Set();\nconst alertable = [];\nconst rows = [];\nlet newCount = 0;\nlet updatedCount = 0;\nlet suppressed = 0;\n\nfor (const i of items) {\n  if (!i || !i.item_id) continue;\n  const id = String(i.item_id).trim();\n  if (!id || id === '__none__' || batch.has(id)) continue;\n  batch.add(id);\n\n  const severity = classify(i);\n  const fingerprint = fp(severity, i);\n  const prev = stored.get(id);\n\n  let status = 'new';\n  const changes = [];\n  if (prev) {\n    const parts = String(prev.fingerprint).split('|');\n    const prevSev = parts[0] || '';\n    const prevKev = (parts[1] || '').replace('kev=', '');\n    const prevMod = (parts[2] || '').replace('mod=', '');\n    if (prev.fingerprint === fingerprint) { suppressed++; continue; }\n    // legacy rows stored a plain severity with no fingerprint: adopt silently\n    if (parts.length < 3) {\n      rows.push({ item_id: id, source: i.source || '', title: (i.title || '').slice(0, 500), url: i.url || '', severity: fingerprint, epss: i.epss == null ? '' : String(i.epss), first_seen: prev.first_seen || nowIso });\n      suppressed++;\n      continue;\n    }\n    if (prevSev !== severity) { changes.push('severity ' + prevSev + ' → ' + severity); }\n    if (prevKev !== (i.kev ? '1' : '0')) { changes.push(i.kev ? 'added to CISA KEV' : 'removed from CISA KEV'); }\n    if (prevMod !== (i.last_modified || '')) { changes.push('record updated upstream'); }\n    if (changes.length === 0) { suppressed++; continue; }\n    status = 'updated';\n    updatedCount++;\n  } else {\n    newCount++;\n  }\n\n  const enriched = Object.assign({}, i, {\n    item_id: id,\n    severity: severity,\n    alert_status: status,\n    change_reason: changes.join('; ') || null,\n    exploitation_status: exploitation(i),\n    kev_status: i.kev ? 'Listed in CISA KEV' : 'Not in CISA KEV',\n    first_seen: (prev && prev.first_seen) || nowIso,\n    observed_at: nowIso\n  });\n  alertable.push(enriched);\n\n  rows.push({\n    item_id: id,\n    source: i.source || '',\n    title: (i.title || '').slice(0, 500),\n    url: i.url || '',\n    severity: fingerprint,\n    epss: i.epss == null ? '' : String(i.epss),\n    first_seen: (prev && prev.first_seen) || nowIso\n  });\n}\n\n// rank: severity, then KEV, then EPSS, then CVSS\nconst sevRank = { CRITICAL: 4, HIGH: 3, MEDIUM: 2, LOW: 1 };\nconst score = (i) => (sevRank[i.severity] || 0) * 10000 + (i.kev ? 1000 : 0) + ((i.epss || 0) * 100) + (i.cvss || 0);\nconst ranked = alertable.slice().sort((a, b) => score(b) - score(a));\n\nconst counts = { CRITICAL: 0, HIGH: 0, MEDIUM: 0, LOW: 0 };\nfor (const i of alertable) { counts[i.severity] = (counts[i.severity] || 0) + 1; }\n\nreturn {\n  run_at: nowIso,\n  count: alertable.length,\n  newCount: newCount,\n  updatedCount: updatedCount,\n  suppressedCount: suppressed,\n  seenCount: stored.size,\n  severityCounts: counts,\n  actionable: counts.CRITICAL + counts.HIGH,\n  sources: <mergeItems.result.sources>,\n  degradedSources: <mergeItems.result.degradedSources>,\n  rows: rows,\n  items: ranked.slice(0, 40)\n};"
+          },
+          "language": {
+            "id": "language",
+            "type": "dropdown",
+            "value": "javascript"
+          },
+          "sandboxId": {
+            "id": "sandboxId",
+            "type": "combobox",
+            "value": null
+          },
+          "secretScope": {
+            "id": "secretScope",
+            "type": "dropdown",
+            "value": null
+          },
+          "mountedSecrets": {
+            "id": "mountedSecrets",
+            "type": "dropdown",
+            "value": null
+          }
+        },
+        "outputs": {
+          "files": {
+            "type": "file[]",
+            "description": "Files the code wrote to /tmp/sim/outputs, ready to attach or upload downstream"
+          },
+          "result": {
+            "type": "json",
+            "description": "Structured result emitted by the executed code"
+          },
+          "stdout": {
+            "type": "string",
+            "description": "Console log output and debug messages from function execution"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 112,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {},
+        "locked": false
+      },
+      "7b073d4d-a782-48f5-9488-e2bf97451b29": {
+        "id": "7b073d4d-a782-48f5-9488-e2bf97451b29",
+        "type": "loop",
+        "name": "recordLoop",
+        "position": {
+          "x": 1394.2857142857156,
+          "y": 802.6789396170838
+        },
+        "subBlocks": {
+          "loopType": {
+            "id": "loopType",
+            "type": "short-input",
+            "value": "forEach"
+          },
+          "collection": {
+            "id": "collection",
+            "type": "short-input",
+            "value": "<filterNew.result.rows>"
+          }
+        },
+        "outputs": {},
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 48,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {
+          "width": 533.0132547864505,
+          "height": 352.3033873343152,
+          "collection": "<filterNew.result.rows>",
+          "loopType": "forEach",
+          "whileCondition": "",
+          "doWhileCondition": ""
+        },
+        "locked": false,
+        "layout": {
+          "measuredWidth": 533.0132547864505,
+          "measuredHeight": 352.3033873343152
+        }
+      },
+      "d2b6b219-5d6e-4087-9cbe-18d08f398c99": {
+        "id": "d2b6b219-5d6e-4087-9cbe-18d08f398c99",
+        "type": "condition",
+        "name": "hasAlerts",
+        "position": {
+          "x": 2079.2194403534627,
+          "y": 819.9528718703974
+        },
+        "subBlocks": {
+          "conditions": {
+            "id": "conditions",
+            "type": "condition-input",
+            "value": "[{\"title\":\"If\",\"value\":\"<filterNew.result.count> > 0\",\"id\":\"d2b6b219-5d6e-4087-9cbe-18d08f398c99-if\"},{\"title\":\"Else\",\"value\":\"\",\"id\":\"d2b6b219-5d6e-4087-9cbe-18d08f398c99-else\"}]"
+          }
+        },
+        "outputs": {
+          "selectedPath": {
+            "type": "json",
+            "description": "Selected execution path"
+          },
+          "selectedOption": {
+            "type": "string",
+            "description": "Selected condition option ID"
+          },
+          "conditionResult": {
+            "type": "boolean",
+            "description": "Condition result"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 136,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {},
+        "locked": false
+      },
+      "12d9cdcf-f958-47c4-9cc3-cb0d6be82b9b": {
+        "id": "12d9cdcf-f958-47c4-9cc3-cb0d6be82b9b",
+        "type": "schedule",
+        "name": "hourlySchedule",
+        "position": {
+          "x": 150,
+          "y": 166
+        },
+        "subBlocks": {
+          "timezone": {
+            "id": "timezone",
+            "type": "dropdown",
+            "value": null
+          },
+          "dailyTime": {
+            "id": "dailyTime",
+            "type": "time-input",
+            "value": null
+          },
+          "weeklyDay": {
+            "id": "weeklyDay",
+            "type": "dropdown",
+            "value": null
+          },
+          "monthlyDay": {
+            "id": "monthlyDay",
+            "type": "short-input",
+            "value": null
+          },
+          "monthlyTime": {
+            "id": "monthlyTime",
+            "type": "time-input",
+            "value": null
+          },
+          "hourlyMinute": {
+            "id": "hourlyMinute",
+            "type": "short-input",
+            "value": "0"
+          },
+          "scheduleInfo": {
+            "id": "scheduleInfo",
+            "type": "schedule-info",
+            "value": null
+          },
+          "scheduleType": {
+            "id": "scheduleType",
+            "type": "dropdown",
+            "value": "hourly"
+          },
+          "weeklyDayTime": {
+            "id": "weeklyDayTime",
+            "type": "time-input",
+            "value": null
+          },
+          "cronExpression": {
+            "id": "cronExpression",
+            "type": "short-input",
+            "value": null
+          },
+          "minutesInterval": {
+            "id": "minutesInterval",
+            "type": "short-input",
+            "value": null
+          }
+        },
+        "outputs": {},
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 80,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": true,
+        "data": {},
+        "locked": false
+      },
+      "96079f92-3062-4d75-ad9b-6f307c302118": {
+        "id": "96079f92-3062-4d75-ad9b-6f307c302118",
+        "type": "table_v2",
+        "name": "queryTable",
+        "position": {
+          "x": 1440,
+          "y": 510
+        },
+        "subBlocks": {
+          "data": {
+            "id": "data",
+            "type": "code",
+            "value": null
+          },
+          "rows": {
+            "id": "rows",
+            "type": "code",
+            "value": null
+          },
+          "limit": {
+            "id": "limit",
+            "type": "short-input",
+            "value": ""
+          },
+          "order": {
+            "id": "order",
+            "type": "short-input",
+            "value": null
+          },
+          "rowId": {
+            "id": "rowId",
+            "type": "short-input",
+            "value": null
+          },
+          "cursor": {
+            "id": "cursor",
+            "type": "short-input",
+            "value": null
+          },
+          "filter": {
+            "id": "filter",
+            "type": "code",
+            "value": "{\"field\":\"item_id\",\"op\":\"in\",\"value\":<mergeItems.result.ids>}"
+          },
+          "eventType": {
+            "id": "eventType",
+            "type": "dropdown",
+            "value": null
+          },
+          "operation": {
+            "id": "operation",
+            "type": "dropdown",
+            "value": "query_rows"
+          },
+          "sortBuilder": {
+            "id": "sortBuilder",
+            "type": "sort-builder",
+            "value": null
+          },
+          "watchColumns": {
+            "id": "watchColumns",
+            "type": "dropdown",
+            "value": null
+          },
+          "filterBuilder": {
+            "id": "filterBuilder",
+            "type": "filter-builder",
+            "value": null
+          },
+          "manualTableId": {
+            "id": "manualTableId",
+            "type": "short-input",
+            "value": null
+          },
+          "outputColumns": {
+            "id": "outputColumns",
+            "type": "dropdown",
+            "value": [
+              "col_ca1a5ff2811049859a6b6fe5d882ff28",
+              "col_485cb326a667409fa3396ed781bf4185",
+              "col_dc49283f6fc044ea90ed933792d6b23a"
+            ]
+          },
+          "tableSelector": {
+            "id": "tableSelector",
+            "type": "table-selector",
+            "value": null
+          },
+          "includeHeaders": {
+            "id": "includeHeaders",
+            "type": "switch",
+            "value": null
+          },
+          "triggerInstructions": {
+            "id": "triggerInstructions",
+            "type": "text",
+            "value": null
+          },
+          "manualConflictColumn": {
+            "id": "manualConflictColumn",
+            "type": "short-input",
+            "value": null
+          },
+          "conflictColumnSelector": {
+            "id": "conflictColumnSelector",
+            "type": "column-selector",
+            "value": null
+          }
+        },
+        "outputs": {
+          "rows": {
+            "type": "array",
+            "description": "Query result rows"
+          },
+          "limit": {
+            "type": "number",
+            "description": "Limit used in the query"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Whether the query succeeded"
+          },
+          "rowCount": {
+            "type": "number",
+            "description": "Number of rows returned"
+          },
+          "nextCursor": {
+            "type": "string",
+            "description": "Cursor to fetch the next page, or null on the last page"
+          },
+          "totalCount": {
+            "type": "number",
+            "description": "Total rows matching the predicate (computed on the first page only)"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 160,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {
+          "canonicalModes": {
+            "tableId": "advanced",
+            "sortInput": "basic",
+            "filterInput": "advanced",
+            "conflictColumn": "basic"
+          }
+        },
+        "locked": false
+      },
+      "45a09244-442d-43da-ae5d-c70080264342": {
+        "id": "45a09244-442d-43da-ae5d-c70080264342",
+        "type": "schedule",
+        "name": "certSchedule",
+        "position": {
+          "x": -2378.276877761412,
+          "y": 1133.6524300441822
+        },
+        "subBlocks": {
+          "timezone": {
+            "id": "timezone",
+            "type": "dropdown",
+            "value": "UTC"
+          },
+          "dailyTime": {
+            "id": "dailyTime",
+            "type": "time-input",
+            "value": null
+          },
+          "weeklyDay": {
+            "id": "weeklyDay",
+            "type": "dropdown",
+            "value": null
+          },
+          "monthlyDay": {
+            "id": "monthlyDay",
+            "type": "short-input",
+            "value": null
+          },
+          "monthlyTime": {
+            "id": "monthlyTime",
+            "type": "time-input",
+            "value": null
+          },
+          "hourlyMinute": {
+            "id": "hourlyMinute",
+            "type": "short-input",
+            "value": null
+          },
+          "scheduleInfo": {
+            "id": "scheduleInfo",
+            "type": "schedule-info",
+            "value": null
+          },
+          "scheduleType": {
+            "id": "scheduleType",
+            "type": "dropdown",
+            "value": "custom"
+          },
+          "weeklyDayTime": {
+            "id": "weeklyDayTime",
+            "type": "time-input",
+            "value": null
+          },
+          "cronExpression": {
+            "id": "cronExpression",
+            "type": "short-input",
+            "value": "15 3 * * *"
+          },
+          "minutesInterval": {
+            "id": "minutesInterval",
+            "type": "short-input",
+            "value": null
+          }
+        },
+        "outputs": {},
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 48,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": true,
+        "data": {},
+        "locked": false
+      },
+      "cda932b8-eec9-45b5-b61c-6bbf1e80bbc2": {
+        "id": "cda932b8-eec9-45b5-b61c-6bbf1e80bbc2",
+        "type": "table_v2",
+        "name": "readDomains",
+        "position": {
+          "x": -1948.276877761412,
+          "y": 1509.6524300441822
+        },
+        "subBlocks": {
+          "data": {
+            "id": "data",
+            "type": "code",
+            "value": null
+          },
+          "rows": {
+            "id": "rows",
+            "type": "code",
+            "value": null
+          },
+          "limit": {
+            "id": "limit",
+            "type": "short-input",
+            "value": null
+          },
+          "order": {
+            "id": "order",
+            "type": "short-input",
+            "value": null
+          },
+          "rowId": {
+            "id": "rowId",
+            "type": "short-input",
+            "value": null
+          },
+          "cursor": {
+            "id": "cursor",
+            "type": "short-input",
+            "value": null
+          },
+          "filter": {
+            "id": "filter",
+            "type": "code",
+            "value": "{\"field\":\"enabled\",\"op\":\"eq\",\"value\":\"true\"}"
+          },
+          "eventType": {
+            "id": "eventType",
+            "type": "dropdown",
+            "value": null
+          },
+          "operation": {
+            "id": "operation",
+            "type": "dropdown",
+            "value": "query_rows"
+          },
+          "sortBuilder": {
+            "id": "sortBuilder",
+            "type": "sort-builder",
+            "value": null
+          },
+          "watchColumns": {
+            "id": "watchColumns",
+            "type": "dropdown",
+            "value": null
+          },
+          "filterBuilder": {
+            "id": "filterBuilder",
+            "type": "filter-builder",
+            "value": null
+          },
+          "manualTableId": {
+            "id": "manualTableId",
+            "type": "short-input",
+            "value": null
+          },
+          "outputColumns": {
+            "id": "outputColumns",
+            "type": "dropdown",
+            "value": null
+          },
+          "tableSelector": {
+            "id": "tableSelector",
+            "type": "table-selector",
+            "value": null
+          },
+          "includeHeaders": {
+            "id": "includeHeaders",
+            "type": "switch",
+            "value": null
+          },
+          "triggerInstructions": {
+            "id": "triggerInstructions",
+            "type": "text",
+            "value": null
+          },
+          "manualConflictColumn": {
+            "id": "manualConflictColumn",
+            "type": "short-input",
+            "value": null
+          },
+          "conflictColumnSelector": {
+            "id": "conflictColumnSelector",
+            "type": "column-selector",
+            "value": null
+          }
+        },
+        "outputs": {
+          "rows": {
+            "type": "array",
+            "description": "Query result rows"
+          },
+          "limit": {
+            "type": "number",
+            "description": "Limit used in the query"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Whether the query succeeded"
+          },
+          "rowCount": {
+            "type": "number",
+            "description": "Number of rows returned"
+          },
+          "nextCursor": {
+            "type": "string",
+            "description": "Cursor to fetch the next page, or null on the last page"
+          },
+          "totalCount": {
+            "type": "number",
+            "description": "Total rows matching the predicate (computed on the first page only)"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 48,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {
+          "canonicalModes": {
+            "tableId": "advanced",
+            "sortInput": "basic",
+            "filterInput": "advanced",
+            "conflictColumn": "basic"
+          }
+        },
+        "locked": false
+      },
+      "7880c9a3-e16e-4e48-9d47-350ea9dfd1dc": {
+        "id": "7880c9a3-e16e-4e48-9d47-350ea9dfd1dc",
+        "type": "table_v2",
+        "name": "readCertState",
+        "position": {
+          "x": -1518.276877761412,
+          "y": 1509.6524300441822
+        },
+        "subBlocks": {
+          "data": {
+            "id": "data",
+            "type": "code",
+            "value": null
+          },
+          "rows": {
+            "id": "rows",
+            "type": "code",
+            "value": null
+          },
+          "limit": {
+            "id": "limit",
+            "type": "short-input",
+            "value": null
+          },
+          "order": {
+            "id": "order",
+            "type": "short-input",
+            "value": null
+          },
+          "rowId": {
+            "id": "rowId",
+            "type": "short-input",
+            "value": null
+          },
+          "cursor": {
+            "id": "cursor",
+            "type": "short-input",
+            "value": null
+          },
+          "filter": {
+            "id": "filter",
+            "type": "code",
+            "value": null
+          },
+          "eventType": {
+            "id": "eventType",
+            "type": "dropdown",
+            "value": null
+          },
+          "operation": {
+            "id": "operation",
+            "type": "dropdown",
+            "value": "query_rows"
+          },
+          "sortBuilder": {
+            "id": "sortBuilder",
+            "type": "sort-builder",
+            "value": null
+          },
+          "watchColumns": {
+            "id": "watchColumns",
+            "type": "dropdown",
+            "value": null
+          },
+          "filterBuilder": {
+            "id": "filterBuilder",
+            "type": "filter-builder",
+            "value": null
+          },
+          "manualTableId": {
+            "id": "manualTableId",
+            "type": "short-input",
+            "value": null
+          },
+          "outputColumns": {
+            "id": "outputColumns",
+            "type": "dropdown",
+            "value": null
+          },
+          "tableSelector": {
+            "id": "tableSelector",
+            "type": "table-selector",
+            "value": null
+          },
+          "includeHeaders": {
+            "id": "includeHeaders",
+            "type": "switch",
+            "value": null
+          },
+          "triggerInstructions": {
+            "id": "triggerInstructions",
+            "type": "text",
+            "value": null
+          },
+          "manualConflictColumn": {
+            "id": "manualConflictColumn",
+            "type": "short-input",
+            "value": null
+          },
+          "conflictColumnSelector": {
+            "id": "conflictColumnSelector",
+            "type": "column-selector",
+            "value": null
+          }
+        },
+        "outputs": {
+          "rows": {
+            "type": "array",
+            "description": "Query result rows"
+          },
+          "limit": {
+            "type": "number",
+            "description": "Limit used in the query"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Whether the query succeeded"
+          },
+          "rowCount": {
+            "type": "number",
+            "description": "Number of rows returned"
+          },
+          "nextCursor": {
+            "type": "string",
+            "description": "Cursor to fetch the next page, or null on the last page"
+          },
+          "totalCount": {
+            "type": "number",
+            "description": "Total rows matching the predicate (computed on the first page only)"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 48,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {
+          "canonicalModes": {
+            "tableId": "advanced",
+            "sortInput": "basic",
+            "filterInput": "basic",
+            "conflictColumn": "basic"
+          }
+        },
+        "locked": false
+      },
+      "2cc284fd-90b1-4ddf-989e-04a0bf5b2487": {
+        "id": "2cc284fd-90b1-4ddf-989e-04a0bf5b2487",
+        "type": "function",
+        "name": "checkCerts",
+        "position": {
+          "x": -1088.276877761412,
+          "y": 1533.6524300441822
+        },
+        "subBlocks": {
+          "code": {
+            "id": "code",
+            "type": "code",
+            "value": "// ===== Bot 2: certificate retrieval =====\n//\n// HARD SANDBOX CONSTRAINT: function blocks have fetch ONLY. No raw TLS socket,\n// and neither AbortController nor setTimeout exists (both throw ReferenceError),\n// so an individual request CANNOT be time-limited or retried with backoff.\n// Two failure modes have already been hit and must not be reintroduced:\n//   1. execution 24c8702f - fetch('https://' + domain) against a non-resolving\n//      host hung ~124s. NEVER fetch a monitored domain directly.\n//   2. HTTP 499 - the block itself was cancelled for exceeding its time budget\n//      when 10 domains x 2 sequential upstream calls ran back to back.\n// DEFENCE: all lookups run CONCURRENTLY in bounded batches, and the slow\n// upstream (SSL Labs) is capped to a small per-run budget that rotates across\n// days, so every execution stays short regardless of how many domains exist.\n\n// ===================== CONFIG =====================\nconst CONCURRENCY = 5;        // parallel Cert Spotter calls (its limit is 5/sec)\nconst MAX_DOMAINS = 40;       // hard cap on domains handled per run\nconst TRUST_CHECK_ENABLED = true;\nconst TRUST_BUDGET = 4;       // max SSL Labs calls per run; rotates daily so all\n                              // hosts get trust-verified over a few days\n// ==================================================\n\nconst CERTSPOTTER = 'https://api.certspotter.com/v1/issuances';\nconst SSLLABS = 'https://api.ssllabs.com/api/v3/analyze';\n\nfunction rowVal(r, k) {\n  const d = (r && r.data) ? r.data : r;\n  return (d && d[k] !== null && d[k] !== undefined) ? String(d[k]).trim() : '';\n}\n\nasync function getJson(url, tries) {\n  tries = tries || 1;\n  let lastErr = null;\n  for (let a = 1; a <= tries; a++) {\n    try {\n      const res = await fetch(url, { headers: { 'User-Agent': 'sim-cert-monitor' } });\n      if (res.status === 429 || res.status >= 500) {\n        lastErr = 'HTTP ' + res.status + (res.status === 429 ? ' (rate limited)' : '');\n        if (a < tries) { continue; }\n        return { ok: false, error: lastErr, data: null };\n      }\n      if (!res.ok) { return { ok: false, error: 'HTTP ' + res.status, data: null }; }\n      const text = await res.text();\n      try { return { ok: true, error: null, data: JSON.parse(text) }; }\n      catch (e) { return { ok: false, error: 'malformed JSON response', data: null }; }\n    } catch (e) {\n      lastErr = (e && e.message) ? e.message : String(e);\n    }\n  }\n  return { ok: false, error: lastErr || 'request failed', data: null };\n}\n\n// Run an async mapper over items with bounded concurrency.\nasync function mapLimit(items, limit, fn) {\n  const out = new Array(items.length);\n  for (let start = 0; start < items.length; start += limit) {\n    const slice = items.slice(start, start + limit);\n    const settled = await Promise.all(slice.map(async (it, j) => {\n      try { return await fn(it, start + j); }\n      catch (e) { return { __threw: (e && e.message) ? e.message : String(e) }; }\n    }));\n    for (let j = 0; j < settled.length; j++) { out[start + j] = settled[j]; }\n  }\n  return out;\n}\n\n// Does a certificate DNS name cover this host (incl. single-label wildcard)?\nfunction nameCovers(name, host) {\n  const n = String(name || '').toLowerCase();\n  if (!n) { return false; }\n  if (n === host) { return true; }\n  if (n.indexOf('*.') === 0) {\n    const suffix = n.slice(2);\n    const dot = host.indexOf('.');\n    return dot > -1 && host.slice(dot + 1) === suffix;\n  }\n  return false;\n}\n\n// SSL Labs chain-issue bitflags\nfunction chainIssues(mask) {\n  const m = Number(mask) || 0;\n  const out = [];\n  if (m & 2) { out.push('incomplete chain'); }\n  if (m & 4) { out.push('unrelated/duplicate certs in chain'); }\n  if (m & 8) { out.push('chain out of order'); }\n  if (m & 16) { out.push('self-signed root in chain'); }\n  if (m & 32) { out.push('chain could not be validated'); }\n  return out;\n}\n\n// --- build the enabled domain list ---\n// A row may carry a scheme, path and/or explicit port (e.g. \"host.example:8082\").\n// Both upstream APIs are keyed on HOSTNAME only, so the port is split off for\n// lookups and kept for display. The raw value stays the cert_status key.\nconst rows = <readDomains.rows> || [];\nconst entries = [];\nconst seenLabels = {};\nfor (const r of rows) {\n  const raw = rowVal(r, 'domain').toLowerCase()\n    .replace(/^https?:\\/\\//, '')\n    .replace(/\\/.*$/, '');\n  if (!raw) { continue; }\n  const en = rowVal(r, 'enabled').toLowerCase();\n  if (en && en !== 'true') { continue; }\n  const bits = raw.split(':');\n  const host = bits[0];\n  const port = (bits.length > 1 && bits[1]) ? bits[1] : null;\n  if (!host || seenLabels[raw] || entries.length >= MAX_DOMAINS) { continue; }\n  seenLabels[raw] = true;\n  entries.push({\n    label: raw,\n    host: host,\n    port: port,\n    owner: rowVal(r, 'owner'),\n    environment: rowVal(r, 'environment'),\n    notes: rowVal(r, 'notes')\n  });\n}\n\n// --- choose which hosts get the expensive trust check this run ---\n// Rotate the window by day so coverage cycles through the whole list.\nconst trustSet = {};\nif (TRUST_CHECK_ENABLED && entries.length) {\n  const dayIndex = Math.floor(Date.now() / 86400000);\n  const n = entries.length;\n  const take = Math.min(TRUST_BUDGET, n);\n  for (let k = 0; k < take; k++) {\n    trustSet[entries[(dayIndex * take + k) % n].label] = true;\n  }\n}\n\nconst nowMs = Date.now();\n\n// --- 1) Cert Spotter for every domain, in parallel batches ---\nconst results = await mapLimit(entries, CONCURRENCY, async (e) => {\n  const host = e.host;\n  const out = {\n    domain: e.label,\n    hostname: host,\n    port: e.port,\n    owner: e.owner,\n    environment: e.environment,\n    checked_at: new Date().toISOString(),\n    expires_at: null,\n    days_remaining: null,\n    issuer: '',\n    subject_sans: '',\n    valid: null,\n    revoked: false,\n    reachable: null,      // null = NOT ASSESSED; never treated as a failure\n    tls_ok: null,\n    trusted: null,\n    grade: null,\n    chain_note: '',\n    error: null,\n    cert_source: null,\n    trust_source: 'not_assessed'\n  };\n  if (e.port && e.port !== '443') {\n    out.chain_note = 'port ' + e.port + ' not inspectable by the cert APIs; expiry shown is for the hostname certificate';\n  }\n\n  const ctUrl = CERTSPOTTER + '?domain=' + encodeURIComponent(host) +\n    '&include_subdomains=false&match_wildcards=true' +\n    '&expand=dns_names&expand=issuer&expand=revocation';\n  const ct = await getJson(ctUrl, 2);\n  if (!ct.ok || !Array.isArray(ct.data)) {\n    out.cert_source = 'certspotter_failed';\n    out.error = 'CT lookup: ' + ct.error;\n    return out;\n  }\n  let best = null;\n  for (const iss of ct.data) {\n    if (!iss || !iss.not_after || iss.revoked === true) { continue; }\n    const names = Array.isArray(iss.dns_names) ? iss.dns_names : [];\n    let covers = false;\n    for (const n of names) { if (nameCovers(n, host)) { covers = true; break; } }\n    if (!covers) { continue; }\n    const t = new Date(iss.not_after).getTime();\n    if (isNaN(t)) { continue; }\n    if (!best || t > best.t) { best = { t: t, iss: iss }; }\n  }\n  if (best) {\n    out.cert_source = 'certspotter';\n    out.expires_at = new Date(best.t).toISOString();\n    out.days_remaining = Math.floor((best.t - nowMs) / 86400000);\n    out.issuer = (best.iss.issuer && (best.iss.issuer.name || best.iss.issuer.friendly_name)) || '';\n    out.subject_sans = (Array.isArray(best.iss.dns_names) ? best.iss.dns_names : []).slice(0, 12).join(', ');\n  } else {\n    out.cert_source = 'certspotter_no_match';\n    out.error = 'no unexpired, non-revoked CT certificate covers ' + host;\n  }\n  return out;\n});\n\n// Guard: mapLimit converts a thrown mapper into a marker object.\nfor (let i = 0; i < results.length; i++) {\n  const r = results[i];\n  if (r && r.__threw) {\n    results[i] = {\n      domain: entries[i].label, hostname: entries[i].host, port: entries[i].port,\n      owner: entries[i].owner, environment: entries[i].environment,\n      checked_at: new Date().toISOString(), expires_at: null, days_remaining: null,\n      issuer: '', subject_sans: '', valid: null, revoked: false,\n      reachable: null, tls_ok: null, trusted: null, grade: null, chain_note: '',\n      error: 'lookup threw: ' + r.__threw, cert_source: 'certspotter_failed',\n      trust_source: 'not_assessed'\n    };\n  }\n}\n\n// --- 2) SSL Labs trust/chain for the budgeted subset, also in parallel ---\n// Cached only: never startNew, never poll. An uncached assessment takes 60-120s\n// and is exactly what blew the time budget before.\nconst trustTargets = results.filter((r) => trustSet[r.domain]);\nlet labsUnavailable = 0;\nif (trustTargets.length) {\n  await mapLimit(trustTargets, CONCURRENCY, async (out) => {\n    const labsUrl = SSLLABS + '?host=' + encodeURIComponent(out.hostname) +\n      '&publish=off&fromCache=on&maxAge=24&all=done';\n    const labs = await getJson(labsUrl, 1);\n    if (!labs.ok || !labs.data) {\n      labsUnavailable++;\n      out.trust_source = 'ssllabs_unavailable';\n      return out;\n    }\n    const L = labs.data;\n    const status = String(L.status || '');\n    if (status === 'ERROR') {\n      const msg = String(L.statusMessage || 'assessment failed');\n      const m = msg.toLowerCase();\n      if (m.indexOf('blacklist') > -1) {\n        out.trust_source = 'ssllabs_refused';\n      } else if (m.indexOf('resolve') > -1 || m.indexOf('unable to connect') > -1 || m.indexOf('no secure protocols') > -1) {\n        out.trust_source = 'ssllabs';\n        out.reachable = false;\n        out.tls_ok = false;\n        out.chain_note = (out.chain_note ? out.chain_note + '; ' : '') + 'SSL Labs could not connect: ' + msg;\n        out.error = out.error ? (out.error + '; ' + msg) : msg;\n      } else {\n        out.trust_source = 'ssllabs_error_inconclusive';\n      }\n      return out;\n    }\n    if (status !== 'READY') {\n      out.trust_source = 'ssllabs_pending_' + (status || 'unknown').toLowerCase();\n      return out;\n    }\n    out.trust_source = 'ssllabs';\n    out.reachable = true;\n    const eps = Array.isArray(L.endpoints) ? L.endpoints : [];\n    const ep = eps[0] || null;\n    const certs = Array.isArray(L.certs) ? L.certs : [];\n    if (ep) {\n      out.grade = ep.grade || null;\n      const g = String(ep.grade || '');\n      if (g === 'T' || g === 'M') {\n        out.trusted = false;\n        out.tls_ok = false;\n        out.chain_note = (out.chain_note ? out.chain_note + '; ' : '') + (g === 'T' ? 'certificate not trusted' : 'certificate name mismatch');\n      }\n      const det = ep.details || {};\n      const chains = Array.isArray(det.certChains) ? det.certChains : [];\n      const notes = [];\n      for (const ch of chains) {\n        for (const p of chainIssues(ch.issues)) { if (notes.indexOf(p) === -1) { notes.push(p); } }\n        for (const tp of (Array.isArray(ch.trustPaths) ? ch.trustPaths : [])) {\n          for (const tr of (Array.isArray(tp.trust) ? tp.trust : [])) {\n            if (tr && tr.isTrusted === false) {\n              out.trusted = false;\n              const store = tr.rootStore ? (' (' + tr.rootStore + ')') : '';\n              const why = tr.trustErrorMessage ? (': ' + tr.trustErrorMessage) : '';\n              const n = 'untrusted' + store + why;\n              if (notes.indexOf(n) === -1) { notes.push(n); }\n            }\n          }\n        }\n      }\n      if (notes.length) { out.chain_note = (out.chain_note ? out.chain_note + '; ' : '') + notes.join('; '); }\n      if (out.trusted === null) { out.trusted = true; out.tls_ok = true; }\n    }\n    // installed cert wins over CT data, but only for the standard port\n    if (certs.length && certs[0].notAfter && (!out.port || out.port === '443')) {\n      const t = Number(certs[0].notAfter);\n      if (!isNaN(t)) {\n        out.expires_at = new Date(t).toISOString();\n        out.days_remaining = Math.floor((t - nowMs) / 86400000);\n        out.cert_source = 'ssllabs_installed';\n        if (certs[0].issuerSubject) { out.issuer = certs[0].issuerSubject; }\n        const alt = Array.isArray(certs[0].altNames) ? certs[0].altNames : [];\n        if (alt.length) { out.subject_sans = alt.slice(0, 12).join(', '); }\n      }\n    }\n    return out;\n  });\n}\n\nfor (const out of results) {\n  if (out.days_remaining !== null) {\n    out.valid = out.days_remaining >= 0 && out.tls_ok !== false;\n  } else if (out.tls_ok === false) {\n    out.valid = false;\n  }\n}\n\nconst ctErrors = results.filter((r) => r.cert_source === 'certspotter_failed').length;\n\nreturn {\n  checked_at: new Date().toISOString(),\n  domainCount: entries.length,\n  ctErrors: ctErrors,\n  labsUnavailable: labsUnavailable,\n  trustBudget: TRUST_BUDGET,\n  trustAttempted: trustTargets.length,\n  trustAssessed: results.filter((r) => r.trust_source === 'ssllabs').length,\n  ok: true,\n  results: results\n};"
+          },
+          "language": {
+            "id": "language",
+            "type": "dropdown",
+            "value": "javascript"
+          },
+          "sandboxId": {
+            "id": "sandboxId",
+            "type": "combobox",
+            "value": null
+          },
+          "secretScope": {
+            "id": "secretScope",
+            "type": "dropdown",
+            "value": null
+          },
+          "mountedSecrets": {
+            "id": "mountedSecrets",
+            "type": "dropdown",
+            "value": null
+          }
+        },
+        "outputs": {
+          "files": {
+            "type": "file[]",
+            "description": "Files the code wrote to /tmp/sim/outputs, ready to attach or upload downstream"
+          },
+          "result": {
+            "type": "json",
+            "description": "Structured result emitted by the executed code"
+          },
+          "stdout": {
+            "type": "string",
+            "description": "Console log output and debug messages from function execution"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 48,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {},
+        "locked": false
+      },
+      "6a63b768-633d-41b9-97e2-9cd35422105b": {
+        "id": "6a63b768-633d-41b9-97e2-9cd35422105b",
+        "type": "function",
+        "name": "classifyCerts",
+        "position": {
+          "x": -658.2768777614119,
+          "y": 1533.6524300441822
+        },
+        "subBlocks": {
+          "code": {
+            "id": "code",
+            "type": "code",
+            "value": "// ===== Bot 2: classification, thresholds and dedup =====\n//\n// >>> CONFIG: warning thresholds in days. Edit ONLY this line to change them. <<<\nconst THRESHOLDS = [30, 14, 7, 3];\n// Severity mapping: expired / invalid / connection failure -> CRITICAL.\n// days <= 3 -> CRITICAL, <= 7 -> HIGH, <= 14 -> HIGH, <= 30 -> MEDIUM, else OK.\nconst SEVERITY_BY_THRESHOLD = { 3: 'CRITICAL', 7: 'HIGH', 14: 'HIGH', 30: 'MEDIUM' };\n\nconst results = <checkCerts.result.results> || [];\nconst stateRows = <readCertState.rows> || [];\n\nfunction rowVal(r, k) {\n  const d = (r && r.data) ? r.data : r;\n  return (d && d[k] !== null && d[k] !== undefined) ? String(d[k]).trim() : '';\n}\n\n// previous state keyed by domain label\nconst prev = {};\nfor (const r of stateRows) {\n  const d = rowVal(r, 'domain').toLowerCase();\n  if (!d) { continue; }\n  prev[d] = {\n    status: rowVal(r, 'status'),\n    last_threshold_alerted: rowVal(r, 'last_threshold_alerted'),\n    expires_at: rowVal(r, 'expires_at')\n  };\n}\n\n// Smallest crossed threshold, or '' when none.\nfunction crossedThreshold(days) {\n  let hit = '';\n  for (const t of THRESHOLDS) {\n    if (days <= t) { hit = String(t); }\n  }\n  return hit;\n}\n\nconst nowIso = new Date().toISOString();\nconst alerts = [];\nconst summary = [];\nconst stateWrites = [];\n\nfor (const c of results) {\n  const domain = c.domain;\n  let status = 'valid';\n  let severity = 'OK';\n  let reason = '';\n  let threshold = '';\n\n  const days = (c.days_remaining === null || c.days_remaining === undefined) ? null : Number(c.days_remaining);\n  // Only an AUTHORITATIVE negative counts as a connection failure: reachable or\n  // tls_ok must be explicitly false. null means \"not assessed\" and is never an alert.\n  const connFailed = c.reachable === false || c.tls_ok === false;\n  const noCert = c.cert_source === 'certspotter_failed' || c.cert_source === 'certspotter_no_match';\n\n  if (connFailed) {\n    status = 'error';\n    severity = 'CRITICAL';\n    reason = c.chain_note || 'TLS/connection failure';\n    threshold = 'error';\n  } else if (days !== null && days < 0) {\n    status = 'expired';\n    severity = 'CRITICAL';\n    reason = 'certificate expired ' + Math.abs(days) + 'd ago';\n    threshold = 'expired';\n  } else if (noCert) {\n    // No certificate data at all. This is a monitoring GAP, not proof of a broken\n    // certificate, so it is reported as a HIGH data-gap rather than a CRITICAL\n    // outage — a private host or a non-standard port lands here legitimately.\n    status = 'unknown';\n    severity = 'HIGH';\n    reason = c.error || 'certificate data unavailable';\n    threshold = 'unknown';\n  } else if (days !== null) {\n    threshold = crossedThreshold(days);\n    if (threshold) {\n      status = 'expiring';\n      severity = SEVERITY_BY_THRESHOLD[threshold] || 'MEDIUM';\n      reason = 'expires in ' + days + 'd (crossed ' + threshold + 'd threshold)';\n    } else {\n      status = 'valid';\n      severity = 'OK';\n      reason = 'expires in ' + days + 'd';\n    }\n  } else {\n    status = 'unknown';\n    severity = 'HIGH';\n    reason = c.error || 'no expiry data';\n    threshold = 'unknown';\n  }\n\n  const p = prev[domain] || null;\n  const isNew = !p;\n  const statusChanged = !!p && p.status !== status;\n  // a NEW threshold means a numerically tighter one than last alerted\n  let thresholdCrossed = false;\n  if (threshold && threshold !== 'error' && threshold !== 'expired' && threshold !== 'unknown') {\n    const last = p ? Number(p.last_threshold_alerted) : NaN;\n    thresholdCrossed = isNaN(last) ? true : Number(threshold) < last;\n  } else if (threshold) {\n    thresholdCrossed = !p || p.last_threshold_alerted !== threshold;\n  }\n\n  const actionable = severity === 'CRITICAL' || severity === 'HIGH' || severity === 'MEDIUM';\n  const shouldAlert = actionable && (isNew || statusChanged || thresholdCrossed);\n\n  const entry = {\n    domain: domain,\n    hostname: c.hostname,\n    port: c.port,\n    owner: c.owner,\n    environment: c.environment,\n    status: status,\n    severity: severity,\n    reason: reason,\n    days_remaining: days,\n    expires_at: c.expires_at,\n    issuer: c.issuer,\n    subject_sans: c.subject_sans,\n    chain_note: c.chain_note,\n    trust_source: c.trust_source,\n    error: c.error,\n    cert_source: c.cert_source,\n    change: isNew ? 'new' : (statusChanged ? 'status-change' : (thresholdCrossed ? 'threshold-crossed' : 'unchanged'))\n  };\n  summary.push(entry);\n  if (shouldAlert) { alerts.push(entry); }\n\n  // Persist state for EVERY checked domain so the ledger always reflects reality.\n  // last_threshold_alerted only advances when we actually alerted.\n  const keepThreshold = shouldAlert ? threshold : (p ? p.last_threshold_alerted : '');\n  stateWrites.push({\n    domain: domain,\n    status: status,\n    expires_at: c.expires_at || '',\n    days_remaining: days === null ? '' : String(days),\n    issuer: c.issuer || '',\n    subject_sans: c.subject_sans || '',\n    last_threshold_alerted: keepThreshold || '',\n    last_checked: nowIso,\n    last_error: c.error || ''\n  });\n}\n\nconst order = { CRITICAL: 0, HIGH: 1, MEDIUM: 2, OK: 3 };\nsummary.sort((a, b) => (order[a.severity] - order[b.severity]) || String(a.domain).localeCompare(String(b.domain)));\nalerts.sort((a, b) => order[a.severity] - order[b.severity]);\n\nreturn {\n  generated_at: nowIso,\n  thresholds: THRESHOLDS,\n  domainCount: results.length,\n  alertCount: alerts.length,\n  criticalCount: summary.filter((s) => s.severity === 'CRITICAL').length,\n  highCount: summary.filter((s) => s.severity === 'HIGH').length,\n  mediumCount: summary.filter((s) => s.severity === 'MEDIUM').length,\n  okCount: summary.filter((s) => s.severity === 'OK').length,\n  trustAssessed: <checkCerts.result.trustAssessed>,\n  alerts: alerts,\n  summary: summary,\n  rows: stateWrites\n};"
+          },
+          "language": {
+            "id": "language",
+            "type": "dropdown",
+            "value": "javascript"
+          },
+          "sandboxId": {
+            "id": "sandboxId",
+            "type": "combobox",
+            "value": null
+          },
+          "secretScope": {
+            "id": "secretScope",
+            "type": "dropdown",
+            "value": null
+          },
+          "mountedSecrets": {
+            "id": "mountedSecrets",
+            "type": "dropdown",
+            "value": null
+          }
+        },
+        "outputs": {
+          "files": {
+            "type": "file[]",
+            "description": "Files the code wrote to /tmp/sim/outputs, ready to attach or upload downstream"
+          },
+          "result": {
+            "type": "json",
+            "description": "Structured result emitted by the executed code"
+          },
+          "stdout": {
+            "type": "string",
+            "description": "Console log output and debug messages from function execution"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 48,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {},
+        "locked": false
+      },
+      "aa5fed42-ba47-48a0-a092-c8d525f839a1": {
+        "id": "aa5fed42-ba47-48a0-a092-c8d525f839a1",
+        "type": "loop",
+        "name": "certLoop",
+        "position": {
+          "x": -228.27687776141192,
+          "y": 1521.6524300441822
+        },
+        "subBlocks": {
+          "loopType": {
+            "id": "loopType",
+            "type": "short-input",
+            "value": "forEach"
+          },
+          "collection": {
+            "id": "collection",
+            "type": "short-input",
+            "value": "<classifyCerts.result.rows>"
+          }
+        },
+        "outputs": {},
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 48,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {
+          "width": 510,
+          "height": 316,
+          "collection": "<classifyCerts.result.rows>",
+          "loopType": "forEach",
+          "whileCondition": "",
+          "doWhileCondition": ""
+        },
+        "locked": false,
+        "layout": {
+          "measuredWidth": 510,
+          "measuredHeight": 316
+        }
+      },
+      "upsert-cert": {
+        "id": "upsert-cert",
+        "type": "table_v2",
+        "name": "upsertCertStatus",
+        "position": {
+          "x": 180,
+          "y": 100
+        },
+        "subBlocks": {
+          "data": {
+            "id": "data",
+            "type": "code",
+            "value": "<loop.currentItem>"
+          },
+          "rows": {
+            "id": "rows",
+            "type": "code",
+            "value": null
+          },
+          "limit": {
+            "id": "limit",
+            "type": "short-input",
+            "value": null
+          },
+          "order": {
+            "id": "order",
+            "type": "short-input",
+            "value": null
+          },
+          "rowId": {
+            "id": "rowId",
+            "type": "short-input",
+            "value": null
+          },
+          "cursor": {
+            "id": "cursor",
+            "type": "short-input",
+            "value": null
+          },
+          "filter": {
+            "id": "filter",
+            "type": "code",
+            "value": null
+          },
+          "eventType": {
+            "id": "eventType",
+            "type": "dropdown",
+            "value": null
+          },
+          "operation": {
+            "id": "operation",
+            "type": "dropdown",
+            "value": "upsert_row"
+          },
+          "sortBuilder": {
+            "id": "sortBuilder",
+            "type": "sort-builder",
+            "value": null
+          },
+          "watchColumns": {
+            "id": "watchColumns",
+            "type": "dropdown",
+            "value": null
+          },
+          "filterBuilder": {
+            "id": "filterBuilder",
+            "type": "filter-builder",
+            "value": null
+          },
+          "manualTableId": {
+            "id": "manualTableId",
+            "type": "short-input",
+            "value": null
+          },
+          "outputColumns": {
+            "id": "outputColumns",
+            "type": "dropdown",
+            "value": null
+          },
+          "tableSelector": {
+            "id": "tableSelector",
+            "type": "table-selector",
+            "value": null
+          },
+          "includeHeaders": {
+            "id": "includeHeaders",
+            "type": "switch",
+            "value": null
+          },
+          "triggerInstructions": {
+            "id": "triggerInstructions",
+            "type": "text",
+            "value": null
+          },
+          "manualConflictColumn": {
+            "id": "manualConflictColumn",
+            "type": "short-input",
+            "value": "domain"
+          },
+          "conflictColumnSelector": {
+            "id": "conflictColumnSelector",
+            "type": "column-selector",
+            "value": null
+          }
+        },
+        "outputs": {
+          "row": {
+            "type": "json",
+            "description": "Upserted row data"
+          },
+          "message": {
+            "type": "string",
+            "description": "Status message"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Whether row was upserted"
+          },
+          "operation": {
+            "type": "string",
+            "description": "Operation performed: insert or update"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 48,
+        "advancedMode": true,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {
+          "parentId": "aa5fed42-ba47-48a0-a092-c8d525f839a1",
+          "extent": "parent",
+          "canonicalModes": {
+            "tableId": "advanced",
+            "sortInput": "basic",
+            "filterInput": "basic",
+            "conflictColumn": "advanced"
+          }
+        },
+        "locked": false
+      },
+      "3b48d124-218a-49c1-9448-2c1e09d5963c": {
+        "id": "3b48d124-218a-49c1-9448-2c1e09d5963c",
+        "type": "function",
+        "name": "buildCertSummary",
+        "position": {
+          "x": 501.7231222385881,
+          "y": 1810.6524300441822
+        },
+        "subBlocks": {
+          "code": {
+            "id": "code",
+            "type": "code",
+            "value": "// ===== Bot 2: daily summary message (deterministic, no LLM) =====\n// Telegram-supported HTML only: <b> <i> <code> <a href>. Hard cap 3500 chars.\n\nconst d = <classifyCerts.result>;\nconst alerts = (d && d.alerts) || [];\nconst summary = (d && d.summary) || [];\nconst thresholds = (d && d.thresholds) || [];\n\nfunction esc(s) {\n  return String(s === null || s === undefined ? '' : s)\n    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\n}\n\nconst icon = { CRITICAL: '\\uD83D\\uDD34', HIGH: '\\uD83D\\uDFE0', MEDIUM: '\\uD83D\\uDFE1', OK: '\\u2705' };\nconst dateOnly = (iso) => (iso ? String(iso).slice(0, 10) : 'unknown');\n\nconst lines = [];\nlines.push('<b>\\uD83D\\uDD10 SSL/TLS Certificate Report</b>');\nlines.push('<i>' + esc(String((d && d.generated_at) || '').replace('T', ' ').slice(0, 16)) + ' UTC</i>');\nlines.push('');\n\nif (!summary.length) {\n  lines.push('<b>No domains monitored.</b> Add rows to the <code>monitored_domains</code> table with <code>enabled=true</code>.');\n} else {\n  lines.push('Monitored: <b>' + summary.length + '</b> \\u2014 ' +\n    icon.CRITICAL + ' ' + (d.criticalCount || 0) + '  ' +\n    icon.HIGH + ' ' + (d.highCount || 0) + '  ' +\n    icon.MEDIUM + ' ' + (d.mediumCount || 0) + '  ' +\n    icon.OK + ' ' + (d.okCount || 0));\n  lines.push('');\n\n  if (alerts.length) {\n    lines.push('<b>\\u26A0 Actionable alerts (' + alerts.length + ')</b>');\n    for (const a of alerts.slice(0, 15)) {\n      lines.push((icon[a.severity] || '') + ' <b>' + esc(a.severity) + '</b> \\u2014 <code>' + esc(a.domain) + '</code>');\n      lines.push('   ' + esc(a.reason));\n      if (a.expires_at) {\n        lines.push('   Expires: <code>' + esc(dateOnly(a.expires_at)) + '</code>' +\n          (a.issuer ? ' \\u2014 ' + esc(String(a.issuer).slice(0, 70)) : ''));\n      }\n      // only add chain_note when it says something the reason line did not\n      if (a.chain_note && String(a.chain_note) !== String(a.reason)) {\n        lines.push('   <i>' + esc(String(a.chain_note).slice(0, 160)) + '</i>');\n      }\n      if (a.environment || a.owner) {\n        lines.push('   <i>' + esc([a.environment, a.owner].filter(Boolean).join(' / ')) + '</i>');\n      }\n      lines.push('');\n    }\n    if (alerts.length > 15) { lines.push('<i>+' + (alerts.length - 15) + ' more alerts suppressed from this message.</i>'); lines.push(''); }\n  } else {\n    lines.push('<b>\\u2705 No new certificate issues.</b>');\n    lines.push('');\n  }\n\n  // Condensed informational roster of every monitored domain\n  lines.push('<b>All monitored domains</b>');\n  for (const s of summary.slice(0, 40)) {\n    let tail;\n    if (s.status === 'error') { tail = 'unreachable'; }\n    else if (s.status === 'unknown') { tail = 'no cert data'; }\n    else {\n      const days = (s.days_remaining === null || s.days_remaining === undefined) ? '?' : (s.days_remaining + 'd');\n      tail = days + ' \\u2192 ' + dateOnly(s.expires_at);\n    }\n    lines.push((icon[s.severity] || '') + ' <code>' + esc(s.domain) + '</code> \\u2014 ' + esc(tail));\n  }\n  if (summary.length > 40) { lines.push('<i>+' + (summary.length - 40) + ' more domains.</i>'); }\n  lines.push('');\n  lines.push('<i>Thresholds: ' + esc(thresholds.join('/')) + ' days. A repeat condition is not re-alerted until its status or threshold changes.</i>');\n  const ta = (d && d.trustAssessed) || 0;\n  if (ta < summary.length) {\n    lines.push('<i>Trust/chain verified by SSL Labs for ' + ta + '/' + summary.length + ' hosts this run; the rest report expiry from Certificate Transparency only.</i>');\n  }\n}\n\nlet text = lines.join('\\n');\nif (text.length > 3500) { text = text.slice(0, 3450) + '\\n<i>\\u2026truncated</i>'; }\n\nreturn { text: text, alertCount: alerts.length, domainCount: summary.length };"
+          },
+          "language": {
+            "id": "language",
+            "type": "dropdown",
+            "value": "javascript"
+          },
+          "sandboxId": {
+            "id": "sandboxId",
+            "type": "combobox",
+            "value": null
+          },
+          "secretScope": {
+            "id": "secretScope",
+            "type": "dropdown",
+            "value": null
+          },
+          "mountedSecrets": {
+            "id": "mountedSecrets",
+            "type": "dropdown",
+            "value": null
+          }
+        },
+        "outputs": {
+          "files": {
+            "type": "file[]",
+            "description": "Files the code wrote to /tmp/sim/outputs, ready to attach or upload downstream"
+          },
+          "result": {
+            "type": "json",
+            "description": "Structured result emitted by the executed code"
+          },
+          "stdout": {
+            "type": "string",
+            "description": "Console log output and debug messages from function execution"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 48,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {},
+        "locked": false
+      },
+      "9801d7ef-75b3-4cb1-a001-1ce2381ac326": {
+        "id": "9801d7ef-75b3-4cb1-a001-1ce2381ac326",
+        "type": "telegram",
+        "name": "sendCertAlert",
+        "position": {
+          "x": 1231.723122238588,
+          "y": 1798.6524300441822
+        },
+        "subBlocks": {
+          "text": {
+            "id": "text",
+            "type": "long-input",
+            "value": "<buildCertSummary.result.text>"
+          },
+          "audio": {
+            "id": "audio",
+            "type": "short-input",
+            "value": null
+          },
+          "files": {
+            "id": "files",
+            "type": "short-input",
+            "value": null
+          },
+          "isBig": {
+            "id": "isBig",
+            "type": "dropdown",
+            "value": null
+          },
+          "photo": {
+            "id": "photo",
+            "type": "short-input",
+            "value": null
+          },
+          "vcard": {
+            "id": "vcard",
+            "type": "long-input",
+            "value": null
+          },
+          "video": {
+            "id": "video",
+            "type": "short-input",
+            "value": null
+          },
+          "action": {
+            "id": "action",
+            "type": "dropdown",
+            "value": null
+          },
+          "chatId": {
+            "id": "chatId",
+            "type": "short-input",
+            "value": "{{TELEGRAM_CHAT_ID}}"
+          },
+          "userId": {
+            "id": "userId",
+            "type": "short-input",
+            "value": null
+          },
+          "caption": {
+            "id": "caption",
+            "type": "long-input",
+            "value": null
+          },
+          "audioRef": {
+            "id": "audioRef",
+            "type": "short-input",
+            "value": null
+          },
+          "botToken": {
+            "id": "botToken",
+            "type": "short-input",
+            "value": "{{TELEGRAM_BOT_TOKEN}}"
+          },
+          "lastName": {
+            "id": "lastName",
+            "type": "short-input",
+            "value": null
+          },
+          "latitude": {
+            "id": "latitude",
+            "type": "short-input",
+            "value": null
+          },
+          "photoRef": {
+            "id": "photoRef",
+            "type": "short-input",
+            "value": null
+          },
+          "question": {
+            "id": "question",
+            "type": "long-input",
+            "value": null
+          },
+          "videoRef": {
+            "id": "videoRef",
+            "type": "short-input",
+            "value": null
+          },
+          "animation": {
+            "id": "animation",
+            "type": "short-input",
+            "value": null
+          },
+          "audioFile": {
+            "id": "audioFile",
+            "type": "file-upload",
+            "value": null
+          },
+          "firstName": {
+            "id": "firstName",
+            "type": "short-input",
+            "value": null
+          },
+          "longitude": {
+            "id": "longitude",
+            "type": "short-input",
+            "value": null
+          },
+          "messageId": {
+            "id": "messageId",
+            "type": "short-input",
+            "value": null
+          },
+          "operation": {
+            "id": "operation",
+            "type": "dropdown",
+            "value": "telegram_message"
+          },
+          "photoFile": {
+            "id": "photoFile",
+            "type": "file-upload",
+            "value": null
+          },
+          "videoFile": {
+            "id": "videoFile",
+            "type": "file-upload",
+            "value": null
+          },
+          "fromChatId": {
+            "id": "fromChatId",
+            "type": "short-input",
+            "value": null
+          },
+          "isAnonymous": {
+            "id": "isAnonymous",
+            "type": "dropdown",
+            "value": null
+          },
+          "phoneNumber": {
+            "id": "phoneNumber",
+            "type": "short-input",
+            "value": null
+          },
+          "pollOptions": {
+            "id": "pollOptions",
+            "type": "long-input",
+            "value": null
+          },
+          "animationRef": {
+            "id": "animationRef",
+            "type": "short-input",
+            "value": null
+          },
+          "animationFile": {
+            "id": "animationFile",
+            "type": "file-upload",
+            "value": null
+          },
+          "reactionEmoji": {
+            "id": "reactionEmoji",
+            "type": "short-input",
+            "value": null
+          },
+          "attachmentFiles": {
+            "id": "attachmentFiles",
+            "type": "file-upload",
+            "value": null
+          },
+          "webhookUrlDisplay": {
+            "id": "webhookUrlDisplay",
+            "type": "short-input",
+            "value": null
+          },
+          "disableNotification": {
+            "id": "disableNotification",
+            "type": "dropdown",
+            "value": null
+          },
+          "triggerInstructions": {
+            "id": "triggerInstructions",
+            "type": "text",
+            "value": null
+          },
+          "allowsMultipleAnswers": {
+            "id": "allowsMultipleAnswers",
+            "type": "dropdown",
+            "value": null
+          },
+          "samplePayload_telegram_webhook": {
+            "id": "samplePayload_telegram_webhook",
+            "type": "code",
+            "value": null
+          }
+        },
+        "outputs": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "chat": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "description": "Bot user ID"
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "chat type private or channel"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "Bot username"
+                  },
+                  "first_name": {
+                    "type": "string",
+                    "description": "Bot first name"
+                  }
+                },
+                "description": "Information about the bot that sent the message"
+              },
+              "date": {
+                "type": "number",
+                "description": "Unix timestamp when message was sent"
+              },
+              "from": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "description": "Chat ID"
+                  },
+                  "is_bot": {
+                    "type": "boolean",
+                    "description": "Whether the chat is a bot or not"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "Chat title (for groups and channels)"
+                  },
+                  "first_name": {
+                    "type": "string",
+                    "description": "Chat username (if available)"
+                  }
+                },
+                "description": "Chat information"
+              },
+              "text": {
+                "type": "string",
+                "description": "Text content of the sent message"
+              },
+              "message_id": {
+                "type": "number",
+                "description": "Unique Telegram message identifier"
+              }
+            },
+            "description": "Telegram message data"
+          },
+          "message": {
+            "type": "string",
+            "description": "Success or error message"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 48,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {
+          "canonicalModes": {
+            "files": "basic",
+            "audioSource": "basic",
+            "photoSource": "basic",
+            "videoSource": "basic",
+            "animationSource": "basic"
+          }
+        },
+        "locked": false
+      },
+      "750c238d-2bbf-425e-a0ae-94495a535741": {
+        "id": "750c238d-2bbf-425e-a0ae-94495a535741",
+        "type": "note",
+        "name": "note2",
+        "position": {
+          "x": -2378.276877761412,
+          "y": 2037.6524300441822
+        },
+        "subBlocks": {
+          "color": {
+            "id": "color",
+            "type": "short-input",
+            "value": "carbon"
+          },
+          "content": {
+            "id": "content",
+            "type": "long-input",
+            "value": "BOT 2 — SSL/TLS CERTIFICATE MONITORING (independent daily branch)\n\nEntry: certSchedule — cron '15 3 * * *' UTC = 09:00 Asia/Kathmandu (+05:45). The timezone dropdown has no Kathmandu option, so the schedule is a UTC cron. Change the cron to move the local time.\n\nThis branch shares NOTHING with the hourly threat-intel branch except the Telegram env vars {{TELEGRAM_BOT_TOKEN}} / {{TELEGRAM_CHAT_ID}}.\n\nFlow: certSchedule -> readDomains -> readCertState -> checkCerts -> classifyCerts -> certLoop(upsertCertStatus) -> buildCertSummary -> sendCertAlert.\n\nCONFIG\n- Domain list: table monitored_domains (tbl_5c213aecdbdf4a30b8994c9be025d846). Only rows with enabled='true' are processed. A row may include a scheme, path, or port; all are normalised, and the raw value is kept as the cert_status key.\n- Warning thresholds: ONE constant at the top of classifyCerts — THRESHOLDS = [30, 14, 7, 3]. Edit that line only.\n- State ledger: table cert_status (tbl_c19bf400aa17496c840c10a573b0724c), unique on domain.\n- Safety cap: MAX_DOMAINS = 40 per run (top of checkCerts).\n\n*** CRITICAL ARCHITECTURAL RULE — DO NOT VIOLATE ***\nNever fetch a monitored domain directly. The function sandbox has fetch ONLY: no raw TLS socket, and neither AbortController nor setTimeout exists (both throw ReferenceError), so a request cannot be time-limited. Execution 24c8702f did fetch('https://' + domain) against a host that did not resolve and hung for ~124s until it was cancelled manually. All certificate data therefore comes from third-party APIs that make the risky connection server-side under their own timeouts.\n\nCERT DATA SOURCES\n1. SSLMate Cert Spotter (primary) — https://api.certspotter.com/v1/issuances?domain=HOST&include_subdomains=false&match_wildcards=true&expand=dns_names&expand=issuer&expand=revocation\n   No API key. Free tier: 100 single-hostname queries/hour, 75/min, 5/sec. Returns not_after, issuer, dns_names (SANs), revoked. Reads Certificate Transparency logs, so it describes the certificate that was ISSUED for the hostname, not necessarily the one installed on a given listener. The newest non-revoked cert whose names cover the host wins (wildcards matched one label deep).\n2. Qualys SSL Labs (trust + chain) — https://api.ssllabs.com/api/v3/analyze?host=HOST&publish=off&fromCache=on&maxAge=24&all=done\n   No API key. CACHED ONLY: never startNew, never poll — an uncached assessment takes 60-120s and would blow the run. When status=READY it supplies the INSTALLED leaf cert (notAfter/issuerSubject/altNames, preferred over CT for port 443), the endpoint grade (T=untrusted, M=name mismatch), trustPaths[].trust[].isTrusted, and certChains[].issues bitflags (2 incomplete, 4 unrelated/duplicate, 8 wrong order, 16 self-signed root, 32 unvalidatable). Deprecated but still serving; v4 needs org-email registration.\n   Rejected alternatives: ssl-checker.io (documented keyless, but its TLS endpoint was unreachable when tested) and crt.sh (flaky 502s, huge payloads).\n\nINCONCLUSIVE IS NOT A FAILURE\nreachable/tls_ok are tri-state. null means NOT ASSESSED and never alerts. Only an authoritative negative counts as a connection failure: SSL Labs replying ERROR with 'unable to resolve/connect' or 'no secure protocols'. A cache miss, IN_PROGRESS, a blacklisted host, or any other Qualys-side error is recorded as inconclusive. Most runs assess only a subset — the summary states how many hosts had trust verified, so a CT-only result is never mistaken for a full check.\n\nPORTS: both APIs are keyed on hostname and SSL Labs always inspects 443. For a row with a non-standard port (e.g. host:8082) the hostname's CT certificate is reported and chain_note flags that the specific listener was not inspected. The SSL Labs installed-cert override is skipped for non-443 rows.\n\nSEVERITY\n- CRITICAL: expired, untrusted/name-mismatch, authoritative connection failure, or <=3 days.\n- HIGH: <=7d or <=14d; also a DATA GAP (no CT certificate found, CT lookup failed) — a gap is a monitoring problem, not proof of a broken cert, so it is HIGH rather than CRITICAL.\n- MEDIUM: <=30 days.\n- OK: everything else, informational.\n\nDEDUP: a domain alerts only when it is new to the ledger, its status changed, or it crossed a TIGHTER threshold than last_threshold_alerted. An unchanged condition is never re-alerted. The daily summary is ALWAYS sent regardless, so silence means the run did not fire.\n\nWRITES: upsert_row on conflict column domain, one row per certLoop iteration. Do NOT switch to batch_insert_rows — domain is unique and a batch insert fails the entire run on any repeat.\n\nRESILIENCE: bounded immediate retries (3 for Cert Spotter, 2 for SSL Labs) on 429/5xx and network errors, JSON parse guards, and every domain fault-isolated — one failure becomes an error/unknown result and the loop continues. All stored and reported timestamps are UTC ISO-8601."
+          }
+        },
+        "outputs": {},
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 70,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {},
+        "locked": false
+      },
+      "efd1a828-0d09-49f9-adcb-2cabb9cce362": {
+        "id": "efd1a828-0d09-49f9-adcb-2cabb9cce362",
+        "type": "schedule",
+        "name": "stackSchedule",
+        "position": {
+          "x": -2678.276877761412,
+          "y": 1345.6524300441822
+        },
+        "subBlocks": {
+          "timezone": {
+            "id": "timezone",
+            "type": "dropdown",
+            "value": "UTC"
+          },
+          "dailyTime": {
+            "id": "dailyTime",
+            "type": "time-input",
+            "value": null
+          },
+          "weeklyDay": {
+            "id": "weeklyDay",
+            "type": "dropdown",
+            "value": null
+          },
+          "monthlyDay": {
+            "id": "monthlyDay",
+            "type": "short-input",
+            "value": null
+          },
+          "monthlyTime": {
+            "id": "monthlyTime",
+            "type": "time-input",
+            "value": null
+          },
+          "hourlyMinute": {
+            "id": "hourlyMinute",
+            "type": "short-input",
+            "value": null
+          },
+          "scheduleInfo": {
+            "id": "scheduleInfo",
+            "type": "schedule-info",
+            "value": null
+          },
+          "scheduleType": {
+            "id": "scheduleType",
+            "type": "dropdown",
+            "value": "custom"
+          },
+          "weeklyDayTime": {
+            "id": "weeklyDayTime",
+            "type": "time-input",
+            "value": null
+          },
+          "cronExpression": {
+            "id": "cronExpression",
+            "type": "short-input",
+            "value": "15 2 * * *"
+          },
+          "minutesInterval": {
+            "id": "minutesInterval",
+            "type": "short-input",
+            "value": null
+          }
+        },
+        "outputs": {},
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 48,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": true,
+        "data": {},
+        "locked": false
+      },
+      "f53e2906-10bb-48b5-9b7b-c1ed10cb204e": {
+        "id": "f53e2906-10bb-48b5-9b7b-c1ed10cb204e",
+        "type": "table_v2",
+        "name": "readInventory",
+        "position": {
+          "x": -2248.276877761412,
+          "y": 1725.6524300441822
+        },
+        "subBlocks": {
+          "data": {
+            "id": "data",
+            "type": "code",
+            "value": null
+          },
+          "rows": {
+            "id": "rows",
+            "type": "code",
+            "value": null
+          },
+          "limit": {
+            "id": "limit",
+            "type": "short-input",
+            "value": null
+          },
+          "order": {
+            "id": "order",
+            "type": "short-input",
+            "value": null
+          },
+          "rowId": {
+            "id": "rowId",
+            "type": "short-input",
+            "value": null
+          },
+          "cursor": {
+            "id": "cursor",
+            "type": "short-input",
+            "value": null
+          },
+          "filter": {
+            "id": "filter",
+            "type": "code",
+            "value": null
+          },
+          "eventType": {
+            "id": "eventType",
+            "type": "dropdown",
+            "value": null
+          },
+          "operation": {
+            "id": "operation",
+            "type": "dropdown",
+            "value": "query_rows"
+          },
+          "sortBuilder": {
+            "id": "sortBuilder",
+            "type": "sort-builder",
+            "value": null
+          },
+          "watchColumns": {
+            "id": "watchColumns",
+            "type": "dropdown",
+            "value": null
+          },
+          "filterBuilder": {
+            "id": "filterBuilder",
+            "type": "filter-builder",
+            "value": null
+          },
+          "manualTableId": {
+            "id": "manualTableId",
+            "type": "short-input",
+            "value": null
+          },
+          "outputColumns": {
+            "id": "outputColumns",
+            "type": "dropdown",
+            "value": null
+          },
+          "tableSelector": {
+            "id": "tableSelector",
+            "type": "table-selector",
+            "value": null
+          },
+          "includeHeaders": {
+            "id": "includeHeaders",
+            "type": "switch",
+            "value": null
+          },
+          "triggerInstructions": {
+            "id": "triggerInstructions",
+            "type": "text",
+            "value": null
+          },
+          "manualConflictColumn": {
+            "id": "manualConflictColumn",
+            "type": "short-input",
+            "value": null
+          },
+          "conflictColumnSelector": {
+            "id": "conflictColumnSelector",
+            "type": "column-selector",
+            "value": null
+          }
+        },
+        "outputs": {
+          "rows": {
+            "type": "array",
+            "description": "Query result rows"
+          },
+          "limit": {
+            "type": "number",
+            "description": "Limit used in the query"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Whether the query succeeded"
+          },
+          "rowCount": {
+            "type": "number",
+            "description": "Number of rows returned"
+          },
+          "nextCursor": {
+            "type": "string",
+            "description": "Cursor to fetch the next page, or null on the last page"
+          },
+          "totalCount": {
+            "type": "number",
+            "description": "Total rows matching the predicate (computed on the first page only)"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 48,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {
+          "canonicalModes": {
+            "tableId": "advanced",
+            "sortInput": "basic",
+            "filterInput": "basic",
+            "conflictColumn": "basic"
+          }
+        },
+        "locked": false
+      },
+      "47fc83fd-621b-4af8-b476-d9d9c3429c51": {
+        "id": "47fc83fd-621b-4af8-b476-d9d9c3429c51",
+        "type": "function",
+        "name": "fetchStackCves",
+        "position": {
+          "x": -1818.276877761412,
+          "y": 1737.6524300441822
+        },
+        "subBlocks": {
+          "code": {
+            "id": "code",
+            "type": "code",
+            "value": "// BOT 3 — NVD recent CVEs + CISA KEV. All timestamps UTC.\n// SANDBOX CONSTRAINT: no setTimeout and no AbortController (both throw ReferenceError).\n// No client-side timeouts or backoff sleeps. Resilience = bounded immediate retries.\n// Outbound calls are HARD CAPPED (MAX_PAGES + 1 KEV call) so the block cannot be\n// cancelled with HTTP 499 for running too long.\n// ---- CONFIG ----\nconst LOOKBACK_HOURS = 26;   // 24h window + 2h safety overlap\nconst PAGE_SIZE = 200;\nconst MAX_PAGES = 3;         // hard cap on NVD requests per run\nconst KEV_RECENT_DAYS = 7;\n// ----------------\nasync function getJson(url, tries) {\n  tries = tries || 3;\n  let lastErr = null;\n  for (let a = 1; a <= tries; a++) {\n    try {\n      const res = await fetch(url, { headers: { 'User-Agent': 'sim-stack-cve' } });\n      if (res.status === 429 || res.status >= 500) {\n        lastErr = 'HTTP ' + res.status + (res.status === 429 ? ' (rate limited)' : '');\n        if (a < tries) { continue; }\n        return { ok: false, error: lastErr, data: null };\n      }\n      if (!res.ok) { return { ok: false, error: 'HTTP ' + res.status, data: null }; }\n      const text = await res.text();\n      try { return { ok: true, error: null, data: JSON.parse(text) }; }\n      catch (e) { return { ok: false, error: 'malformed JSON response', data: null }; }\n    } catch (e) { lastErr = (e && e.message) ? e.message : String(e); }\n  }\n  return { ok: false, error: lastErr || 'request failed', data: null };\n}\nfunction cpeMatches(c) {\n  const out = [];\n  for (const cfg of (c.configurations || [])) {\n    for (const n of (cfg.nodes || [])) {\n      for (const m of (n.cpeMatch || [])) {\n        const p = String(m.criteria || '').split(':');\n        if (p.length > 5 && p[3] && p[4]) {\n          out.push({\n            vendor: String(p[3]).toLowerCase(),\n            product: String(p[4]).toLowerCase(),\n            exact: (p[5] && p[5] !== '*' && p[5] !== '-') ? p[5] : null,\n            vsi: m.versionStartIncluding || null,\n            vse: m.versionStartExcluding || null,\n            vei: m.versionEndIncluding || null,\n            vee: m.versionEndExcluding || null\n          });\n        }\n      }\n    }\n  }\n  return out.slice(0, 40);\n}\nconst end = new Date();\nconst start = new Date(end.getTime() - LOOKBACK_HOURS * 3600000);\nconst fmt = (d) => d.toISOString().slice(0, 19) + '.000';\nconst cves = [];\nconst byId = {};\nlet nvdOk = true; let nvdError = null; let pages = 0; let nvdTotal = null;\nfor (let page = 0; page < MAX_PAGES; page++) {\n  const url = 'https://services.nvd.nist.gov/rest/json/cves/2.0?lastModStartDate=' + fmt(start) + '&lastModEndDate=' + fmt(end) + '&resultsPerPage=' + PAGE_SIZE + '&startIndex=' + (page * PAGE_SIZE);\n  const r = await getJson(url, 3);\n  pages++;\n  if (!r.ok || !r.data) { nvdOk = cves.length > 0; nvdError = r.error; break; }\n  nvdTotal = r.data.totalResults === undefined ? nvdTotal : r.data.totalResults;\n  const vulns = Array.isArray(r.data.vulnerabilities) ? r.data.vulnerabilities : [];\n  for (const v of vulns) {\n    const c = (v && v.cve) || {};\n    if (!c.id || byId[c.id]) { continue; }\n    const m = c.metrics || {};\n    const arr = m.cvssMetricV31 || m.cvssMetricV40 || m.cvssMetricV30 || m.cvssMetricV2 || [];\n    const cd = (arr[0] && arr[0].cvssData) || {};\n    const desc = ((c.descriptions || []).find((d) => d.lang === 'en') || {}).value || '';\n    const item = {\n      cve_id: c.id,\n      description: desc.slice(0, 600),\n      cvss: cd.baseScore === undefined ? null : cd.baseScore,\n      cvss_severity: cd.baseSeverity || 'UNKNOWN',\n      cvss_vector: cd.vectorString || null,\n      published: c.published ? new Date(c.published).toISOString() : null,\n      last_modified: c.lastModified ? new Date(c.lastModified).toISOString() : null,\n      vuln_status: c.vulnStatus || null,\n      references: (c.references || []).map((x) => x && x.url).filter(Boolean).slice(0, 4),\n      matches: cpeMatches(c),\n      name_hints: [],\n      kev: false, kev_due: null, remediation: null, kev_added: null,\n      url: 'https://nvd.nist.gov/vuln/detail/' + c.id\n    };\n    byId[c.id] = item;\n    cves.push(item);\n  }\n  if (vulns.length < PAGE_SIZE) { break; }\n}\n// ---- CISA KEV ----\nlet kevOk = true; let kevError = null; let kevSize = 0; let kevRecentCount = 0;\nconst kr = await getJson('https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json', 3);\nif (kr.ok && kr.data) {\n  const list = kr.data.vulnerabilities || [];\n  kevSize = list.length;\n  const cutoff = Date.now() - KEV_RECENT_DAYS * 86400000;\n  for (const v of list) {\n    if (!v || !v.cveID) { continue; }\n    const existing = byId[v.cveID];\n    if (existing) {\n      existing.kev = true;\n      existing.kev_due = v.dueDate || null;\n      existing.remediation = v.requiredAction || null;\n      existing.kev_added = v.dateAdded || null;\n      existing.name_hints.push(String(v.vendorProject || '').toLowerCase(), String(v.product || '').toLowerCase());\n      continue;\n    }\n    // KEV entries added recently are candidates even if NVD did not modify them in the window\n    const t = v.dateAdded ? new Date(v.dateAdded + 'T00:00:00Z').getTime() : 0;\n    if (t < cutoff) { continue; }\n    kevRecentCount++;\n    const item = {\n      cve_id: v.cveID,\n      description: (v.shortDescription || '').slice(0, 600),\n      cvss: null,\n      cvss_severity: 'UNKNOWN',\n      cvss_vector: null,\n      published: v.dateAdded ? new Date(v.dateAdded + 'T00:00:00Z').toISOString() : null,\n      last_modified: v.dateAdded ? new Date(v.dateAdded + 'T00:00:00Z').toISOString() : null,\n      vuln_status: 'KEV',\n      references: ['https://www.cisa.gov/known-exploited-vulnerabilities-catalog'],\n      matches: [],\n      name_hints: [String(v.vendorProject || '').toLowerCase(), String(v.product || '').toLowerCase()],\n      kev: true, kev_due: v.dueDate || null, remediation: v.requiredAction || null, kev_added: v.dateAdded || null,\n      url: 'https://nvd.nist.gov/vuln/detail/' + v.cveID\n    };\n    byId[v.cveID] = item;\n    cves.push(item);\n  }\n} else { kevOk = false; kevError = kr.error; }\nreturn {\n  fetched_at: new Date().toISOString(),\n  window_hours: LOOKBACK_HOURS,\n  sources: { nvd: { ok: nvdOk, error: nvdError, pages: pages, total: nvdTotal }, cisa_kev: { ok: kevOk, error: kevError, size: kevSize, recent: kevRecentCount } },\n  degraded: [].concat(nvdOk ? [] : ['nvd'], kevOk ? [] : ['cisa_kev']),\n  count: cves.length,\n  cves: cves\n};"
+          },
+          "language": {
+            "id": "language",
+            "type": "dropdown",
+            "value": "javascript"
+          },
+          "sandboxId": {
+            "id": "sandboxId",
+            "type": "combobox",
+            "value": null
+          },
+          "secretScope": {
+            "id": "secretScope",
+            "type": "dropdown",
+            "value": null
+          },
+          "mountedSecrets": {
+            "id": "mountedSecrets",
+            "type": "dropdown",
+            "value": null
+          }
+        },
+        "outputs": {
+          "files": {
+            "type": "file[]",
+            "description": "Files the code wrote to /tmp/sim/outputs, ready to attach or upload downstream"
+          },
+          "result": {
+            "type": "json",
+            "description": "Structured result emitted by the executed code"
+          },
+          "stdout": {
+            "type": "string",
+            "description": "Console log output and debug messages from function execution"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 48,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {},
+        "locked": false
+      },
+      "7a8d7dc7-de69-4ada-b242-7aa099b5dff8": {
+        "id": "7a8d7dc7-de69-4ada-b242-7aa099b5dff8",
+        "type": "function",
+        "name": "matchStack",
+        "position": {
+          "x": -1388.276877761412,
+          "y": 1737.6524300441822
+        },
+        "subBlocks": {
+          "code": {
+            "id": "code",
+            "type": "code",
+            "value": "// BOT 3 — match fetched CVEs against the technology inventory.\n// Strategy, strongest first:\n//   HIGH   = CPE vendor+product both match the inventory CPE\n//   MEDIUM = product name matches and vendor matches (or inventory has no vendor)\n//   LOW    = package_name or bare product-name match only -> routed to a review list,\n//            never into the actionable alert section\n// Version applicability is a real range comparison: true / false / null(unknown).\n// ---- CONFIG ----\nconst EPSS_ENABLED = true;   // one extra batched call, max 100 ids\n// ----------------\nfunction cell(r) { return (r && r.data) ? r.data : r; }\nfunction norm(s) { return String(s === undefined || s === null ? '' : s).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim(); }\nfunction key(s) { return norm(s).replace(/ /g, '_'); }\nfunction parts(v) { return String(v || '').split(/[^0-9a-zA-Z]+/).filter(Boolean); }\nfunction cmpVer(a, b) {\n  const pa = parts(a); const pb = parts(b);\n  const n = Math.max(pa.length, pb.length);\n  for (let i = 0; i < n; i++) {\n    const xa = pa[i] === undefined ? '0' : pa[i];\n    const xb = pb[i] === undefined ? '0' : pb[i];\n    const na = parseInt(xa, 10); const nb = parseInt(xb, 10);\n    if (!isNaN(na) && !isNaN(nb)) { if (na !== nb) { return na < nb ? -1 : 1; } }\n    else if (xa !== xb) { return xa < xb ? -1 : 1; }\n  }\n  return 0;\n}\nfunction applies(ver, m) {\n  if (!ver) { return null; }\n  if (m.exact) { return cmpVer(ver, m.exact) === 0; }\n  let bounded = false; let ok = true;\n  if (m.vsi) { bounded = true; if (cmpVer(ver, m.vsi) < 0) { ok = false; } }\n  if (m.vse) { bounded = true; if (cmpVer(ver, m.vse) <= 0) { ok = false; } }\n  if (m.vei) { bounded = true; if (cmpVer(ver, m.vei) > 0) { ok = false; } }\n  if (m.vee) { bounded = true; if (cmpVer(ver, m.vee) >= 0) { ok = false; } }\n  if (!bounded) { return null; }\n  return ok;\n}\nfunction rangeText(m) {\n  if (m.exact) { return m.exact; }\n  const lo = m.vsi ? '>=' + m.vsi : (m.vse ? '>' + m.vse : '');\n  const hi = m.vei ? '<=' + m.vei : (m.vee ? '<' + m.vee : '');\n  const t = [lo, hi].filter(Boolean).join(' ');\n  return t || 'all versions';\n}\nconst feed = <fetchStackCves.result>;\nconst cves = (feed && feed.cves) || [];\nconst invRows = (<readInventory.rows> || []).map(cell).filter((e) => e && String(e.enabled).toLowerCase() === 'true');\nconst inv = invRows.map((e) => {\n  const cp = String(e.cpe || '').split(':');\n  return {\n    tech_id: e.tech_id || (e.vendor + ' ' + e.product),\n    category: e.category || '',\n    vendorN: norm(e.vendor), productN: norm(e.product),\n    cpeVendor: cp.length > 4 ? String(cp[3]).toLowerCase() : '',\n    cpeProduct: cp.length > 5 ? String(cp[4]).toLowerCase() : '',\n    pkgN: norm(e.package_name),\n    version: String(e.version || '').trim(),\n    criticality: String(e.criticality || 'medium').toLowerCase(),\n    label: [e.vendor, e.product].filter(Boolean).join(' ')\n  };\n});\nfunction score(entry, m) {\n  const mv = m.vendor; const mp = m.product;\n  if (entry.cpeVendor && entry.cpeProduct && mv === entry.cpeVendor && mp === entry.cpeProduct) { return 'high'; }\n  if (entry.productN && key(mp) === key(entry.productN)) {\n    if (!entry.vendorN || key(mv) === key(entry.vendorN)) { return 'high'; }\n    return 'medium';\n  }\n  if (entry.pkgN && key(mp) === key(entry.pkgN)) { return 'low'; }\n  return null;\n}\nfunction sevOf(cvss, kev) {\n  if (kev) { return 'CRITICAL'; }\n  if (cvss === null || cvss === undefined) { return 'LOW'; }\n  if (cvss >= 9) { return 'CRITICAL'; }\n  if (cvss >= 7) { return 'HIGH'; }\n  if (cvss >= 4) { return 'MEDIUM'; }\n  return 'LOW';\n}\nconst CRIT_W = { critical: 4, high: 3, medium: 2, low: 1 };\nconst SEV_W = { CRITICAL: 400, HIGH: 300, MEDIUM: 200, LOW: 100 };\nconst results = [];\nfor (const c of cves) {\n  let best = null;\n  for (const entry of inv) {\n    // CPE-based matching\n    for (const m of (c.matches || [])) {\n      const conf = score(entry, m);\n      if (!conf) { continue; }\n      const app = applies(entry.version, m);\n      const cand = { entry: entry, conf: conf, app: app, range: rangeText(m) };\n      if (!best || (conf === 'high' && best.conf !== 'high') || (app === true && best.app !== true)) { best = cand; }\n    }\n    // name-hint matching (KEV-only entries carry no CPE)\n    if (!best && (c.name_hints || []).length) {\n      const hints = c.name_hints.map(key);\n      const pk = key(entry.productN); const vk = key(entry.vendorN); const gk = key(entry.pkgN);\n      if (pk && hints.indexOf(pk) >= 0) {\n        best = { entry: entry, conf: vk && hints.indexOf(vk) >= 0 ? 'medium' : 'low', app: null, range: 'unspecified' };\n      } else if (gk && hints.indexOf(gk) >= 0) {\n        best = { entry: entry, conf: 'low', app: null, range: 'unspecified' };\n      }\n    }\n  }\n  if (!best) { continue; }\n  const severity = sevOf(c.cvss, c.kev);\n  results.push({\n    cve_id: c.cve_id,\n    matched_tech: best.entry.label + (best.entry.tech_id ? ' [' + best.entry.tech_id + ']' : ''),\n    tech_category: best.entry.category,\n    affected_versions: best.range,\n    our_version: best.entry.version || 'unknown',\n    applicable: best.app,\n    confidence: best.conf,\n    severity: severity,\n    cvss: c.cvss,\n    cvss_severity: c.cvss_severity,\n    kev: c.kev,\n    kev_due: c.kev_due,\n    kev_status: c.kev ? 'LISTED in CISA KEV' + (c.kev_added ? ' (added ' + c.kev_added + ')' : '') : 'not listed',\n    exploitation_status: c.kev ? 'actively exploited' : 'no confirmed exploitation',\n    remediation: c.remediation || (best.app === true ? 'Upgrade ' + best.entry.label + ' beyond the affected range (' + best.range + ')' : 'Review vendor advisory and confirm deployed version'),\n    description: c.description,\n    references: c.references,\n    url: c.url,\n    published: c.published,\n    last_modified: c.last_modified,\n    criticality: best.entry.criticality,\n    rank: SEV_W[severity] + (CRIT_W[best.entry.criticality] || 2) * 10 + (best.app === true ? 5 : 0) + (best.conf === 'high' ? 3 : (best.conf === 'medium' ? 1 : 0)),\n    epss: null\n  });\n}\nresults.sort((a, b) => b.rank - a.rank);\n// ---- EPSS for matched ids only (single batched call, bounded) ----\nlet epssOk = true; let epssError = null;\nif (EPSS_ENABLED && results.length) {\n  const ids = results.map((r) => r.cve_id).slice(0, 100);\n  try {\n    const res = await fetch('https://api.first.org/data/v1/epss?cve=' + ids.join(','), { headers: { 'User-Agent': 'sim-stack-cve' } });\n    if (res.ok) {\n      const txt = await res.text();\n      try {\n        const j = JSON.parse(txt);\n        const map = {};\n        for (const d of (j.data || [])) { const f = parseFloat(d.epss); if (!isNaN(f)) { map[d.cve] = f; } }\n        for (const r of results) { if (map[r.cve_id] !== undefined) { r.epss = map[r.cve_id]; } }\n      } catch (e) { epssOk = false; epssError = 'malformed JSON response'; }\n    } else { epssOk = false; epssError = 'HTTP ' + res.status; }\n  } catch (e) { epssOk = false; epssError = (e && e.message) ? e.message : String(e); }\n}\nconst ids = results.map((r) => r.cve_id);\nif (ids.length === 0) { ids.push('__none__'); }\nreturn {\n  scanned_at: new Date().toISOString(),\n  inventorySize: inv.length,\n  cvesScanned: cves.length,\n  count: results.length,\n  applicableCount: results.filter((r) => r.applicable === true).length,\n  notApplicableCount: results.filter((r) => r.applicable === false).length,\n  lowConfidenceCount: results.filter((r) => r.confidence === 'low').length,\n  feedSources: (feed && feed.sources) || null,\n  degraded: (feed && feed.degraded) || [],\n  epssOk: epssOk,\n  epssError: epssError,\n  ids: ids,\n  matches: results\n};"
+          },
+          "language": {
+            "id": "language",
+            "type": "dropdown",
+            "value": "javascript"
+          },
+          "sandboxId": {
+            "id": "sandboxId",
+            "type": "combobox",
+            "value": null
+          },
+          "secretScope": {
+            "id": "secretScope",
+            "type": "dropdown",
+            "value": null
+          },
+          "mountedSecrets": {
+            "id": "mountedSecrets",
+            "type": "dropdown",
+            "value": null
+          }
+        },
+        "outputs": {
+          "files": {
+            "type": "file[]",
+            "description": "Files the code wrote to /tmp/sim/outputs, ready to attach or upload downstream"
+          },
+          "result": {
+            "type": "json",
+            "description": "Structured result emitted by the executed code"
+          },
+          "stdout": {
+            "type": "string",
+            "description": "Console log output and debug messages from function execution"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 48,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {},
+        "locked": false
+      },
+      "e82d1f0d-fb9e-4fcd-9648-abb301bc54ff": {
+        "id": "e82d1f0d-fb9e-4fcd-9648-abb301bc54ff",
+        "type": "table_v2",
+        "name": "readStackSeen",
+        "position": {
+          "x": -958.2768777614119,
+          "y": 1725.6524300441822
+        },
+        "subBlocks": {
+          "data": {
+            "id": "data",
+            "type": "code",
+            "value": null
+          },
+          "rows": {
+            "id": "rows",
+            "type": "code",
+            "value": null
+          },
+          "limit": {
+            "id": "limit",
+            "type": "short-input",
+            "value": null
+          },
+          "order": {
+            "id": "order",
+            "type": "short-input",
+            "value": null
+          },
+          "rowId": {
+            "id": "rowId",
+            "type": "short-input",
+            "value": null
+          },
+          "cursor": {
+            "id": "cursor",
+            "type": "short-input",
+            "value": null
+          },
+          "filter": {
+            "id": "filter",
+            "type": "code",
+            "value": "{\"field\":\"cve_id\",\"op\":\"in\",\"value\":<matchStack.result.ids>}"
+          },
+          "eventType": {
+            "id": "eventType",
+            "type": "dropdown",
+            "value": null
+          },
+          "operation": {
+            "id": "operation",
+            "type": "dropdown",
+            "value": "query_rows"
+          },
+          "sortBuilder": {
+            "id": "sortBuilder",
+            "type": "sort-builder",
+            "value": null
+          },
+          "watchColumns": {
+            "id": "watchColumns",
+            "type": "dropdown",
+            "value": null
+          },
+          "filterBuilder": {
+            "id": "filterBuilder",
+            "type": "filter-builder",
+            "value": null
+          },
+          "manualTableId": {
+            "id": "manualTableId",
+            "type": "short-input",
+            "value": null
+          },
+          "outputColumns": {
+            "id": "outputColumns",
+            "type": "dropdown",
+            "value": null
+          },
+          "tableSelector": {
+            "id": "tableSelector",
+            "type": "table-selector",
+            "value": null
+          },
+          "includeHeaders": {
+            "id": "includeHeaders",
+            "type": "switch",
+            "value": null
+          },
+          "triggerInstructions": {
+            "id": "triggerInstructions",
+            "type": "text",
+            "value": null
+          },
+          "manualConflictColumn": {
+            "id": "manualConflictColumn",
+            "type": "short-input",
+            "value": null
+          },
+          "conflictColumnSelector": {
+            "id": "conflictColumnSelector",
+            "type": "column-selector",
+            "value": null
+          }
+        },
+        "outputs": {
+          "rows": {
+            "type": "array",
+            "description": "Query result rows"
+          },
+          "limit": {
+            "type": "number",
+            "description": "Limit used in the query"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Whether the query succeeded"
+          },
+          "rowCount": {
+            "type": "number",
+            "description": "Number of rows returned"
+          },
+          "nextCursor": {
+            "type": "string",
+            "description": "Cursor to fetch the next page, or null on the last page"
+          },
+          "totalCount": {
+            "type": "number",
+            "description": "Total rows matching the predicate (computed on the first page only)"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 48,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {
+          "canonicalModes": {
+            "tableId": "advanced",
+            "sortInput": "basic",
+            "filterInput": "advanced",
+            "conflictColumn": "basic"
+          }
+        },
+        "locked": false
+      },
+      "78dce855-6c75-4571-884e-5f3758ed520c": {
+        "id": "78dce855-6c75-4571-884e-5f3758ed520c",
+        "type": "function",
+        "name": "diffStack",
+        "position": {
+          "x": -528.2768777614119,
+          "y": 2037.6524300441822
+        },
+        "subBlocks": {
+          "code": {
+            "id": "code",
+            "type": "code",
+            "value": "// BOT 3 — dedup with change detection.\n// An already-recorded CVE re-alerts ONLY when its content hash changes, i.e. when\n// severity, CVSS, KEV/exploitation status, or the affected version range moves.\nfunction cell(r) { return (r && r.data) ? r.data : r; }\nfunction hash(s) { let h = 5381; for (let i = 0; i < s.length; i++) { h = ((h << 5) + h + s.charCodeAt(i)) >>> 0; } return h.toString(36); }\nconst m = <matchStack.result>;\nconst seenRows = (<readStackSeen.rows> || []).map(cell);\nconst seen = {};\nfor (const r of seenRows) { if (r && r.cve_id) { seen[String(r.cve_id).trim()] = r; } }\nconst now = new Date().toISOString();\nconst rows = []; const alerts = []; const review = []; const notApplicable = []; const suppressed = [];\nfor (const it of (m.matches || [])) {\n  const fp = hash([it.severity, String(it.cvss), it.kev ? '1' : '0', it.exploitation_status, it.affected_versions].join('|'));\n  const prev = seen[it.cve_id];\n  const isNew = !prev;\n  const changed = isNew || String(prev.last_hash || '') !== fp;\n  let bucket = null;\n  if (!changed) { bucket = 'suppressed'; }\n  else if (it.applicable === false) { bucket = 'not_applicable'; }\n  else if (it.confidence === 'low') { bucket = 'review'; }\n  else { bucket = 'alert'; }\n  const tagged = Object.assign({}, it, { is_new: isNew, change_reason: isNew ? 'new' : (changed ? 'severity/KEV/version changed' : 'unchanged') });\n  if (bucket === 'alert') { alerts.push(tagged); }\n  else if (bucket === 'review') { review.push(tagged); }\n  else if (bucket === 'not_applicable') { notApplicable.push(tagged); }\n  else { suppressed.push(it.cve_id); }\n  rows.push({\n    cve_id: it.cve_id,\n    matched_tech: it.matched_tech,\n    affected_versions: it.affected_versions,\n    our_version: it.our_version,\n    severity: it.severity,\n    cvss: (it.cvss === null || it.cvss === undefined) ? '' : String(it.cvss),\n    kev: it.kev ? 'true' : 'false',\n    exploitation_status: it.exploitation_status,\n    last_alerted: bucket === 'alert' ? now : ((prev && prev.last_alerted) ? prev.last_alerted : ''),\n    last_hash: fp\n  });\n}\nreturn {\n  checked_at: now,\n  inventorySize: m.inventorySize,\n  cvesScanned: m.cvesScanned,\n  matchCount: m.count,\n  rowCount: rows.length,\n  alertCount: alerts.length,\n  reviewCount: review.length,\n  notApplicableCount: notApplicable.length,\n  suppressedCount: suppressed.length,\n  degraded: m.degraded || [],\n  feedSources: m.feedSources,\n  rows: rows,\n  alerts: alerts.slice(0, 15),\n  review: review.slice(0, 8),\n  notApplicable: notApplicable.slice(0, 8)\n};"
+          },
+          "language": {
+            "id": "language",
+            "type": "dropdown",
+            "value": "javascript"
+          },
+          "sandboxId": {
+            "id": "sandboxId",
+            "type": "combobox",
+            "value": null
+          },
+          "secretScope": {
+            "id": "secretScope",
+            "type": "dropdown",
+            "value": null
+          },
+          "mountedSecrets": {
+            "id": "mountedSecrets",
+            "type": "dropdown",
+            "value": null
+          }
+        },
+        "outputs": {
+          "files": {
+            "type": "file[]",
+            "description": "Files the code wrote to /tmp/sim/outputs, ready to attach or upload downstream"
+          },
+          "result": {
+            "type": "json",
+            "description": "Structured result emitted by the executed code"
+          },
+          "stdout": {
+            "type": "string",
+            "description": "Console log output and debug messages from function execution"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 48,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {},
+        "locked": false
+      },
+      "dbfb609c-55ea-41b7-b770-e2589260c41f": {
+        "id": "dbfb609c-55ea-41b7-b770-e2589260c41f",
+        "type": "condition",
+        "name": "hasStackRows",
+        "position": {
+          "x": 201.72312223858808,
+          "y": 2037.6524300441822
+        },
+        "subBlocks": {
+          "conditions": {
+            "id": "conditions",
+            "type": "condition-input",
+            "value": "[{\"title\":\"If\",\"value\":\"<diffStack.result.rowCount> > 0\",\"id\":\"dbfb609c-55ea-41b7-b770-e2589260c41f-if\"},{\"title\":\"Else\",\"value\":\"\",\"id\":\"dbfb609c-55ea-41b7-b770-e2589260c41f-else\"}]"
+          }
+        },
+        "outputs": {
+          "selectedPath": {
+            "type": "json",
+            "description": "Selected execution path"
+          },
+          "selectedOption": {
+            "type": "string",
+            "description": "Selected condition option ID"
+          },
+          "conditionResult": {
+            "type": "boolean",
+            "description": "Condition result"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 48,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {},
+        "locked": false
+      },
+      "7a2b0202-3311-485f-9c2b-7f6b1a11846a": {
+        "id": "7a2b0202-3311-485f-9c2b-7f6b1a11846a",
+        "type": "loop",
+        "name": "stackLoop",
+        "position": {
+          "x": 931.7231222385881,
+          "y": 2026.6524300441822
+        },
+        "subBlocks": {
+          "loopType": {
+            "id": "loopType",
+            "type": "short-input",
+            "value": "forEach"
+          },
+          "collection": {
+            "id": "collection",
+            "type": "short-input",
+            "value": "<diffStack.result.rows>"
+          }
+        },
+        "outputs": {},
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 48,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {
+          "width": 510,
+          "height": 316,
+          "collection": "<diffStack.result.rows>",
+          "loopType": "forEach",
+          "whileCondition": "",
+          "doWhileCondition": ""
+        },
+        "locked": false,
+        "layout": {
+          "measuredWidth": 510,
+          "measuredHeight": 316
+        }
+      },
+      "upsertStackCve": {
+        "id": "upsertStackCve",
+        "type": "table_v2",
+        "name": "upsertStackCve",
+        "position": {
+          "x": 180,
+          "y": 100
+        },
+        "subBlocks": {
+          "data": {
+            "id": "data",
+            "type": "code",
+            "value": "<loop.currentItem>"
+          },
+          "rows": {
+            "id": "rows",
+            "type": "code",
+            "value": null
+          },
+          "limit": {
+            "id": "limit",
+            "type": "short-input",
+            "value": null
+          },
+          "order": {
+            "id": "order",
+            "type": "short-input",
+            "value": null
+          },
+          "rowId": {
+            "id": "rowId",
+            "type": "short-input",
+            "value": null
+          },
+          "cursor": {
+            "id": "cursor",
+            "type": "short-input",
+            "value": null
+          },
+          "filter": {
+            "id": "filter",
+            "type": "code",
+            "value": null
+          },
+          "eventType": {
+            "id": "eventType",
+            "type": "dropdown",
+            "value": null
+          },
+          "operation": {
+            "id": "operation",
+            "type": "dropdown",
+            "value": "upsert_row"
+          },
+          "sortBuilder": {
+            "id": "sortBuilder",
+            "type": "sort-builder",
+            "value": null
+          },
+          "watchColumns": {
+            "id": "watchColumns",
+            "type": "dropdown",
+            "value": null
+          },
+          "filterBuilder": {
+            "id": "filterBuilder",
+            "type": "filter-builder",
+            "value": null
+          },
+          "manualTableId": {
+            "id": "manualTableId",
+            "type": "short-input",
+            "value": null
+          },
+          "outputColumns": {
+            "id": "outputColumns",
+            "type": "dropdown",
+            "value": null
+          },
+          "tableSelector": {
+            "id": "tableSelector",
+            "type": "table-selector",
+            "value": null
+          },
+          "includeHeaders": {
+            "id": "includeHeaders",
+            "type": "switch",
+            "value": null
+          },
+          "triggerInstructions": {
+            "id": "triggerInstructions",
+            "type": "text",
+            "value": null
+          },
+          "manualConflictColumn": {
+            "id": "manualConflictColumn",
+            "type": "short-input",
+            "value": "cve_id"
+          },
+          "conflictColumnSelector": {
+            "id": "conflictColumnSelector",
+            "type": "column-selector",
+            "value": null
+          }
+        },
+        "outputs": {
+          "row": {
+            "type": "json",
+            "description": "Upserted row data"
+          },
+          "message": {
+            "type": "string",
+            "description": "Status message"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Whether row was upserted"
+          },
+          "operation": {
+            "type": "string",
+            "description": "Operation performed: insert or update"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 48,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {
+          "parentId": "7a2b0202-3311-485f-9c2b-7f6b1a11846a",
+          "extent": "parent",
+          "canonicalModes": {
+            "tableId": "advanced",
+            "sortInput": "basic",
+            "filterInput": "basic",
+            "conflictColumn": "advanced"
+          }
+        },
+        "locked": false
+      },
+      "d2d2396f-0e4d-439f-83f5-091b6aca34be": {
+        "id": "d2d2396f-0e4d-439f-83f5-091b6aca34be",
+        "type": "condition",
+        "name": "hasStackAlerts",
+        "position": {
+          "x": 1661.723122238588,
+          "y": 2027.6524300441822
+        },
+        "subBlocks": {
+          "conditions": {
+            "id": "conditions",
+            "type": "condition-input",
+            "value": "[{\"title\":\"If\",\"value\":\"(<diffStack.result.alertCount> + <diffStack.result.reviewCount>) > 0\",\"id\":\"d2d2396f-0e4d-439f-83f5-091b6aca34be-if\"},{\"title\":\"Else\",\"value\":\"\",\"id\":\"d2d2396f-0e4d-439f-83f5-091b6aca34be-else\"}]"
+          }
+        },
+        "outputs": {
+          "selectedPath": {
+            "type": "json",
+            "description": "Selected execution path"
+          },
+          "selectedOption": {
+            "type": "string",
+            "description": "Selected condition option ID"
+          },
+          "conditionResult": {
+            "type": "boolean",
+            "description": "Condition result"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 48,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {},
+        "locked": false
+      },
+      "5d8b4a57-f541-479a-b5cb-cd84d9125427": {
+        "id": "5d8b4a57-f541-479a-b5cb-cd84d9125427",
+        "type": "agent",
+        "name": "stackDigest",
+        "position": {
+          "x": 2091.723122238588,
+          "y": 2017.6524300441822
+        },
+        "subBlocks": {
+          "files": {
+            "id": "files",
+            "type": "short-input",
+            "value": null
+          },
+          "model": {
+            "id": "model",
+            "type": "combobox",
+            "value": "claude-sonnet-4-6"
+          },
+          "tools": {
+            "id": "tools",
+            "type": "tool-input",
+            "value": []
+          },
+          "apiKey": {
+            "id": "apiKey",
+            "type": "short-input",
+            "value": null
+          },
+          "skills": {
+            "id": "skills",
+            "type": "skill-input",
+            "value": null
+          },
+          "messages": {
+            "id": "messages",
+            "type": "messages-input",
+            "value": [
+              {
+                "role": "system",
+                "content": "You write Telegram alerts for a security team about CVEs affecting THIS organization's own technology stack. Every item you are given has already been matched against the company inventory — never re-judge relevance, never recompute severity, and never invent scores, versions, or facts absent from the data.\n\nUse ONLY Telegram-supported HTML: <b>, <i>, <code>, <a href=\"...\">. No markdown, no <br>, no other tags. Stay under 3500 characters.\n\nStructure:\n1. Header: <b>🎯 Stack CVE Alert</b> with the count of actionable items and the UTC timestamp.\n2. <b>🔴 CRITICAL / 🟠 HIGH — act now</b>: one block per item. Line 1: severity, CVE id linked to its url, and the matched technology. Line 2: CVSS, EPSS as a percentage when present, exploitation status, and KEV status. Line 3: affected versions vs our deployed version — state plainly whether our version is confirmed in range or unconfirmed. Line 4: recommended remediation. Add the first reference link when it adds value.\n3. <b>🟡 MEDIUM / ⚪ LOW</b>: condensed, one line each.\n4. <b>🔍 Needs review (low-confidence match)</b>: only if review items exist. One line each, and say explicitly these matched on name alone and need a human to confirm they are really our component.\n5. Footer: counts of CVEs scanned, matches found, items suppressed as unchanged, and any not-applicable items. If a data source was degraded, say which one and warn that coverage is partial this run.\n\nMark items whose change_reason is not 'new' as <i>updated</i> and say what changed. Be terse and factual — this is an operations alert, not prose."
+              },
+              {
+                "role": "user",
+                "content": "Actionable matches (JSON):\n<diffStack.result.alerts>\n\nLow-confidence matches needing review (JSON):\n<diffStack.result.review>\n\nRun stats — CVEs scanned: <diffStack.result.cvesScanned>, inventory entries: <diffStack.result.inventorySize>, total matches: <diffStack.result.matchCount>, actionable: <diffStack.result.alertCount>, review: <diffStack.result.reviewCount>, not applicable to our versions: <diffStack.result.notApplicableCount>, suppressed as unchanged: <diffStack.result.suppressedCount>, degraded sources: <diffStack.result.degraded>, checked at (UTC): <diffStack.result.checked_at>"
+              }
+            ]
+          },
+          "maxTokens": {
+            "id": "maxTokens",
+            "type": "short-input",
+            "value": null
+          },
+          "verbosity": {
+            "id": "verbosity",
+            "type": "combobox",
+            "value": null
+          },
+          "memoryType": {
+            "id": "memoryType",
+            "type": "dropdown",
+            "value": "none"
+          },
+          "temperature": {
+            "id": "temperature",
+            "type": "slider",
+            "value": 0.2
+          },
+          "azureEndpoint": {
+            "id": "azureEndpoint",
+            "type": "short-input",
+            "value": null
+          },
+          "bedrockRegion": {
+            "id": "bedrockRegion",
+            "type": "short-input",
+            "value": null
+          },
+          "promptCaching": {
+            "id": "promptCaching",
+            "type": "switch",
+            "value": null
+          },
+          "thinkingLevel": {
+            "id": "thinkingLevel",
+            "type": "combobox",
+            "value": null
+          },
+          "vertexProject": {
+            "id": "vertexProject",
+            "type": "short-input",
+            "value": null
+          },
+          "conversationId": {
+            "id": "conversationId",
+            "type": "short-input",
+            "value": null
+          },
+          "fallbackModels": {
+            "id": "fallbackModels",
+            "type": "model-fallback-list",
+            "value": null
+          },
+          "responseFormat": {
+            "id": "responseFormat",
+            "type": "code",
+            "value": null
+          },
+          "vertexLocation": {
+            "id": "vertexLocation",
+            "type": "short-input",
+            "value": null
+          },
+          "attachmentFiles": {
+            "id": "attachmentFiles",
+            "type": "file-upload",
+            "value": null
+          },
+          "azureApiVersion": {
+            "id": "azureApiVersion",
+            "type": "short-input",
+            "value": null
+          },
+          "reasoningEffort": {
+            "id": "reasoningEffort",
+            "type": "combobox",
+            "value": null
+          },
+          "bedrockSecretKey": {
+            "id": "bedrockSecretKey",
+            "type": "short-input",
+            "value": null
+          },
+          "vertexCredential": {
+            "id": "vertexCredential",
+            "type": "oauth-input",
+            "value": null
+          },
+          "slidingWindowSize": {
+            "id": "slidingWindowSize",
+            "type": "short-input",
+            "value": null
+          },
+          "bedrockAccessKeyId": {
+            "id": "bedrockAccessKeyId",
+            "type": "short-input",
+            "value": null
+          },
+          "slidingWindowTokens": {
+            "id": "slidingWindowTokens",
+            "type": "short-input",
+            "value": null
+          },
+          "previousInteractionId": {
+            "id": "previousInteractionId",
+            "type": "short-input",
+            "value": null
+          },
+          "vertexManualCredential": {
+            "id": "vertexManualCredential",
+            "type": "short-input",
+            "value": null
+          }
+        },
+        "outputs": {
+          "cost": {
+            "type": "json",
+            "description": "Cost of the API call"
+          },
+          "model": {
+            "type": "string",
+            "description": "Model used for generation"
+          },
+          "tokens": {
+            "type": "json",
+            "description": "Token usage statistics"
+          },
+          "content": {
+            "type": "string",
+            "description": "Generated response content"
+          },
+          "toolCalls": {
+            "type": "json",
+            "description": "Tool calls made"
+          },
+          "providerTiming": {
+            "type": "json",
+            "description": "Provider timing information"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 48,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {
+          "canonicalModes": {
+            "files": "basic",
+            "vertexCredential": "basic"
+          }
+        },
+        "locked": false
+      },
+      "0adddc07-a7dc-4a5e-be8a-5d079c2661ac": {
+        "id": "0adddc07-a7dc-4a5e-be8a-5d079c2661ac",
+        "type": "telegram",
+        "name": "sendStackAlert",
+        "position": {
+          "x": 2521.723122238588,
+          "y": 2017.6524300441822
+        },
+        "subBlocks": {
+          "text": {
+            "id": "text",
+            "type": "long-input",
+            "value": "<stackDigest.content>"
+          },
+          "audio": {
+            "id": "audio",
+            "type": "short-input",
+            "value": null
+          },
+          "files": {
+            "id": "files",
+            "type": "short-input",
+            "value": null
+          },
+          "isBig": {
+            "id": "isBig",
+            "type": "dropdown",
+            "value": null
+          },
+          "photo": {
+            "id": "photo",
+            "type": "short-input",
+            "value": null
+          },
+          "vcard": {
+            "id": "vcard",
+            "type": "long-input",
+            "value": null
+          },
+          "video": {
+            "id": "video",
+            "type": "short-input",
+            "value": null
+          },
+          "action": {
+            "id": "action",
+            "type": "dropdown",
+            "value": null
+          },
+          "chatId": {
+            "id": "chatId",
+            "type": "short-input",
+            "value": "{{TELEGRAM_CHAT_ID}}"
+          },
+          "userId": {
+            "id": "userId",
+            "type": "short-input",
+            "value": null
+          },
+          "caption": {
+            "id": "caption",
+            "type": "long-input",
+            "value": null
+          },
+          "audioRef": {
+            "id": "audioRef",
+            "type": "short-input",
+            "value": null
+          },
+          "botToken": {
+            "id": "botToken",
+            "type": "short-input",
+            "value": "{{TELEGRAM_BOT_TOKEN}}"
+          },
+          "lastName": {
+            "id": "lastName",
+            "type": "short-input",
+            "value": null
+          },
+          "latitude": {
+            "id": "latitude",
+            "type": "short-input",
+            "value": null
+          },
+          "photoRef": {
+            "id": "photoRef",
+            "type": "short-input",
+            "value": null
+          },
+          "question": {
+            "id": "question",
+            "type": "long-input",
+            "value": null
+          },
+          "videoRef": {
+            "id": "videoRef",
+            "type": "short-input",
+            "value": null
+          },
+          "animation": {
+            "id": "animation",
+            "type": "short-input",
+            "value": null
+          },
+          "audioFile": {
+            "id": "audioFile",
+            "type": "file-upload",
+            "value": null
+          },
+          "firstName": {
+            "id": "firstName",
+            "type": "short-input",
+            "value": null
+          },
+          "longitude": {
+            "id": "longitude",
+            "type": "short-input",
+            "value": null
+          },
+          "messageId": {
+            "id": "messageId",
+            "type": "short-input",
+            "value": null
+          },
+          "operation": {
+            "id": "operation",
+            "type": "dropdown",
+            "value": "telegram_message"
+          },
+          "photoFile": {
+            "id": "photoFile",
+            "type": "file-upload",
+            "value": null
+          },
+          "videoFile": {
+            "id": "videoFile",
+            "type": "file-upload",
+            "value": null
+          },
+          "fromChatId": {
+            "id": "fromChatId",
+            "type": "short-input",
+            "value": null
+          },
+          "isAnonymous": {
+            "id": "isAnonymous",
+            "type": "dropdown",
+            "value": null
+          },
+          "phoneNumber": {
+            "id": "phoneNumber",
+            "type": "short-input",
+            "value": null
+          },
+          "pollOptions": {
+            "id": "pollOptions",
+            "type": "long-input",
+            "value": null
+          },
+          "animationRef": {
+            "id": "animationRef",
+            "type": "short-input",
+            "value": null
+          },
+          "animationFile": {
+            "id": "animationFile",
+            "type": "file-upload",
+            "value": null
+          },
+          "reactionEmoji": {
+            "id": "reactionEmoji",
+            "type": "short-input",
+            "value": null
+          },
+          "attachmentFiles": {
+            "id": "attachmentFiles",
+            "type": "file-upload",
+            "value": null
+          },
+          "webhookUrlDisplay": {
+            "id": "webhookUrlDisplay",
+            "type": "short-input",
+            "value": null
+          },
+          "disableNotification": {
+            "id": "disableNotification",
+            "type": "dropdown",
+            "value": null
+          },
+          "triggerInstructions": {
+            "id": "triggerInstructions",
+            "type": "text",
+            "value": null
+          },
+          "allowsMultipleAnswers": {
+            "id": "allowsMultipleAnswers",
+            "type": "dropdown",
+            "value": null
+          },
+          "samplePayload_telegram_webhook": {
+            "id": "samplePayload_telegram_webhook",
+            "type": "code",
+            "value": null
+          }
+        },
+        "outputs": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "chat": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "description": "Bot user ID"
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "chat type private or channel"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "Bot username"
+                  },
+                  "first_name": {
+                    "type": "string",
+                    "description": "Bot first name"
+                  }
+                },
+                "description": "Information about the bot that sent the message"
+              },
+              "date": {
+                "type": "number",
+                "description": "Unix timestamp when message was sent"
+              },
+              "from": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "description": "Chat ID"
+                  },
+                  "is_bot": {
+                    "type": "boolean",
+                    "description": "Whether the chat is a bot or not"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "Chat title (for groups and channels)"
+                  },
+                  "first_name": {
+                    "type": "string",
+                    "description": "Chat username (if available)"
+                  }
+                },
+                "description": "Chat information"
+              },
+              "text": {
+                "type": "string",
+                "description": "Text content of the sent message"
+              },
+              "message_id": {
+                "type": "number",
+                "description": "Unique Telegram message identifier"
+              }
+            },
+            "description": "Telegram message data"
+          },
+          "message": {
+            "type": "string",
+            "description": "Success or error message"
+          }
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 48,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {
+          "canonicalModes": {
+            "files": "basic",
+            "audioSource": "basic",
+            "photoSource": "basic",
+            "videoSource": "basic",
+            "animationSource": "basic"
+          }
+        },
+        "locked": false
+      },
+      "5bd5fba9-f96f-4380-b2e1-ee4191f25530": {
+        "id": "5bd5fba9-f96f-4380-b2e1-ee4191f25530",
+        "type": "note",
+        "name": "note3",
+        "position": {
+          "x": -2678.276877761412,
+          "y": 2542.6524300441824
+        },
+        "subBlocks": {
+          "color": {
+            "id": "color",
+            "type": "short-input",
+            "value": "carbon"
+          },
+          "content": {
+            "id": "content",
+            "type": "long-input",
+            "value": "BOT 3 — Technology Stack CVE Monitoring Bot (daily 08:00 Nepal = cron \"15 2 * * *\" UTC)\n\nIndependent branch. Shares NOTHING with Bot 1 (hourly threat intel) or Bot 2 (daily certs) except the Telegram env vars.\n\nPIPELINE\nstackSchedule -> readInventory -> fetchStackCves -> matchStack -> readStackSeen -> diffStack -> hasStackRows -> stackLoop(upsertStackCve) -> hasStackAlerts -> stackDigest -> sendStackAlert\n\nTABLES\n- tech_inventory tbl_cf9e69183bc1443aa9ae2f8b7d1ea482 — the inventory. Only rows with enabled = \"true\" are processed. Fill in cpe (cpe:2.3:a:vendor:product:...) for the most accurate matching; vendor+product alone still works, package_name is the weakest signal.\n- stack_cve_seen tbl_bd865fd064a74566af27d075b310ddc4 — dedup ledger, unique on cve_id, written with upsert_row (NEVER batch_insert_rows: a batch insert cannot survive a re-run and will throw unique-constraint errors).\n\nMATCHING STRATEGY (matchStack)\n- HIGH confidence: CPE vendor AND product both match the inventory CPE, or product name matches with a matching/absent vendor.\n- MEDIUM: product name matches but the vendor differs.\n- LOW: package_name or bare name match only -> routed to a separate \"needs review\" section, never presented as actionable.\n- Version applicability is a real range comparison (versionStartIncluding/Excluding, versionEndIncluding/Excluding, exact CPE version) against our deployed version: true = confirmed in range, false = our version is outside the affected range (recorded, NOT alerted), null = unknown (alerted, flagged unconfirmed).\n- KEV entries with no CPE data are matched on vendor/product name hints only.\n\nSEVERITY: KEV or CVSS>=9 => CRITICAL; >=7 HIGH; >=4 MEDIUM; else LOW. Ordering additionally weights the inventory criticality column and confirmed applicability.\n\nDEDUP: diffStack hashes severity|cvss|kev|exploitation_status|affected_versions into last_hash. Unchanged = suppressed silently. Changed = re-alerted and tagged with the reason. Telegram is behind hasStackAlerts, so a run with nothing new or changed sends nothing.\n\nCONFIG CONSTANTS (top of each function block)\n- fetchStackCves: LOOKBACK_HOURS 26 (24h + overlap), PAGE_SIZE 200, MAX_PAGES 3 (hard cap on NVD calls), KEV_RECENT_DAYS 7.\n- matchStack: EPSS_ENABLED (one batched call, max 100 ids).\n\nSANDBOX CONSTRAINTS — DO NOT REINTRODUCE\n- No setTimeout and no AbortController: both throw ReferenceError. Client-side timeouts and backoff sleeps are impossible.\n- Many sequential outbound calls in one block get the block cancelled with HTTP 499. Keep calls capped (MAX_PAGES) and batch concurrently where more are needed.\n- Table query_rows returns rows as { id, data: { ...columns } } — always read columns through .data (the cell() helper) or the dedup silently matches nothing.\n\nAll timestamps stored and reported are UTC ISO-8601."
+          }
+        },
+        "outputs": {},
+        "enabled": true,
+        "horizontalHandles": true,
+        "height": 70,
+        "advancedMode": false,
+        "errorEnabled": false,
+        "triggerMode": false,
+        "data": {},
+        "locked": false
+      }
+    },
+    "edges": [
+      {
+        "id": "ebcbd804-e876-422b-be1d-5143b82b3644",
+        "source": "12d9cdcf-f958-47c4-9cc3-cb0d6be82b9b",
+        "target": "2340e2f0-7782-4f7f-aac6-911760087d39",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "a061134b-77fe-414e-914b-a72d4c569263",
+        "source": "12d9cdcf-f958-47c4-9cc3-cb0d6be82b9b",
+        "target": "d016e131-c25a-4a86-91d2-faabae25ca4f",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "84b82486-23c0-4332-929e-c22f82a5c242",
+        "source": "12d9cdcf-f958-47c4-9cc3-cb0d6be82b9b",
+        "target": "6739d6f9-9988-4f02-8d81-38720324a7fa",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "c7370acf-f624-4eb9-ba6a-c259cab8eead",
+        "source": "2340e2f0-7782-4f7f-aac6-911760087d39",
+        "target": "f6f58bc9-f82d-47a4-af22-8c4e3d1b4fe8",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "e73ad40d-53ff-4811-babc-f9f495ffb40d",
+        "source": "d016e131-c25a-4a86-91d2-faabae25ca4f",
+        "target": "f6f58bc9-f82d-47a4-af22-8c4e3d1b4fe8",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "83c06b3e-946b-4129-9eae-f1fd8fa26f15",
+        "source": "6739d6f9-9988-4f02-8d81-38720324a7fa",
+        "target": "f6f58bc9-f82d-47a4-af22-8c4e3d1b4fe8",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "ff469e98-45c7-4c9e-82ab-76953757b5a2",
+        "source": "96079f92-3062-4d75-ad9b-6f307c302118",
+        "target": "22c329bf-62c5-4586-92be-e0088dc9db96",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "6c4488e8-f0d6-4a9a-850b-fe4e083552bf",
+        "source": "22c329bf-62c5-4586-92be-e0088dc9db96",
+        "target": "1d882d2c-72b4-4882-8d9d-35c6cd0762b2",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "4adb493e-81fc-49b9-be1c-63731f9d1faa",
+        "source": "68241f0e-369e-493a-860e-82d4ea08c6c0",
+        "target": "9440e358-1e56-4298-96de-b4bed046172d",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "a575aaed-0b21-446f-baa4-e3091be428a3",
+        "source": "f6f58bc9-f82d-47a4-af22-8c4e3d1b4fe8",
+        "target": "96079f92-3062-4d75-ad9b-6f307c302118",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "d2bcee0b-c878-4caa-8c3b-4294f045112d",
+        "source": "1d882d2c-72b4-4882-8d9d-35c6cd0762b2",
+        "target": "7b073d4d-a782-48f5-9488-e2bf97451b29",
+        "sourceHandle": "condition-1d882d2c-72b4-4882-8d9d-35c6cd0762b2-if",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "59ead97f-dc78-4075-90da-1fccd3bb0d6b",
+        "source": "d2b6b219-5d6e-4087-9cbe-18d08f398c99",
+        "target": "68241f0e-369e-493a-860e-82d4ea08c6c0",
+        "sourceHandle": "condition-d2b6b219-5d6e-4087-9cbe-18d08f398c99-if",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "6102a17a-f569-4e63-ba20-c40948d681bd",
+        "source": "7b073d4d-a782-48f5-9488-e2bf97451b29",
+        "target": "d2b6b219-5d6e-4087-9cbe-18d08f398c99",
+        "sourceHandle": "loop-end-source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "c96857f1-cd6c-4194-9a74-e5f7ed5d6bbd",
+        "source": "7b073d4d-a782-48f5-9488-e2bf97451b29",
+        "target": "upsertSeen",
+        "sourceHandle": "loop-start-source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "e4d0ba98-214f-43c8-9c80-570a26dd7bb8",
+        "source": "45a09244-442d-43da-ae5d-c70080264342",
+        "target": "cda932b8-eec9-45b5-b61c-6bbf1e80bbc2",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "73615e34-b685-4e71-9413-52711775a533",
+        "source": "cda932b8-eec9-45b5-b61c-6bbf1e80bbc2",
+        "target": "7880c9a3-e16e-4e48-9d47-350ea9dfd1dc",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "87f61ef0-16e6-42a8-bcaa-ad06331065a8",
+        "source": "7880c9a3-e16e-4e48-9d47-350ea9dfd1dc",
+        "target": "2cc284fd-90b1-4ddf-989e-04a0bf5b2487",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "5e359cd6-ff20-4cc8-b162-3a57276bfbf5",
+        "source": "2cc284fd-90b1-4ddf-989e-04a0bf5b2487",
+        "target": "6a63b768-633d-41b9-97e2-9cd35422105b",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "08881026-492b-44ee-b402-7790656d9749",
+        "source": "6a63b768-633d-41b9-97e2-9cd35422105b",
+        "target": "aa5fed42-ba47-48a0-a092-c8d525f839a1",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "a08a560d-1d07-49d8-b883-c2f4d2f95175",
+        "source": "aa5fed42-ba47-48a0-a092-c8d525f839a1",
+        "target": "3b48d124-218a-49c1-9448-2c1e09d5963c",
+        "sourceHandle": "loop-end-source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "aefd6555-5878-4148-9b54-50be3599f9d7",
+        "source": "aa5fed42-ba47-48a0-a092-c8d525f839a1",
+        "target": "upsert-cert",
+        "sourceHandle": "loop-start-source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "624c7305-3baf-472d-af46-9a9b833b990f",
+        "source": "3b48d124-218a-49c1-9448-2c1e09d5963c",
+        "target": "9801d7ef-75b3-4cb1-a001-1ce2381ac326",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "afb1d6b8-7d40-46ff-a937-80ddd4247625",
+        "source": "efd1a828-0d09-49f9-adcb-2cabb9cce362",
+        "target": "f53e2906-10bb-48b5-9b7b-c1ed10cb204e",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "03f23feb-002c-40ec-bcb5-3fcc068d89bf",
+        "source": "f53e2906-10bb-48b5-9b7b-c1ed10cb204e",
+        "target": "47fc83fd-621b-4af8-b476-d9d9c3429c51",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "119b7c22-1988-4c3a-a6be-72b0d669dd39",
+        "source": "47fc83fd-621b-4af8-b476-d9d9c3429c51",
+        "target": "7a8d7dc7-de69-4ada-b242-7aa099b5dff8",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "f53d0652-6ab9-4b4e-bae0-e7e61e938c65",
+        "source": "7a8d7dc7-de69-4ada-b242-7aa099b5dff8",
+        "target": "e82d1f0d-fb9e-4fcd-9648-abb301bc54ff",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "43edc80e-b210-4f14-a200-b718cdc16039",
+        "source": "e82d1f0d-fb9e-4fcd-9648-abb301bc54ff",
+        "target": "78dce855-6c75-4571-884e-5f3758ed520c",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "49356584-a441-4573-9133-8a73c7d130a1",
+        "source": "78dce855-6c75-4571-884e-5f3758ed520c",
+        "target": "dbfb609c-55ea-41b7-b770-e2589260c41f",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "87804102-2255-4fed-8fff-919e4fff317c",
+        "source": "dbfb609c-55ea-41b7-b770-e2589260c41f",
+        "target": "7a2b0202-3311-485f-9c2b-7f6b1a11846a",
+        "sourceHandle": "condition-dbfb609c-55ea-41b7-b770-e2589260c41f-if",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "0116a7d0-388e-41a7-99e1-98a7ca2c4912",
+        "source": "7a2b0202-3311-485f-9c2b-7f6b1a11846a",
+        "target": "d2d2396f-0e4d-439f-83f5-091b6aca34be",
+        "sourceHandle": "loop-end-source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "524b0b2c-8f27-4735-9801-1dafb1e1bfc5",
+        "source": "7a2b0202-3311-485f-9c2b-7f6b1a11846a",
+        "target": "upsertStackCve",
+        "sourceHandle": "loop-start-source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "8f4df154-ef34-4323-b2b3-0e3c9eba8782",
+        "source": "d2d2396f-0e4d-439f-83f5-091b6aca34be",
+        "target": "5d8b4a57-f541-479a-b5cb-cd84d9125427",
+        "sourceHandle": "condition-d2d2396f-0e4d-439f-83f5-091b6aca34be-if",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "1845b180-bc4f-47ad-b1c4-1896dfece5d6",
+        "source": "5d8b4a57-f541-479a-b5cb-cd84d9125427",
+        "target": "0adddc07-a7dc-4a5e-be8a-5d079c2661ac",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      }
+    ],
+    "loops": {
+      "7b073d4d-a782-48f5-9488-e2bf97451b29": {
+        "id": "7b073d4d-a782-48f5-9488-e2bf97451b29",
+        "nodes": [
+          "upsertSeen"
+        ],
+        "iterations": 5,
+        "loopType": "forEach",
+        "enabled": true,
+        "forEachItems": "<filterNew.result.rows>",
+        "whileCondition": "",
+        "doWhileCondition": ""
+      },
+      "aa5fed42-ba47-48a0-a092-c8d525f839a1": {
+        "id": "aa5fed42-ba47-48a0-a092-c8d525f839a1",
+        "nodes": [
+          "upsert-cert"
+        ],
+        "iterations": 5,
+        "loopType": "forEach",
+        "enabled": true,
+        "forEachItems": "<classifyCerts.result.rows>",
+        "whileCondition": "",
+        "doWhileCondition": ""
+      },
+      "7a2b0202-3311-485f-9c2b-7f6b1a11846a": {
+        "id": "7a2b0202-3311-485f-9c2b-7f6b1a11846a",
+        "nodes": [
+          "upsertStackCve"
+        ],
+        "iterations": 5,
+        "loopType": "forEach",
+        "enabled": true,
+        "forEachItems": "<diffStack.result.rows>",
+        "whileCondition": "",
+        "doWhileCondition": ""
+      }
+    },
+    "parallels": {},
+    "metadata": {
+      "name": "Threat Intel Telegram Alerts",
+      "exportedAt": "2026-09-21T09:51:38.842Z"
+    },
+    "variables": {}
+  }
+}
