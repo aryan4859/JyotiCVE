@@ -2,21 +2,17 @@ services:
   - type: web
     name: jyoticve
     runtime: python
-    plan: 0.5c-512mb
+    plan: free
     numInstances: 1
     buildCommand: pip install '.[hosted]'
     startCommand: gunicorn --config deploy/gunicorn.conf.py 'jyoticve.hosted:create_app()'
     healthCheckPath: /healthz
     maxShutdownDelaySeconds: 60
-    disk:
-      name: jyoticve-data
-      mountPath: /var/data
-      sizeGB: 1
     envVars:
       - key: PYTHONUNBUFFERED
         value: '1'
-      - key: JYOTICVE_DATA_DIR
-        value: /var/data/jyoticve
+      - key: DATABASE_URL
+        sync: false
       - key: JYOTICVE_ADMIN_USER
         value: admin
       - key: JYOTICVE_ADMIN_PASSWORD

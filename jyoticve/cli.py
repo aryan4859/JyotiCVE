@@ -15,10 +15,15 @@ from .bots import BOTS
 from .certificates import domains
 from .core import HTTP, LOG, State, deliver, load_config, stamp
 from .matching import inventory
+from .storage import is_postgres, database_lock
 
 
 @contextmanager
 def lock(path):
+    if is_postgres(path):
+        with database_lock(path):
+            yield
+        return
     Path(path).parent.mkdir(parents=True, exist_ok=True)
     with open(path, 'a') as handle:
         try:
@@ -35,13 +40,28 @@ def run(bot, config, dry_run=False):
     with lock(config['state_file'] + '.' + bot + '.lock'):
         state = State(':memory:' if dry_run else config['state_file'])
         if dry_run:
-            if Path(config['state_file']).exists():
+            if is_postgres(config['state_file']):
+                source = State(config['state_file'])
+                try:
+                    # An isolated SQLite snapshot keeps previews strictly read-only
+                    # against the live PostgreSQL event history and outbox.
+                    with source.db.connection.transaction():
+                        source.db.execute('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY')
+                        for table in ('kv', 'events', 'deliveries', 'runs'):
+                            cursor = source.db.execute('SELECT * FROM ' + table)
+                            columns = ','.join(c[0] for c in cursor.description)
+                            placeholders = ','.join('?' for _ in cursor.description)
+                            state.db.executemany(f'INSERT INTO {table} ({columns}) VALUES ({placeholders})', cursor.fetchall())
+                    state.db.commit()
+                finally:
+                    source.close()
+            elif Path(config['state_file']).exists():
                 source = sqlite3.connect(f"file:{config['state_file']}?mode=ro", uri=True)
                 source.backup(state.db)
                 source.close()
             config = dict(config, notifications=[{'id': 'preview', 'type': 'console'}])
         http = HTTP(config.get('http_timeout_seconds', 30))
-        record = state.db.execute('INSERT INTO runs(bot,started,status) VALUES(?,?,?)', (bot, stamp(), 'running')).lastrowid
+        record = state.db.execute('INSERT INTO runs(bot,started,status) VALUES(?,?,?) RETURNING id', (bot, stamp(), 'running')).fetchone()[0]
         state.db.commit()
         LOG.info('Execution started bot=%s dry_run=%s', bot, dry_run)
         errors = []

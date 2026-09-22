@@ -1,6 +1,6 @@
 # JyotiCVE — standalone security monitoring
 
-Three independent scheduled Python bots share durable SQLite history and a retryable notification queue. Run the tool on a Linux host or VM; GitHub Actions is **not** the scheduler. Existing Actions workflows are retained for manual legacy use, with their automatic schedules disabled.
+Three independent scheduled Python bots share durable PostgreSQL or SQLite history and a retryable notification queue. Run the tool on a Linux host or VM; GitHub Actions is **not** the scheduler. Existing Actions workflows are retained for manual legacy use, with their automatic schedules disabled.
 
 | Bot | Default schedule | Work |
 | --- | --- | --- |
@@ -8,9 +8,9 @@ Three independent scheduled Python bots share durable SQLite history and a retry
 | `certificates` | Every 24 hours | HTTPS certificate validation, threshold alerts, recovery alerts, daily UTC summary |
 | `stack` | Every 6 hours | NVD/CISA intelligence matched to the organization's explicit product/version inventory |
 
-For cloud hosting, use the included **[Render deployment guide](docs/hosting.md)** and `render.yaml`. It configures an authenticated dashboard, automatic monitoring, and persistent storage on a paid service. The local `web` command remains loopback-only.
+For cloud hosting, use the included **[Render deployment guide](docs/hosting.md)** and `render.yaml`. Set `DATABASE_URL` to store history, settings, and assets in PostgreSQL without a Render disk. The Blueprint uses free compute, which sleeps when idle; monitoring runs only while the service is awake. The local `web` command remains loopback-only.
 
-See [`.env.example`](.env.example) for required hosting settings and optional API key/webhook placeholders. For local use, copy it to `.env`, fill in the values, then run `set -a; source .env; set +a` before starting the app. The app does not automatically load `.env`; on Render, configure the values in the service's Environment settings. PostgreSQL is not yet supported.
+See [`.env.example`](.env.example) for required hosting settings and optional API key/webhook placeholders. Copy it to `.env` and fill in the values for local use; the app loads it automatically from the working directory without overriding existing environment values. On Render, set the values in the service's Environment settings. Keep `.env` private and uncommitted. With `DATABASE_URL`, `JYOTICVE_DATA_DIR` is not needed.
 
 ## Browser dashboard
 

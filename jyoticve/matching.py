@@ -4,6 +4,7 @@ import re
 from pathlib import Path
 
 from packaging.version import InvalidVersion, Version
+from .storage import read_text
 
 
 def cpe_parts(value):
@@ -14,7 +15,7 @@ def cpe_parts(value):
 
 
 def inventory(path):
-    entries = json.loads(Path(path).read_text())
+    entries = json.loads(read_text(path))
     if not isinstance(entries, list):
         raise ValueError('Inventory must be an array')
     ids = set()

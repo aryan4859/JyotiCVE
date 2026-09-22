@@ -1,4 +1,4 @@
-"""Single-instance runtime: SQLite, local locks, and scheduler ownership are shared."""
+"""Single-instance runtime with one dashboard and supervised scheduler."""
 import os
 
 bind = '0.0.0.0:' + os.environ.get('PORT', '10000')

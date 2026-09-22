@@ -12,6 +12,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 import requests
+from .storage import PostgresDB, is_postgres, read_text
 
 LOG = logging.getLogger('jyoticve')
 NVD_LOCK = threading.Lock()
@@ -31,10 +32,15 @@ def fingerprint(value):
 
 
 def load_config(path):
+    remote = is_postgres(path)
+    config = json.loads(read_text(path))
     path = Path(path).resolve()
-    config = json.loads(path.read_text())
     config['_base'] = str(path.parent)
     for key in ('state_file', 'domains_file', 'inventory_file'):
+        if remote:
+            config[key] = {'state_file': 'postgres:state', 'domains_file': 'postgres:domains',
+                           'inventory_file': 'postgres:inventory'}[key]
+            continue
         config[key] = str(path.parent / config.get(key, {
             'state_file': 'state/monitor.sqlite3', 'domains_file': 'domains.txt',
             'inventory_file': 'inventory.json'}[key]))
@@ -124,6 +130,10 @@ class HTTP:
 
 class State:
     def __init__(self, path):
+        self.postgres = is_postgres(path)
+        if self.postgres:
+            self.db = PostgresDB()
+            return
         if str(path) != ':memory:':
             Path(path).parent.mkdir(parents=True, exist_ok=True)
         self.db = sqlite3.connect(path, timeout=30)
@@ -147,7 +157,7 @@ class State:
         return json.loads(row[0]) if row else default
 
     def put(self, key, value):
-        self.db.execute('INSERT OR REPLACE INTO kv VALUES (?,?)', (key, json.dumps(value)))
+        self.db.execute('INSERT INTO kv VALUES (?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value', (key, json.dumps(value)))
         self.db.commit()
 
     def event(self, bot, identity, payload, channels, meaningful=None):
@@ -156,11 +166,12 @@ class State:
         if self.get(key) == digest:
             return False
         with self.db:
-            cursor = self.db.execute('INSERT INTO events(bot,identity,fingerprint,payload,created) VALUES(?,?,?,?,?)',
+            cursor = self.db.execute('INSERT INTO events(bot,identity,fingerprint,payload,created) VALUES(?,?,?,?,?) RETURNING id',
                                      (bot, identity, digest, json.dumps(payload), stamp()))
+            identifier = cursor.fetchone()[0]
             for channel in channels:
-                self.db.execute('INSERT INTO deliveries(event_id,channel) VALUES(?,?)', (cursor.lastrowid, channel['id']))
-            self.db.execute('INSERT OR REPLACE INTO kv VALUES (?,?)', (key, json.dumps(digest)))
+                self.db.execute('INSERT INTO deliveries(event_id,channel) VALUES(?,?)', (identifier, channel['id']))
+            self.db.execute('INSERT INTO kv VALUES (?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value', (key, json.dumps(digest)))
         return True
 
     def close(self):
