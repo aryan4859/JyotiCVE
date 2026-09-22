@@ -88,9 +88,25 @@ export SECURITY_WEBHOOK='https://your-https-receiver'
 export NVD_API_KEY='your-optional-nvd-api-key'
 ```
 
-Supported channels are `console`, `webhook`, `slack` incoming webhooks, and `teams` Adaptive Card webhook/workflow receivers. A Teams workflow must accept the documented Adaptive Card envelope; configure its HTTP trigger accordingly. A generic webhook receives the structured event with `event_id`, `title`, `severity`, `kind`, `summary`, and `details`. An email gateway can consume this webhook; direct SMTP is not implemented.
+Supported channels are `telegram`, `console`, `webhook`, `slack` incoming webhooks, and `teams` Adaptive Card webhook/workflow receivers. A Teams workflow must accept the documented Adaptive Card envelope; configure its HTTP trigger accordingly. A generic webhook receives the structured event with `event_id`, `title`, `severity`, `kind`, `summary`, and `details`. An email gateway can consume this webhook; direct SMTP is not implemented.
 
 All configured channels receive events. Channel IDs must stay stable: queued deliveries reference them. Changing a destination URL retains history; adding a channel applies to future events, without replaying historical events. Failed deliveries are retried, and already delivered channels/message chunks are not intentionally resent. Slack and Teams messages are split to keep individual payloads manageable. Keep webhook URLs secret; request errors do not log them.
+
+To enable Telegram, set `TELEGRAM_BOT_TOKEN` (the token only, without the `bot` prefix)
+and `TELEGRAM_CHAT_ID` in `.env`, or in your hosting service environment, then restart
+the service. Add a Telegram channel in **Settings → Notification channels** using
+those environment variable names and save. The bot must have permission to send
+to that chat. Example channel metadata:
+
+```json
+{"id": "security-telegram", "type": "telegram", "token_env": "TELEGRAM_BOT_TOKEN", "chat_id_env": "TELEGRAM_CHAT_ID"}
+```
+
+Credentials are never returned to the browser. Telegram messages use plain text,
+split within the [sendMessage limit](https://core.telegram.org/bots/api#sendmessage).
+Failed chunks stay queued for retry; successful chunks retain their progress.
+Local `.env` and `config.json` are ignored by Git; a hosted deployment needs its own
+environment values and saved notification settings.
 
 ### Domains and certificate thresholds
 
