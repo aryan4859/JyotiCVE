@@ -10,6 +10,8 @@ Three independent scheduled Python bots share durable SQLite history and a retry
 
 For cloud hosting, use the included **[Render deployment guide](docs/hosting.md)** and `render.yaml`. It configures an authenticated dashboard, automatic monitoring, and persistent storage on a paid service. The local `web` command remains loopback-only.
 
+See [`.env.example`](.env.example) for required hosting settings and optional API key/webhook placeholders. For local use, copy it to `.env`, fill in the values, then run `set -a; source .env; set +a` before starting the app. The app does not automatically load `.env`; on Render, configure the values in the service's Environment settings. PostgreSQL is not yet supported.
+
 ## Browser dashboard
 
 Start the local web UI with your existing environment:
