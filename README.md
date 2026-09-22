@@ -8,6 +8,8 @@ Three independent scheduled Python bots share durable SQLite history and a retry
 | `certificates` | Every 24 hours | HTTPS certificate validation, threshold alerts, recovery alerts, daily UTC summary |
 | `stack` | Every 6 hours | NVD/CISA intelligence matched to the organization's explicit product/version inventory |
 
+For cloud hosting, use the included **[Render deployment guide](docs/hosting.md)** and `render.yaml`. It configures an authenticated dashboard, automatic monitoring, and persistent storage on a paid service. The local `web` command remains loopback-only.
+
 ## Browser dashboard
 
 Start the local web UI with your existing environment:
@@ -170,6 +172,7 @@ The service template is provided, not installed or started automatically by this
 ## Tests and extension points
 
 ```sh
+python -m pip install -e '.[hosted]'
 python -m unittest discover -s tests -v
 ```
 

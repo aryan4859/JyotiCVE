@@ -1,0 +1,18 @@
+{
+  "state_file": "state/monitor.sqlite3",
+  "domains_file": "domains.txt",
+  "inventory_file": "inventory.json",
+  "initial_lookback_hours": 24,
+  "http_timeout_seconds": 30,
+  "tls_timeout_seconds": 10,
+  "certificate_thresholds": [30, 14, 7, 3],
+  "certificate_critical_days": 7,
+  "news_keywords": ["vulnerability", "cybersecurity", "ransomware", "zero-day", "data breach"],
+  "significant_news_terms": ["actively exploited", "zero-day", "ransomware", "breach"],
+  "schedules": {
+    "news": {"enabled": true, "interval_seconds": 900},
+    "certificates": {"enabled": true, "interval_seconds": 86400},
+    "stack": {"enabled": true, "interval_seconds": 21600}
+  },
+  "notifications": [{"id": "local", "type": "console"}]
+}

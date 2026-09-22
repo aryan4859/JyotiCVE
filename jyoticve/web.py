@@ -42,6 +42,7 @@ class Dashboard:
         self.scheduler_log = None
         self.scheduler_stopping = False
         self.scheduler_error = ''
+        self.scheduler_output_to_console = False
         self.config()  # Fail before binding if configuration is invalid.
 
     def config(self):
@@ -72,10 +73,13 @@ class Dashboard:
                 if self.scheduler.poll() is None:
                     scheduler = 'stopping' if self.scheduler_stopping else 'running'
                 else:
-                    size = os.fstat(self.scheduler_log.fileno()).st_size
-                    self.scheduler_error = (os.pread(self.scheduler_log.fileno(), 4000, max(0, size - 4000)).decode(errors='replace')
-                                            if self.scheduler.returncode else '')
-                    self.scheduler_log.close()
+                    if self.scheduler_log:
+                        size = os.fstat(self.scheduler_log.fileno()).st_size
+                        self.scheduler_error = (os.pread(self.scheduler_log.fileno(), 4000, max(0, size - 4000)).decode(errors='replace')
+                                                if self.scheduler.returncode else '')
+                        self.scheduler_log.close()
+                    else:
+                        self.scheduler_error = 'Scheduler exited; see service logs.' if self.scheduler.returncode else ''
                     self.scheduler_log = None
                     self.scheduler = None
                     self.scheduler_stopping = False
@@ -203,7 +207,7 @@ class Dashboard:
                     raise ValueError('Scheduler is already running in another terminal or service. Manage it there, or stop it before starting it here.')
                 if self.scheduler_log:
                     self.scheduler_log.close()
-                self.scheduler_log = tempfile.TemporaryFile()
+                self.scheduler_log = None if self.scheduler_output_to_console else tempfile.TemporaryFile()
                 self.scheduler_stopping = False
                 self.scheduler_error = ''
                 self.scheduler = subprocess.Popen([sys.executable, '-u', '-m', 'jyoticve', '--config', str(self.path), 'serve'],
