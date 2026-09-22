@@ -3,6 +3,7 @@ import hashlib
 import json
 import logging
 import os
+import re
 import sqlite3
 import time
 import threading
@@ -69,13 +70,39 @@ def load_config(path):
     if len(ids) != len(set(ids)):
         raise ValueError('Notification channel IDs must be unique')
     for channel in channels:
-        if channel.get('type') not in ('console', 'webhook', 'slack', 'teams'):
-            raise ValueError('Supported notification types: console, webhook, slack, teams')
-        if channel['type'] != 'console':
+        if channel.get('type') not in ('console', 'webhook', 'slack', 'teams', 'telegram'):
+            raise ValueError('Supported notification types: console, webhook, slack, teams, telegram')
+        if channel['type'] == 'telegram':
+            telegram_credentials(channel)
+        elif channel['type'] != 'console':
             url = os.getenv(channel.get('url_env', ''), '')
             if urlsplit(url).scheme != 'https' or not urlsplit(url).hostname:
                 raise ValueError(f"Set HTTPS destination environment variable for {channel['id']}")
     return config
+
+
+def telegram_credentials(channel):
+    token = os.getenv(channel.get('token_env') or 'TELEGRAM_BOT_TOKEN', '').strip()
+    chat = os.getenv(channel.get('chat_id_env') or 'TELEGRAM_CHAT_ID', '').strip()
+    if not re.fullmatch(r'[0-9]+:[A-Za-z0-9_-]+', token):
+        raise ValueError('Set the Telegram bot token environment variable to the token only (without bot or the URL)')
+    if not re.fullmatch(r'-?[0-9]+|@[A-Za-z0-9_]+', chat):
+        raise ValueError('Set the Telegram chat ID environment variable to a numeric ID or @channel username')
+    return token, chat
+
+
+def telegram_chunks(message):
+    # Count UTF-16 units conservatively, including emoji, without splitting code points.
+    chunk, size = [], 0
+    for char in message:
+        units = 2 if ord(char) > 0xffff else 1
+        if size + units > 4096:
+            yield ''.join(chunk)
+            chunk, size = [], 0
+        chunk.append(char)
+        size += units
+    if chunk:
+        yield ''.join(chunk)
 
 
 class HTTP:
@@ -202,23 +229,32 @@ def deliver(state, config, http, bot=None):
             if kind == 'console':
                 print(message, flush=True)
             else:
-                url = os.environ[channel['url_env']]
-                chunks = [message[i:i + 6000] for i in range(0, len(message), 6000)] if kind != 'webhook' else [message]
+                if kind == 'telegram':
+                    token, chat = telegram_credentials(channel)
+                    url = f'https://api.telegram.org/bot{token}/sendMessage'
+                    chunks = list(telegram_chunks(message))
+                else:
+                    url = os.environ[channel['url_env']]
+                    chunks = [message[i:i + 6000] for i in range(0, len(message), 6000)] if kind != 'webhook' else [message]
                 for index in range(parts_sent, len(chunks)):
                     body = payload | {'event_id': event_id} if kind == 'webhook' else {'text': chunks[index]}
+                    if kind == 'telegram':
+                        body.update(chat_id=chat, link_preview_options={'is_disabled': True})
                     if kind == 'teams':
                         body = {'type': 'message', 'attachments': [{
                             'contentType': 'application/vnd.microsoft.card.adaptive',
                             'content': {'type': 'AdaptiveCard', 'version': '1.2',
                                         'body': [{'type': 'TextBlock', 'text': chunks[index], 'wrap': True}]}}]}
-                    http.request('POST', url, json=body,
+                    response = http.request('POST', url, json=body,
                                  headers={'Idempotency-Key': f'jyoticve-{event_id}-{channel_id}-{index}'}, allow_redirects=False)
+                    if kind == 'telegram' and response.json().get('ok') is not True:
+                        raise RuntimeError('Telegram rejected the message')
                     state.db.execute('UPDATE deliveries SET parts_sent=? WHERE event_id=? AND channel=?',
                                      (index + 1, event_id, channel_id))
                     state.db.commit()
             state.db.execute('UPDATE deliveries SET delivered=?,attempts=attempts+1 WHERE event_id=? AND channel=?',
                              (stamp(), event_id, channel_id))
-        except (RuntimeError, KeyError):
+        except (RuntimeError, KeyError, ValueError):
             failures += 1
             state.db.execute('UPDATE deliveries SET attempts=attempts+1 WHERE event_id=? AND channel=?',
                              (event_id, channel_id))

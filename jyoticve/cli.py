@@ -156,7 +156,7 @@ def main():
             if not hosts or not tech:
                 print('Empty inventories disable corresponding asset coverage; add your actual assets.')
             if all(c['type'] == 'console' for c in config['notifications']):
-                print('Console-only delivery: configure a webhook, Slack, or Teams destination for team notifications.')
+                print('Console-only delivery: configure a Telegram, webhook, Slack, or Teams destination for team notifications.')
         elif args.command == 'web':
             from .web import serve_web
             serve_web(args.config, args.port)
