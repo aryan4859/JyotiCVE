@@ -14,12 +14,20 @@ from urllib.parse import urlsplit
 from .certificates import domains
 from .core import State, load_config, stamp
 from .matching import inventory
+from .storage import is_postgres, read_text, write_document, database_lock
 
 BOTS = ('news', 'certificates', 'stack')
 STATIC = Path(__file__).parent / 'static'
 
 
 def atomic_write(path, text, validator):
+    if is_postgres(path):
+        with tempfile.TemporaryDirectory() as folder:
+            candidate = Path(folder) / 'candidate.json'
+            candidate.write_text(text)
+            validator(candidate)
+        write_document(path, text)
+        return
     path = Path(path)
     fd, name = tempfile.mkstemp(prefix='.dashboard-', suffix=path.suffix, dir=path.parent)
     try:
@@ -34,7 +42,7 @@ def atomic_write(path, text, validator):
 
 class Dashboard:
     def __init__(self, config_path):
-        self.path = Path(config_path).resolve()
+        self.path = str(config_path) if is_postgres(config_path) else Path(config_path).resolve()
         self.token = secrets.token_urlsafe(32)
         self.mutex = threading.RLock()
         self.jobs = {}
@@ -55,12 +63,13 @@ class Dashboard:
         config = self.config()
         state = self.state()
         try:
-            state.db.row_factory = __import__('sqlite3').Row
-            events = [dict(r) for r in state.db.execute('SELECT id,bot,created,payload FROM events ORDER BY id DESC LIMIT 200')]
+            cursor = state.db.execute('SELECT id,bot,created,payload FROM events ORDER BY id DESC LIMIT 200')
+            events = [dict(zip([c[0] for c in cursor.description], r)) for r in cursor.fetchall()]
             for event in events:
                 event['payload'] = json.loads(event['payload'])
                 event['payload'].pop('details', None)
-            runs = [dict(r) for r in state.db.execute('SELECT * FROM runs ORDER BY id DESC LIMIT 100')]
+            cursor = state.db.execute('SELECT * FROM runs ORDER BY id DESC LIMIT 100')
+            runs = [dict(zip([c[0] for c in cursor.description], r)) for r in cursor.fetchall()]
             counts = dict(state.db.execute("SELECT coalesce(json_extract(payload,'$.severity'),'informational'),count(*) FROM events GROUP BY 1").fetchall())
             pending = state.db.execute('SELECT count(*) FROM deliveries WHERE delivered IS NULL').fetchone()[0]
             certificates = [json.loads(r[0]) for r in state.db.execute("SELECT value FROM kv WHERE key LIKE 'certificates:status:%'")]
@@ -95,13 +104,21 @@ class Dashboard:
                 jobs.append(public)
         return {'timestamp': stamp(), 'events': events, 'runs': runs, 'counts': counts,
                 'pending': pending, 'certificates': certificates, 'next_due': due,
-                'domains': Path(config['domains_file']).read_text(), 'inventory': inventory(config['inventory_file']),
+                'domains': read_text(config['domains_file']), 'inventory': inventory(config['inventory_file']),
                 'settings': {k: config.get(k) for k in ('schedules', 'certificate_thresholds', 'certificate_critical_days',
                                                        'initial_lookback_hours', 'news_keywords', 'notifications')},
                 'scheduler': scheduler, 'scheduler_message': self.scheduler_error,
                 'jobs': list(reversed(jobs)), 'nvd_key_set': bool(os.getenv('NVD_API_KEY'))}
 
     def external_scheduler(self):
+        if is_postgres(self.path):
+            try:
+                with database_lock('postgres:state.scheduler.lock'):
+                    return False
+            except RuntimeError as error:
+                if 'already running' in str(error):
+                    return True
+                raise
         path = Path(self.config()['state_file'] + '.scheduler.lock')
         if not path.exists():
             return False
@@ -145,7 +162,7 @@ class Dashboard:
                     for schedule in body['schedules'].values():
                         if type(schedule.get('enabled')) is not bool:
                             raise ValueError('Schedule enabled must be true or false')
-                raw = json.loads(self.path.read_text())
+                raw = json.loads(read_text(self.path))
                 old_schedules = raw.get('schedules', {})
                 raw.update(body)
                 atomic_write(self.path, json.dumps(raw, indent=2) + '\n', load_config)

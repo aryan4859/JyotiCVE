@@ -9,11 +9,12 @@ from cryptography import x509
 from cryptography.hazmat.primitives import hashes
 
 from .core import now
+from .storage import read_text
 
 
 def domains(path):
     result = []
-    for number, line in enumerate(Path(path).read_text().splitlines(), 1):
+    for number, line in enumerate(read_text(path).splitlines(), 1):
         value = line.split('#', 1)[0].strip()
         if not value:
             continue

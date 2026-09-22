@@ -16,6 +16,7 @@ from werkzeug.exceptions import HTTPException
 from .cli import lock
 from .core import load_config
 from .web import Dashboard, STATIC
+from .storage import PostgresDB, initialize
 
 LOG = logging.getLogger('jyoticve.hosted')
 
@@ -34,6 +35,20 @@ def create_once(path, content):
 
 
 def bootstrap(data_dir):
+    if data_dir == 'postgres:':
+        db = PostgresDB()
+        try:
+            initialize(db)
+            with db:
+                for key, value in (
+                    ('postgres:config', (Path(__file__).parent / 'default-config.json').read_text()),
+                    ('postgres:domains', '# Add monitored hostnames in the dashboard.\n'),
+                    ('postgres:inventory', '[]\n'),
+                ):
+                    db.execute('INSERT INTO documents(key,value) VALUES(?,?) ON CONFLICT(key) DO NOTHING', (key, value))
+        finally:
+            db.close()
+        return 'postgres:config'
     root = Path(data_dir)
     if not root.is_absolute():
         raise ValueError('JYOTICVE_DATA_DIR must be an absolute persistent directory')
@@ -131,16 +146,23 @@ class ManagedDashboard(Dashboard):
 def settings_from_environment(env):
     username = env.get('JYOTICVE_ADMIN_USER', 'admin')
     password = env.get('JYOTICVE_ADMIN_PASSWORD', '')
-    if not username or ':' in username or len(password) < 24:
-        raise ValueError('Set JYOTICVE_ADMIN_PASSWORD to at least 24 characters and a valid JYOTICVE_ADMIN_USER')
+    if not username or ':' in username:
+        raise ValueError('JYOTICVE_ADMIN_USER must be nonempty and must not contain a colon; use admin')
+    if len(password) < 24:
+        raise ValueError('JYOTICVE_ADMIN_PASSWORD must contain at least 24 characters')
     origin = env.get('JYOTICVE_PUBLIC_ORIGIN') or env.get('RENDER_EXTERNAL_URL', '')
     parsed = urlsplit(origin)
     if (parsed.scheme != 'https' or not parsed.hostname or parsed.username or parsed.password or
             parsed.path not in ('', '/') or parsed.query or parsed.fragment):
         raise ValueError('Set JYOTICVE_PUBLIC_ORIGIN or RENDER_EXTERNAL_URL to the public HTTPS origin')
+    database_url = env.get('DATABASE_URL', '').strip()
+    if database_url:
+        if not database_url.startswith(('postgresql://', 'postgres://')):
+            raise ValueError('DATABASE_URL must be a PostgreSQL connection URL, not an API key or HTTPS URL')
+        return username, password, origin.rstrip('/'), 'postgres:'
     data_dir = env.get('JYOTICVE_DATA_DIR', '')
     if not data_dir or not Path(data_dir).is_absolute():
-        raise ValueError('Set JYOTICVE_DATA_DIR to an absolute persistent directory')
+        raise ValueError('Set DATABASE_URL for PostgreSQL storage, or JYOTICVE_DATA_DIR to an absolute persistent directory for SQLite')
     return username, password, origin.rstrip('/'), data_dir
 
 
