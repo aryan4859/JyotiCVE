@@ -9,6 +9,9 @@ description = "Independent scheduled security intelligence, TLS, and stack monit
 requires-python = ">=3.11"
 dependencies = ["requests>=2.32.4,<3", "cryptography>=42,<51", "packaging>=24,<27"]
 
+[project.optional-dependencies]
+hosted = ["Flask>=3.1,<4", "gunicorn>=23,<26"]
+
 [project.scripts]
 jyoticve = "jyoticve.cli:main"
 
@@ -16,4 +19,4 @@ jyoticve = "jyoticve.cli:main"
 include = ["jyoticve*"]
 
 [tool.setuptools.package-data]
-jyoticve = ["static/*.html", "static/*.css", "static/*.js"]
+jyoticve = ["static/*.html", "static/*.css", "static/*.js", "default-config.json"]
